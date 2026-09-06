@@ -4,5 +4,23 @@
     "Tadokuro",
     "Chasse au trésor"
   ],
-  "books": []
+  "books": [
+    {
+      "id": "book_1788688589465",
+      "status": "visible",
+      "languages": {
+        "Français": {
+          "title": "Mots cachés illustrés - Les animaux",
+          "category": "Mots cachés illustrés",
+          "description": "Le cahier d'activités garanti 100 % sans écran qui allie la stimulation du jeu à la beauté de la faune !\n\nDécouvrez les animaux comme vous ne les avez jamais vus et relevez le défi Enigmium. Ce premier tome vous propose une aventure à travers les plus beaux paysages de notre planète. Des savanes ensoleillées aux profondeurs océaniques, explorez la vie animale à travers le prisme du jeu et de la découverte.\n\nCet ouvrage hybride mêle harmonieusement des fiches documentaires captivantes et de grands défis d'observation. C'est le livre-cadeau idéal pour s'accorder un moment de calme, enrichir son vocabulaire et s'émerveiller en famille.\n\nPourquoi ce livre sort du lot :\n- Un véritable voyage artistique : Chaque animal est sublimé par une illustration, faisant de ce cahier un bel objet de collection.\n- Apprendre en s'amusant : Chaque grille résolue s'accompagne d'une fiche culturelle riche en faits surprenants et insolites sur l'espèce. Devenez incollable sur la faune sauvage !\n- Confort visuel maximal : imprimé en très grand format avec une mise en page aérée et des caractères très lisibles. Finie la fatigue pour les yeux, le plaisir de jeu est total.\n- Un moment à partager : Que ce soit pour des moments de relaxation en solo, pour occuper les trajets de vacances, ou pour créer une complicité entre parents, enfants et grands-parents.",
+          "content": "- Une exploration immersive à travers de grands univers (Savane, Océans, Forêts, Animaux disparus...).\n- 745 mots cachés stimulants pour exercer votre cerveau.\n- 80 mots mystères à déchiffrer pour clore chaque grille en beauté.\n- Les solutions complètes incluses en fin d'ouvrage.\n\nPréparez vos crayons, offrez (ou offrez-vous) une pause d'évasion intelligente au cœur du monde animal !",
+          "coverUrl": "images/covers/cover-book_1788688589465-Français.avif",
+          "banners": [],
+          "pdfBonusUrl": "",
+          "amazonUrl": "https://www.amazon.ca/-/fr/Mots-cach%C3%A9s-illustr%C3%A9s-myst%C3%A8res-d%C3%A9couvrir/dp/B0H2BWKKPD/ref=sr_1_6?crid=24MBQWT7QTVTW&dib=eyJ2IjoiMSJ9.07XBP5JFq-qnnAnLCp07slWW0ccGvBbZDoH0ePKO1OE-kMHSQFyaPQpCpN2uF9_VnyF6BtEpW2JeZYlja-W1OZvX4HR0_BGmXydSGHSeQpx0eQWb0PArk7_mezcrECB2fETpG6Gm9MNn2NOIEcdQpHGMgy5phK28rN5fyp018zpvUL0o7vPhKLUBYf95oqnZ8rHliVmphEre46LGRdSbZjGvijTGxenE3p7S5pe63lQ.o0ZhgSsWJx_Dd9s_DsBbi4DKNGA_bC_4hZRVv1i2VVQ&dib_tag=se&keywords=mots+cach%C3%A9s+illustr%C3%A9&qid=1788473608&s=books&sprefix=%2Cstripbooks%2C148&sr=1-6&xpid=m48V7UsEf2qNb",
+          "amazonReviewsUrl": "https://www.amazon.ca/-/fr/review/create-review/?ie=UTF8&channel=glance-detail&asin=B0H2BWKKPD"
+        }
+      }
+    }
+  ]
 }
