@@ -315,31 +315,24 @@
         });
 
         async function fetchBooks() {
-    const loading = document.getElementById('loadingState');
-    const vitrine = document.getElementById('vitrineContainer');
-    const empty = document.getElementById('emptyState');
-
     try {
         let data = {};
         const isLocal = window.location.protocol === 'file:';
 
-        // Si on teste sur ordi en local, on lit le localStorage de démo
+        // Si on teste en local, on utilise la démo, sinon on force la lecture du vrai books.json sur GitHub
         if (isLocal && localStorage.getItem('demo_books_db')) {
             data = JSON.parse(localStorage.getItem('demo_books_db'));
         } else {
-            // Si on est en ligne sur GitHub, on force la lecture du vrai books.json
-            const response = await fetch('books.json?t=' + Date.now()); // Évite le cache navigateur
+            const response = await fetch('books.json?t=' + Date.now()); // Évite le cache
             if (!response.ok) throw new Error("Impossible de lire books.json");
             data = await response.json();
         }
-
         booksData = data;
-        renderVitrine();
-        enrichReviewBanner();
+        applyInterfaceTranslations();
+        renderProductDetails();
     } catch (err) {
         console.error(err);
-        loading.classList.add('hidden');
-        empty.classList.remove('hidden');
+        alert("Erreur de chargement du produit.");
     }
 }
 
