@@ -315,28 +315,33 @@
         });
 
         async function fetchBooks() {
-            try {
-                let data = {};
-                if (localStorage.getItem('demo_books_db')) {
-                    data = JSON.parse(localStorage.getItem('demo_books_db'));
-                } else {
-                    try {
-                        const response = await fetch('books.json');
-                        if (!response.ok) throw new Error("CORS or not found");
-                        data = await response.json();
-                    } catch (e) {
-                        localStorage.setItem('demo_books_db', JSON.stringify(DEFAULT_DEMO_DB));
-                        data = DEFAULT_DEMO_DB;
-                    }
-                }
-                booksData = data;
-                applyInterfaceTranslations();
-                renderProductDetails();
-            } catch (err) {
-                console.error(err);
-                alert("Erreur de chargement du produit.");
-            }
+    const loading = document.getElementById('loadingState');
+    const vitrine = document.getElementById('vitrineContainer');
+    const empty = document.getElementById('emptyState');
+
+    try {
+        let data = {};
+        const isLocal = window.location.protocol === 'file:';
+
+        // Si on teste sur ordi en local, on lit le localStorage de démo
+        if (isLocal && localStorage.getItem('demo_books_db')) {
+            data = JSON.parse(localStorage.getItem('demo_books_db'));
+        } else {
+            // Si on est en ligne sur GitHub, on force la lecture du vrai books.json
+            const response = await fetch('books.json?t=' + Date.now()); // Évite le cache navigateur
+            if (!response.ok) throw new Error("Impossible de lire books.json");
+            data = await response.json();
         }
+
+        booksData = data;
+        renderVitrine();
+        enrichReviewBanner();
+    } catch (err) {
+        console.error(err);
+        loading.classList.add('hidden');
+        empty.classList.remove('hidden');
+    }
+}
 
         function changeLanguage() {
             currentLanguage = document.getElementById('publicLanguageSelector').value;
