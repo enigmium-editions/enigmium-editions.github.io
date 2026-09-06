@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enigmium - Boutique de Collections d'Énigmes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        enigmiumGreen: '#a3c9a8',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-white min-h-screen font-sans text-gray-900 flex flex-col">
+
+    <!-- HEADER PUBLIC -->
+    <header class="border-b border-gray-100 py-4 px-6 md:px-12 flex justify-between items-center bg-white sticky top-0 z-40">
+        <div class="flex items-center space-x-3">
+            <a href="index.html" class="w-8 h-8 bg-black text-white flex items-center justify-center font-bold text-lg rounded-sm">E</a>
+            <span class="text-xl font-bold tracking-tight text-gray-800">Enigmium</span>
+        </div>
+        
+        <div class="flex items-center space-x-2">
+            <span id="navLanguageLabel" class="text-sm text-gray-500">Langues</span>
+            <select id="publicLanguageSelector" onchange="changeLanguage()" class="border border-gray-200 rounded px-2 py-1 text-sm bg-gray-50 focus:outline-none focus:ring-1 focus:ring-black">
+                <option value="Français" selected>Français</option>
+                <option value="Anglais">Anglais</option>
+                <option value="Allemand">Allemand</option>
+                <option value="Espagnol">Espagnol</option>
+                <option value="Italien">Italien</option>
+                <option value="Portugais">Portugais</option>
+                <option value="Néerlandais">Néerlandais</option>
+            </select>
+        </div>
+    </header>
+
+    <!-- BANDEAU DE DEMANDE DE COMMENTAIRE INTELLIGENT (Caché par défaut) -->
+    <div id="reviewBannerContainer" class="hidden bg-gray-100 py-6 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center gap-6">
+            
+            <!-- Cover dynamique ou icône si pas d'image -->
+            <div class="w-20 h-28 bg-gray-200 flex items-center justify-center rounded shadow-sm border border-gray-300 shrink-0 overflow-hidden">
+                <img id="reviewBannerBookCover" src="" class="w-full h-full object-cover hidden">
+                <i id="reviewBannerBookFallbackIcon" data-lucide="book-open" class="w-8 h-8 text-gray-400 animate-pulse"></i>
+            </div>
+
+            <!-- Texte du bandeau -->
+            <div class="flex-grow space-y-3 text-center md:text-left pr-6">
+                <h3 id="reviewBannerTitle" class="text-lg font-bold text-gray-900">Laissez-nous un commentaire !</h3>
+                <p id="reviewBannerText" class="text-sm text-gray-600 max-w-2xl">
+                    Merci pour votre achat ! N'hésitez pas à nous laisser un commentaire sur Amazon, cela compte énormément pour nous, soutient notre travail indépendant et nous encourage à produire de nouveaux livres !
+                </p>
+                <a id="reviewBannerLink" href="#" target="_blank" class="inline-flex bg-black text-white text-xs font-semibold px-5 py-2.5 rounded hover:bg-gray-800 transition-colors">
+                    <span id="reviewBannerLinkText">Laisser un commentaire</span>
+                </a>
+            </div>
+            
+            <button onclick="dismissReviewBanner()" class="text-gray-400 hover:text-black self-start">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN VITRINE -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-6 md:px-12 py-10">
+        
+        <div id="loadingState" class="py-24 flex flex-col items-center justify-center space-y-3">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
+            <p id="loadingStateText" class="text-sm text-gray-500">Découverte de nos collections d'énigmes...</p>
+        </div>
+
+        <div id="vitrineContainer" class="space-y-16 hidden">
+            <!-- Catégories dynamiques injectées ici -->
+        </div>
+
+        <div id="emptyState" class="hidden border border-dashed border-gray-200 rounded-lg py-20 text-center">
+            <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="book" class="w-8 h-8 text-gray-400"></i>
+            </div>
+            <h3 id="emptyStateTitle" class="text-lg font-medium text-gray-800">Bientôt de retour</h3>
+            <p id="emptyStateText" class="text-sm text-gray-500 mt-1 max-w-md mx-auto">Nous préparons actuellement nos collections dans cette langue. Revenez très bientôt !</p>
+        </div>
+    </main>
+
+    <footer class="border-t border-gray-100 py-8 text-center text-xs text-gray-400 bg-white">
+        <span id="footerText">© 2026 Enigmium. Tous droits réservés.</span>
+    </footer>
+
+    <script>
+        let booksData = { categories: [], books: [] };
+        let currentLanguage = 'Français';
+
+        const UI_TRANSLATIONS = {
+            "Français": {
+                "nav_languages": "Langues",
+                "loading_text": "Découverte de nos collections d'énigmes...",
+                "empty_title": "Bientôt de retour",
+                "empty_text": "Nous préparons actuellement nos collections dans cette langue. Revenez très bientôt !",
+                "review_banner_title": "Laissez-nous un commentaire !",
+                "review_banner_text": "Merci pour votre achat ! N'hésitez pas à nous laisser un commentaire sur Amazon, cela compte énormément pour nous, soutient notre travail indépendant et nous encourage à produire de nouveaux livres !",
+                "review_banner_btn": "Laisser un commentaire",
+                "footer_text": "© 2026 Enigmium. Tous droits réservés.",
+                "buy_on_amazon": "Acheter sur Amazon",
+                "view_book": "Voir le produit"
+            },
+            "Anglais": {
+                "nav_languages": "Languages",
+                "loading_text": "Discovering our puzzle collections...",
+                "empty_title": "Coming back soon",
+                "empty_text": "We are currently preparing our collections in this language. Come back very soon!",
+                "review_banner_title": "Leave us a review!",
+                "review_banner_text": "Thank you for your purchase! Feel free to leave us a review on Amazon, it means a lot to us, supports our independent work and encourages us to produce new books!",
+                "review_banner_btn": "Leave a review",
+                "footer_text": "© 2026 Enigmium. All rights reserved.",
+                "buy_on_amazon": "Buy on Amazon",
+                "view_book": "View Product"
+            },
+            "Allemand": {
+                "nav_languages": "Sprachen",
+                "loading_text": "Rätselsammlungen werden geladen...",
+                "empty_title": "Bald wieder da",
+                "empty_text": "Wir bereiten derzeit unsere Sammlungen in dieser Sprache vor. Kommen Sie bald wieder!",
+                "review_banner_title": "Hinterlassen Sie uns eine Bewertung!",
+                "review_banner_text": "Vielen Dank für Ihren Kauf! Bitte hinterlassen Sie uns eine Bewertung auf Amazon, das bedeutet uns sehr viel, unterstützt unsere unabhängige Arbeit und ermutigt uns, neue Bücher zu erstellen!",
+                "review_banner_btn": "Bewertung hinterlassen",
+                "footer_text": "© 2026 Enigmium. Alle Rechte vorbehalten.",
+                "buy_on_amazon": "Bei Amazon kaufen",
+                "view_book": "Produkt ansehen"
+            },
+            "Espagnol": {
+                "nav_languages": "Idiomas",
+                "loading_text": "Descubriendo nuestras colecciones de acertijos...",
+                "empty_title": "Pronto de vuelta",
+                "empty_text": "Actualmente estamos preparando nuestras colecciones en este idioma. ¡Vuelve pronto!",
+                "review_banner_title": "¡Déjanos un comentario!",
+                "review_banner_text": "¡Gracias por su compra! No dude en dejarnos un comentario en Amazon, significa mucho para nosotros, apoya nuestro trabajo independiente y nos anima a producir nuevos libros.",
+                "review_banner_btn": "Dejar un comentario",
+                "footer_text": "© 2026 Enigmium. Todos los derechos reservados.",
+                "buy_on_amazon": "Comprar en Amazon",
+                "view_book": "Ver producto"
+            },
+            "Italien": {
+                "nav_languages": "Lingue",
+                "loading_text": "Scoprendo le nostre collezioni di puzzle...",
+                "empty_title": "Presto di ritorno",
+                "empty_text": "Stiamo attualmente preparando le nostre collezioni in questa lingua. Torna presto!",
+                "review_banner_title": "Lasciaci una recensione!",
+                "review_banner_text": "Grazie per il tuo acquisto! Sentiti libero di lasciarci una recensione su Amazon, significa molto per noi, supporta il tuo lavoro indipendente e ci incoraggia a produrre nuovi libri!",
+                "review_banner_btn": "Lascia una recensione",
+                "footer_text": "© 2026 Enigmium. Tutti i diritti riservati.",
+                "buy_on_amazon": "Acquista su Amazon",
+                "view_book": "Visualizza prodotto"
+            },
+            "Portugais": {
+                "nav_languages": "Idiomas",
+                "loading_text": "Descobrindo nossas coleções de quebra-cabeças...",
+                "empty_title": "Em breve de volta",
+                "empty_text": "Atualmente estamos preparando nossas coleções neste idioma. Volte muito em breve!",
+                "review_banner_title": "Deixe-nos um comentário!",
+                "review_banner_text": "Obrigado pela sua compra! Sinta-se à vontade para nos deixar um comentário na Amazon, isso significa muito para nós, apoia o nosso trabalho independente e nos incentiva a produzir novos livres!",
+                "review_banner_btn": "Deixar um comentário",
+                "footer_text": "© 2026 Enigmium. Todos os direitos reservados.",
+                "buy_on_amazon": "Comprar na Amazon",
+                "view_book": "Ver produto"
+            },
+            "Néerlandais": {
+                "nav_languages": "Talen",
+                "loading_text": "Onze puzzelcollecties ontdekken...",
+                "empty_title": "Binnenkort terug",
+                "empty_text": "We bereiden momenteel onze collecties voor in deze taal. Kom snel terug!",
+                "review_banner_title": "Laat een beoordeling achter!",
+                "review_banner_text": "Bedankt voor uw aankoop! Laat gerust een beoordeling achter op Amazon, dit betekent veel voor ons, ondersteunt ons onafhankelijke werk en moedigt ons aan om nieuwe boeken te maken!",
+                "review_banner_btn": "Beoordeling achterlaten",
+                "footer_text": "© 2026 Enigmium. Alle rechten voorbehouden.",
+                "buy_on_amazon": "Koop op Amazon",
+                "view_book": "Bekijk product"
+            }
+        };
+
+        const DEFAULT_DEMO_DB = {
+    categories: ["Mots cachés illustrés", "Tadokuro", "Chasse au trésor"],
+    books: [
+        {
+            id: "book_demo_1",
+            status: "visible",
+            languages: {
+                "Français": {
+                    title: "Mots cachés illustrés - Les Animaux",
+                    category: "Mots cachés illustrés",
+                    description: "Le premier cahier d'activités hybride qui allie la stimulation des mots cachés à la richesse d'un documentaire illustré.",
+                    content: "Idéal pour tous les âges !\n- 80 mots mystères à déchiffrer\n- Des fiches illustrées explicatives\n- Des solutions complètes en fin d'ouvrage",
+                    coverUrl: "https://images-na.ssl-images-amazon.com/images/I/81XXXXXX.jpg",
+                    banners: [
+                        "https://images-na.ssl-images-amazon.com/images/I/81XXXXXX.jpg"
+                    ],
+                    pdfBonusUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+                    amazonUrl: "https://www.amazon.fr/dp/B0D1XXXXXX",
+                    amazonReviewsUrl: "https://www.amazon.fr/product-reviews/B0D1XXXXXX"
+                },
+                "Anglais": {
+                    title: "Illustrated Word Search - Animals",
+                    category: "Mots cachés illustrés",
+                    description: "The first hybrid activity book combining word search puzzles with beautiful animal illustrations.",
+                    content: "Ideal for all ages!\n- 80 mystery words to decipher\n- Explanatory illustrated sheets\n- Complete solutions at the end",
+                    coverUrl: "https://images-na.ssl-images-amazon.com/images/I/81XXXXXX.jpg",
+                    banners: [
+                        "https://images-na.ssl-images-amazon.com/images/I/81XXXXXX.jpg"
+                    ],
+                    pdfBonusUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+                    amazonUrl: "https://www.amazon.com/dp/B0D1XXXXXX",
+                    amazonReviewsUrl: "https://www.amazon.com/product-reviews/B0D1XXXXXX"
+                }
+            }
+        },
+        {
+            id: "book_demo_2",
+            status: "visible",
+            languages: {
+                "Français": {
+                    title: "Tadokuro - Casse-têtes de Logique",
+                    category: "Tadokuro",
+                    description: "Découvrez le casse-tête de logique qui stimule vos neurones.",
+                    content: "Grilles de niveau facile à difficile.",
+                    coverUrl: "",
+                    banners: [],
+                    pdfBonusUrl: "",
+                    amazonUrl: "https://www.amazon.fr/dp/B0D2XXXXXX",
+                    amazonReviewsUrl: ""
+                }
+            }
+        },
+        {
+            id: "book_demo_3",
+            status: "visible",
+            languages: {
+                "Allemand": {
+                    title: "Rätselhafte Schatzsuche",
+                    category: "Chasse au trésor",
+                    description: "Eine große Abenteuerreise für die ganze Familie.",
+                    content: "Spannende Rätsel und Geheimnisse.",
+                    coverUrl: "",
+                    banners: [],
+                    pdfBonusUrl: "",
+                    amazonUrl: "https://www.amazon.de/dp/B0D3XXXXXX",
+                    amazonReviewsUrl: ""
+                }
+            }
+        }
+    ]
+};
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            lucide.createIcons();
+            
+            const savedLang = localStorage.getItem('enigmium_lang');
+            if (savedLang) {
+                currentLanguage = savedLang;
+                document.getElementById('publicLanguageSelector').value = currentLanguage;
+            } else {
+                const browserLang = navigator.language || navigator.userLanguage;
+                if (browserLang.startsWith('en')) currentLanguage = 'Anglais';
+                else if (browserLang.startsWith('de')) currentLanguage = 'Allemand';
+                else if (browserLang.startsWith('es')) currentLanguage = 'Espagnol';
+                else if (browserLang.startsWith('it')) currentLanguage = 'Italien';
+                else if (browserLang.startsWith('nl')) currentLanguage = 'Néerlandais';
+                else if (browserLang.startsWith('pt')) currentLanguage = 'Portugais';
+                document.getElementById('publicLanguageSelector').value = currentLanguage;
+            }
+
+            applyInterfaceTranslations();
+            checkQrCodeRedirect();
+            await fetchBooks();
+        });
+
+        function checkQrCodeRedirect() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isBonusClaimed = urlParams.get('bonus') === 'claimed';
+            const bookId = urlParams.get('book_id');
+
+            if (isBonusClaimed) {
+                localStorage.setItem('enigmium_bonus_claimed', 'true');
+                if (bookId) {
+                    localStorage.setItem('enigmium_last_scanned_book', bookId);
+                }
+                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
+            }
+            displayReviewBannerIfEligible();
+        }
+
+        function displayReviewBannerIfEligible() {
+            const isEligible = localStorage.getItem('enigmium_bonus_claimed') === 'true';
+            const banner = document.getElementById('reviewBannerContainer');
+            if (isEligible) {
+                banner.classList.remove('hidden');
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+
+        function dismissReviewBanner() {
+            localStorage.removeItem('enigmium_bonus_claimed');
+            document.getElementById('reviewBannerContainer').classList.add('hidden');
+        }
+
+        async function fetchBooks() {
+            const loading = document.getElementById('loadingState');
+            const vitrine = document.getElementById('vitrineContainer');
+            const empty = document.getElementById('emptyState');
+
+            try {
+                let data = {};
+                if (localStorage.getItem('demo_books_db')) {
+                    data = JSON.parse(localStorage.getItem('demo_books_db'));
+                } else {
+                    try {
+                        const response = await fetch('books.json');
+                        if (!response.ok) throw new Error("Fetch failed");
+                        data = await response.json();
+                    } catch (e) {
+                        // Fallback démo local instantané !
+                        localStorage.setItem('demo_books_db', JSON.stringify(DEFAULT_DEMO_DB));
+                        data = DEFAULT_DEMO_DB;
+                    }
+                }
+
+                booksData = data;
+                renderVitrine();
+                enrichReviewBanner();
+            } catch (err) {
+                console.error(err);
+                loading.classList.add('hidden');
+                empty.classList.remove('hidden');
+            }
+        }
+
+        function changeLanguage() {
+            currentLanguage = document.getElementById('publicLanguageSelector').value;
+            localStorage.setItem('enigmium_lang', currentLanguage);
+            applyInterfaceTranslations();
+            renderVitrine();
+            enrichReviewBanner();
+        }
+
+        function applyInterfaceTranslations() {
+            const lang = currentLanguage || 'Français';
+            const t = UI_TRANSLATIONS[lang] || UI_TRANSLATIONS['Français'];
+            
+            document.getElementById('navLanguageLabel').innerText = t.nav_languages;
+            document.getElementById('loadingStateText').innerText = t.loading_text;
+            document.getElementById('emptyStateTitle').innerText = t.empty_title;
+            document.getElementById('emptyStateText').innerText = t.empty_text;
+            document.getElementById('reviewBannerTitle').innerText = t.review_banner_title;
+            document.getElementById('reviewBannerText').innerText = t.review_banner_text;
+            document.getElementById('reviewBannerLinkText').innerText = t.review_banner_btn;
+            document.getElementById('footerText').innerText = t.footer_text;
+        }
+
+        function enrichReviewBanner() {
+            const lastScannedId = localStorage.getItem('enigmium_last_scanned_book');
+            const coverImg = document.getElementById('reviewBannerBookCover');
+            const fallbackIcon = document.getElementById('reviewBannerBookFallbackIcon');
+            const reviewBtn = document.getElementById('reviewBannerLink');
+
+            let targetBook = null;
+            if (lastScannedId) {
+                targetBook = booksData.books.find(b => b.id === lastScannedId && b.languages && b.languages[currentLanguage]);
+            }
+            if (!targetBook) {
+                targetBook = booksData.books.find(b => b.languages && b.languages[currentLanguage] && b.languages[currentLanguage].amazonReviewsUrl);
+            }
+
+            if (targetBook && targetBook.languages[currentLanguage]) {
+                const langData = targetBook.languages[currentLanguage];
+                if (langData.coverUrl) {
+                    coverImg.src = langData.coverUrl;
+                    coverImg.classList.remove('hidden');
+                    fallbackIcon.classList.add('hidden');
+                } else {
+                    coverImg.classList.add('hidden');
+                    fallbackIcon.classList.remove('hidden');
+                }
+                reviewBtn.href = langData.amazonReviewsUrl || "https://www.amazon.fr";
+            } else {
+                coverImg.classList.add('hidden');
+                fallbackIcon.classList.remove('hidden');
+                reviewBtn.href = "https://www.amazon.fr";
+            }
+        }
+
+        function renderVitrine() {
+            const container = document.getElementById('vitrineContainer');
+            const emptyState = document.getElementById('emptyState');
+            const loadingState = document.getElementById('loadingState');
+
+            loadingState.classList.add('hidden');
+            container.innerHTML = '';
+
+            const activeBooks = booksData.books.filter(book => {
+                if (book.status === 'masqué') return false;
+                const langData = book.languages ? book.languages[currentLanguage] : null;
+                return langData && (langData.title || langData.description);
+            });
+
+            if (activeBooks.length === 0) {
+                container.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            container.classList.remove('hidden');
+
+            booksData.categories.forEach(cat => {
+                const booksInCat = activeBooks.filter(b => b.languages[currentLanguage].category === cat);
+                if (booksInCat.length > 0) {
+                    renderCategorySection(container, cat, booksInCat);
+                }
+            });
+
+            lucide.createIcons();
+        }
+
+        function renderCategorySection(parent, categoryName, books) {
+            const section = document.createElement('div');
+            section.className = "space-y-6 animate-fadeIn";
+
+            const titleRow = document.createElement('div');
+            titleRow.className = "flex justify-between items-center border-b border-gray-100 pb-2.5";
+            titleRow.innerHTML = `<h2 class="text-xl font-bold tracking-tight text-gray-900">${categoryName}</h2>`;
+            section.appendChild(titleRow);
+
+            const grid = document.createElement('div');
+            grid.className = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8";
+
+            const lang = currentLanguage || 'Français';
+            const t = UI_TRANSLATIONS[lang] || UI_TRANSLATIONS['Français'];
+
+            books.forEach(book => {
+                const langData = book.languages[currentLanguage];
+                const card = document.createElement('a');
+                card.href = `produit.html?id=${book.id}&lang=${currentLanguage}`;
+                card.className = "group flex flex-col space-y-3 cursor-pointer focus:outline-none";
+
+                const imgContainer = document.createElement('div');
+                imgContainer.className = "aspect-[3/4] bg-gray-50 border border-gray-100 rounded-md overflow-hidden relative shadow-sm group-hover:shadow-md transition-shadow flex items-center justify-center";
+                
+                if (langData.coverUrl) {
+                    const img = document.createElement('img');
+                    img.src = langData.coverUrl;
+                    img.alt = langData.title;
+                    img.className = "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300";
+                    imgContainer.appendChild(img);
+                } else {
+                    const noImg = document.createElement('div');
+                    noImg.className = "text-center p-4 text-gray-300 flex flex-col items-center space-y-1";
+                    noImg.innerHTML = `<i data-lucide="book-open" class="w-10 h-10"></i><span class="text-xs">${t.view_book}</span>`;
+                    imgContainer.appendChild(noImg);
+                }
+
+                card.appendChild(imgContainer);
+
+                const infoDiv = document.createElement('div');
+                infoDiv.className = "space-y-1";
+                
+                const title = document.createElement('h3');
+                title.className = "text-sm font-bold text-gray-900 group-hover:text-black line-clamp-1";
+                title.innerText = langData.title;
+                infoDiv.appendChild(title);
+
+                card.appendChild(infoDiv);
+                grid.appendChild(card);
+            });
+
+            section.appendChild(grid);
+            parent.appendChild(section);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enigmium - Gestion du site</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        enigmiumGreen: '#a3c9a8',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-white min-h-screen font-sans text-gray-900 flex flex-col">
+
+    <!-- HEADER -->
+    <header class="border-b border-gray-100 py-4 px-6 md:px-12 flex justify-between items-center bg-white sticky top-0 z-40">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-black text-white flex items-center justify-center font-bold text-lg rounded-sm">E</div>
+            <span class="text-xl font-bold tracking-tight text-gray-800">Enigmium</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2">
+                <span class="text-sm text-gray-500">Langues</span>
+                <select id="headerLanguageFilter" onchange="filterBooksByLanguage()" class="border border-gray-200 rounded px-2 py-1 text-sm bg-gray-50 focus:outline-none focus:ring-1 focus:ring-black">
+                    <option value="all">Toutes</option>
+                    <option value="Français" selected>Français</option>
+                    <option value="Anglais">Anglais</option>
+                    <option value="Allemand">Allemand</option>
+                    <option value="Espagnol">Espagnol</option>
+                    <option value="Italien">Italien</option>
+                    <option value="Portugais">Portugais</option>
+                    <option value="Néerlandais">Néerlandais</option>
+                </select>
+            </div>
+            <button onclick="toggleConfigModal()" class="text-gray-500 hover:text-black transition-colors" title="Configuration de la clé GitHub">
+                <i data-lucide="settings" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- BANDEAU MODE DÉMO -->
+    <div id="missingConfigBanner" class="hidden bg-amber-50 border-b border-amber-200 text-amber-800 px-6 py-3.5 text-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+        <div class="flex items-center space-x-2">
+            <i data-lucide="info" class="w-5 h-5 text-amber-600 shrink-0"></i>
+            <span>
+                <strong>⚡ Mode Démo actif :</strong> Vos modifications seront stockées localement dans votre navigateur (via <code>localStorage</code>). Pour lier votre vrai dépôt GitHub, cliquez sur connecter.
+            </span>
+        </div>
+        <button onclick="toggleConfigModal()" class="bg-amber-800 hover:bg-amber-900 text-white px-4 py-1.5 rounded text-xs font-semibold transition-colors">
+            Connecter à GitHub
+        </button>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-6 md:px-12 py-8">
+        <div class="flex justify-end mb-8">
+            <a href="formulaire.html" class="bg-black text-white px-6 py-2.5 rounded font-medium hover:bg-gray-800 transition-colors inline-flex items-center space-x-2 shadow-sm">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span>Nouveau livre</span>
+            </a>
+        </div>
+
+        <div id="loadingState" class="py-12 flex flex-col items-center justify-center space-y-3">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
+            <p class="text-sm text-gray-500">Chargement de vos livres...</p>
+        </div>
+
+        <div id="categoriesContainer" class="space-y-12 hidden">
+            <!-- Rempli dynamiquement via JS -->
+        </div>
+
+        <div id="emptyState" class="hidden border border-dashed border-gray-200 rounded-lg py-16 px-4 text-center">
+            <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="book" class="w-8 h-8 text-gray-400"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-800">Aucun livre enregistré</h3>
+            <p class="text-sm text-gray-500 mt-1 mb-6 max-w-md mx-auto">Commencez par ajouter votre tout premier livre KDP pour le faire apparaître sur votre site vitrine.</p>
+            <a href="formulaire.html" class="bg-black text-white px-5 py-2 rounded text-sm hover:bg-gray-800 transition-colors inline-flex items-center space-x-2">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span>Ajouter un livre</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="border-t border-gray-100 py-6 text-center text-xs text-gray-400 bg-white">
+        © 2026 Enigmium - Outil de gestion de contenu statique GitHub
+    </footer>
+
+    <!-- MODAL CONFIGURATION -->
+    <div id="configModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg max-w-md w-full p-6 shadow-xl border border-gray-100 mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-gray-900 flex items-center space-x-2">
+                    <i data-lucide="github" class="w-5 h-5 text-black"></i>
+                    <span>Configuration API GitHub</span>
+                </h3>
+                <button onclick="toggleConfigModal()" class="text-gray-400 hover:text-black">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <form id="configForm" onsubmit="saveConfig(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Jeton d'accès personnel GitHub (Token)</label>
+                    <input type="password" id="ghToken" required placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" class="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black">
+                    <p class="text-xxs text-gray-400 mt-1">Générez un Token classique avec les droits "repo". Conservé uniquement dans ce navigateur.</p>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nom d'utilisateur GitHub (Owner)</label>
+                    <input type="text" id="ghOwner" required placeholder="votre-pseudo-github" class="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nom du Dépôt (Repository)</label>
+                    <input type="text" id="ghRepo" required placeholder="enigmium-site" class="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Branche</label>
+                    <input type="text" id="ghBranch" required value="main" placeholder="main" class="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black">
+                </div>
+                <div class="flex space-x-3 pt-4 border-t border-gray-100">
+                    <button type="button" onclick="toggleConfigModal()" class="w-1/2 border border-gray-200 rounded py-2 text-sm font-medium hover:bg-gray-50 transition-colors">Annuler</button>
+                    <button type="submit" class="w-1/2 bg-black text-white rounded py-2 text-sm font-medium hover:bg-gray-800 transition-colors">Sauvegarder</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        class GitHubCMS {
+            constructor() {
+                this.token = localStorage.getItem('gh_token') || '';
+                this.owner = localStorage.getItem('gh_owner') || '';
+                this.repo = localStorage.getItem('gh_repo') || '';
+                this.branch = localStorage.getItem('gh_branch') || 'main';
+                this.jsonPath = 'books.json';
+                this.demoMode = !this.isConfigured();
+            }
+
+            isConfigured() {
+                return this.token !== '' && this.owner !== '' && this.repo !== '';
+            }
+
+            async apiRequest(path, options = {}) {
+                if (this.demoMode) throw new Error("Impossible d'exécuter une API réelle en mode démo.");
+                const url = `https://api.github.com/repos/${this.owner}/${this.repo}/contents/${path}?ref=${this.branch}`;
+                const headers = {
+                    'Authorization': `token ${this.token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                };
+                const response = await fetch(url, { ...options, headers });
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.message || `Erreur HTTP ! Statut: ${response.status}`);
+                }
+                return response.json();
+            }
+
+            async getDatabase() {
+                if (this.demoMode) {
+                    let demoDb = localStorage.getItem('demo_books_db');
+                    if (!demoDb) {
+                        const initialDb = {
+    categories: ["Mots cachés illustrés", "Tadokuro", "Chasse au trésor"],
+    books: [
+        {
+            id: "book_demo_1",
+            status: "visible",
+            languages: {
+                "Français": {
+                    title: "Mots cachés illustrés - Les Animaux",
+                    category: "Mots cachés illustrés",
+                    description: "Le premier cahier d'activités hybride qui allie la stimulation des mots cachés à la richesse d'un documentaire illustré.",
+                    content: "Idéal pour tous les âges !\n- 80 mots mystères à déchiffrer\n- Des fiches illustrées explicatives\n- Des solutions complètes en fin d'ouvrage",
+                    coverUrl: "https://images-na.ssl-images-amazon.com/images/I/81XXXXXX.jpg",
+                    banners: [
+                        "https://images-na.ssl-images-amazon.com/images/I/81XXXXXX.jpg"
+                    ],
+                    pdfBonusUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+                    amazonUrl: "https://www.amazon.fr/dp/B0D1XXXXXX",
+                    amazonReviewsUrl: "https://www.amazon.fr/product-reviews/B0D1XXXXXX"
+                },
+                "Anglais": {
+                    title: "Illustrated Word Search - Animals",
+                    category: "Mots cachés illustrés",
+                    description: "The first hybrid activity book combining word search puzzles with beautiful animal illustrations.",
+                    content: "Ideal for all ages!\n- 80 mystery words to decipher\n- Explanatory illustrated sheets\n- Complete solutions at the end",
+                    coverUrl: "https://images-na.ssl-images-amazon.com/images/I/81XXXXXX.jpg",
+                    banners: [
+                        "https://images-na.ssl-images-amazon.com/images/I/81XXXXXX.jpg"
+                    ],
+                    pdfBonusUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+                    amazonUrl: "https://www.amazon.com/dp/B0D1XXXXXX",
+                    amazonReviewsUrl: "https://www.amazon.com/product-reviews/B0D1XXXXXX"
+                }
+            }
+        },
+        {
+            id: "book_demo_2",
+            status: "visible",
+            languages: {
+                "Français": {
+                    title: "Tadokuro - Casse-têtes de Logique",
+                    category: "Tadokuro",
+                    description: "Découvrez le casse-tête de logique qui stimule vos neurones.",
+                    content: "Grilles de niveau facile à difficile.",
+                    coverUrl: "",
+                    banners: [],
+                    pdfBonusUrl: "",
+                    amazonUrl: "https://www.amazon.fr/dp/B0D2XXXXXX",
+                    amazonReviewsUrl: ""
+                }
+            }
+        },
+        {
+            id: "book_demo_3",
+            status: "visible",
+            languages: {
+                "Allemand": {
+                    title: "Rätselhafte Schatzsuche",
+                    category: "Chasse au trésor",
+                    description: "Eine große Abenteuerreise für die ganze Familie.",
+                    content: "Spannende Rätsel und Geheimnisse.",
+                    coverUrl: "",
+                    banners: [],
+                    pdfBonusUrl: "",
+                    amazonUrl: "https://www.amazon.de/dp/B0D3XXXXXX",
+                    amazonReviewsUrl: ""
+                }
+            }
+        }
+    ]
+};
+                        localStorage.setItem('demo_books_db', JSON.stringify(initialDb));
+                        demoDb = JSON.stringify(initialDb);
+                    }
+                    return { sha: "demo-sha", data: JSON.parse(demoDb) };
+                }
+
+                try {
+                    const data = await this.apiRequest(this.jsonPath);
+                    const content = decodeURIComponent(escape(atob(data.content)));
+                    return { sha: data.sha, data: JSON.parse(content) };
+                } catch (e) {
+                    if (e.message.includes('Not Found') || e.message.includes('404')) {
+                        return { sha: null, data: { categories: [], books: [] } };
+                    }
+                    throw e;
+                }
+            }
+
+            async saveDatabase(db, sha = null) {
+                if (this.demoMode) {
+                    localStorage.setItem('demo_books_db', JSON.stringify(db));
+                    return true;
+                }
+
+                const content = btoa(unescape(encodeURIComponent(JSON.stringify(db, null, 2))));
+                const body = {
+                    message: 'Mise à jour de la base de données des livres KDP',
+                    content: content,
+                    branch: this.branch
+                };
+                if (sha) body.sha = sha;
+
+                const url = `https://api.github.com/repos/${this.owner}/${this.repo}/contents/${this.jsonPath}`;
+                const headers = {
+                    'Authorization': `token ${this.token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                };
+                const response = await fetch(url, {
+                    method: 'PUT',
+                    headers,
+                    body: JSON.stringify(body)
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.message || `Erreur de sauvegarde: ${response.status}`);
+                }
+                return response.json();
+            }
+        }
+
+        const cms = new GitHubCMS();
+        let dbCache = { categories: [], books: [] };
+        let dbSha = null;
+        let activeDropdownId = null;
+        let expandedCategories = {};
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.dropdown-trigger') && !e.target.closest('.dropdown-menu')) {
+                    closeAllDropdowns();
+                }
+            });
+
+            if (!cms.isConfigured()) {
+                document.getElementById('missingConfigBanner').classList.remove('hidden');
+            }
+            loadBooks();
+        });
+
+        function toggleConfigModal() {
+            const modal = document.getElementById('configModal');
+            if (modal.classList.contains('hidden')) {
+                document.getElementById('ghToken').value = localStorage.getItem('gh_token') || '';
+                document.getElementById('ghOwner').value = localStorage.getItem('gh_owner') || '';
+                document.getElementById('ghRepo').value = localStorage.getItem('gh_repo') || '';
+                document.getElementById('ghBranch').value = localStorage.getItem('gh_branch') || 'main';
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function saveConfig(event) {
+            event.preventDefault();
+            localStorage.setItem('gh_token', document.getElementById('ghToken').value.trim());
+            localStorage.setItem('gh_owner', document.getElementById('ghOwner').value.trim());
+            localStorage.setItem('gh_repo', document.getElementById('ghRepo').value.trim());
+            localStorage.setItem('gh_branch', document.getElementById('ghBranch').value.trim() || 'main');
+            toggleConfigModal();
+            window.location.reload();
+        }
+
+        async function loadBooks() {
+            try {
+                const res = await cms.getDatabase();
+                dbCache = res.data;
+                dbSha = res.sha;
+                if (!dbCache.books) dbCache.books = [];
+                if (!dbCache.categories) dbCache.categories = [];
+                renderBooks();
+            } catch (err) {
+                alert("Erreur lors de la récupération : " + err.message);
+                document.getElementById('loadingState').innerHTML = `
+                    <div class="text-center text-red-500 py-6 max-w-md">
+                        <i data-lucide="alert-circle" class="w-10 h-10 mx-auto mb-2"></i>
+                        <p class="font-bold">Erreur de connexion</p>
+                        <p class="text-xs text-gray-500 mt-1">${err.message}</p>
+                        <button onclick="toggleConfigModal()" class="mt-4 bg-black text-white px-4 py-2 rounded text-xs hover:bg-gray-800">Modifier la configuration</button>
+                    </div>
+                `;
+                lucide.createIcons();
+            }
+        }
+
+        function renderBooks() {
+            const container = document.getElementById('categoriesContainer');
+            const emptyState = document.getElementById('emptyState');
+            const loadingState = document.getElementById('loadingState');
+            
+            loadingState.classList.add('hidden');
+            container.innerHTML = '';
+
+            const selectedLang = document.getElementById('headerLanguageFilter').value;
+
+            // Filtrer par langue si besoin (on regarde si b.languages existe et a la langue)
+            let filteredBooks = dbCache.books;
+            if (selectedLang !== 'all') {
+                filteredBooks = dbCache.books.filter(b => {
+                    return b.languages && b.languages[selectedLang];
+                });
+            }
+
+            if (filteredBooks.length === 0) {
+                container.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            container.classList.remove('hidden');
+
+            const visibleBooks = filteredBooks.filter(b => b.status !== 'masqué');
+            const hiddenBooks = filteredBooks.filter(b => b.status === 'masqué');
+
+            dbCache.categories.forEach(cat => {
+                const booksInCat = visibleBooks.filter(b => {
+                    const langKey = (selectedLang !== 'all' && b.languages[selectedLang]) ? selectedLang : Object.keys(b.languages)[0];
+                    const category = b.languages[langKey]?.category || "";
+                    return category === cat;
+                });
+                
+                if (booksInCat.length > 0) {
+                    renderCategorySection(container, cat, booksInCat);
+                }
+            });
+
+            if (hiddenBooks.length > 0) {
+                renderCategorySection(container, "Masqués", hiddenBooks, true);
+            }
+
+            lucide.createIcons();
+        }
+
+        function renderCategorySection(parent, categoryName, books, isGrayed = false) {
+            const section = document.createElement('div');
+            section.className = "space-y-6";
+
+            const isExpanded = expandedCategories[categoryName] || false;
+            const hasMoreThan4 = books.length > 4;
+            const booksToShow = (hasMoreThan4 && !isExpanded) ? books.slice(0, 4) : books;
+
+            const titleRow = document.createElement('div');
+            titleRow.className = "flex justify-between items-center border-b border-gray-100 pb-2";
+            
+            let actionBtnHtml = '';
+            if (!isGrayed && hasMoreThan4) {
+                actionBtnHtml = `<button onclick="toggleCategoryExpand('${categoryName}')" class="text-xs text-gray-400 hover:text-black transition-colors font-semibold underline decoration-dotted">${isExpanded ? 'Réduire' : 'Tout voir'}</button>`;
+            }
+
+            titleRow.innerHTML = `
+                <h2 class="text-lg font-bold tracking-tight ${isGrayed ? 'text-gray-400 font-medium' : 'text-gray-900'}">${categoryName}</h2>
+                ${actionBtnHtml}
+            `;
+            section.appendChild(titleRow);
+
+            const grid = document.createElement('div');
+            grid.className = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6";
+
+            booksToShow.forEach(book => {
+                const card = document.createElement('div');
+                card.className = "group relative flex flex-col space-y-2";
+
+                const imgContainer = document.createElement('div');
+                imgContainer.className = `aspect-[3/4] bg-gray-50 border border-gray-100 rounded-md overflow-hidden relative shadow-sm hover:shadow transition-shadow flex items-center justify-center ${isGrayed ? 'opacity-60 bg-gray-100' : ''}`;
+                
+                const selectedLang = document.getElementById('headerLanguageFilter').value;
+                const availableLangs = Object.keys(book.languages || {});
+                const langToUse = (selectedLang !== 'all' && book.languages[selectedLang]) ? selectedLang : availableLangs[0];
+                
+                const trans = book.languages && book.languages[langToUse] ? book.languages[langToUse] : {};
+                const coverUrl = trans.coverUrl || "";
+                const bookTitle = trans.title || "Livre sans titre";
+
+                if (coverUrl) {
+                    const img = document.createElement('img');
+                    img.src = (coverUrl.startsWith('http') || coverUrl.startsWith('data:')) ? coverUrl : `https://raw.githubusercontent.com/${cms.owner}/${cms.repo}/${cms.branch}/${coverUrl}`;
+                    img.alt = bookTitle;
+                    img.className = "w-full h-full object-cover";
+                    imgContainer.appendChild(img);
+                } else {
+                    const noImg = document.createElement('div');
+                    noImg.className = "text-center p-4 text-gray-300 flex flex-col items-center space-y-1";
+                    noImg.innerHTML = `<i data-lucide="book-open" class="w-8 h-8"></i><span class="text-xs">Pas d'image</span>`;
+                    imgContainer.appendChild(noImg);
+                }
+
+                const menuBtn = document.createElement('button');
+                menuBtn.className = "dropdown-trigger absolute bottom-2 right-2 w-7 h-7 bg-white/90 hover:bg-white border border-gray-200 rounded flex items-center justify-center text-gray-700 shadow-sm focus:outline-none";
+                menuBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    toggleDropdown(book.id);
+                };
+                menuBtn.innerHTML = `<i data-lucide="more-horizontal" class="w-4 h-4"></i>`;
+                imgContainer.appendChild(menuBtn);
+
+                const menu = document.createElement('div');
+                menu.id = `dropdown-${book.id}`;
+                menu.className = "dropdown-menu absolute right-2 bottom-10 w-32 bg-white border border-gray-150 rounded shadow-lg py-1 hidden z-50 text-xs";
+                menu.innerHTML = `
+                    <button onclick="editBook('${book.id}')" class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2">
+                        <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                        <span>Éditer</span>
+                    </button>
+                    <button onclick="toggleVisibility('${book.id}', '${book.status}')" class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2">
+                        <i data-lucide="${book.status === 'masqué' ? 'eye' : 'eye-off'}" class="w-3.5 h-3.5"></i>
+                        <span>${book.status === 'masqué' ? 'Afficher' : 'Masquer'}</span>
+                    </button>
+                    <button onclick="deleteBook('${book.id}')" class="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 border-t border-gray-100 flex items-center space-x-2">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        <span>Supprimer</span>
+                    </button>
+                `;
+                imgContainer.appendChild(menu);
+                card.appendChild(imgContainer);
+
+                const title = document.createElement('span');
+                title.className = `text-xs font-semibold line-clamp-1 truncate ${isGrayed ? 'text-gray-400' : 'text-gray-700'}`;
+                title.innerText = bookTitle;
+                card.appendChild(title);
+
+                grid.appendChild(card);
+            });
+
+            section.appendChild(grid);
+            parent.appendChild(section);
+        }
+
+        function toggleCategoryExpand(categoryName) {
+            expandedCategories[categoryName] = !expandedCategories[categoryName];
+            renderBooks();
+        }
+
+        function toggleDropdown(bookId) {
+            const dropdownId = `dropdown-${bookId}`;
+            const target = document.getElementById(dropdownId);
+            if (activeDropdownId && activeDropdownId !== dropdownId) {
+                const activeMenu = document.getElementById(activeDropdownId);
+                if (activeMenu) activeMenu.classList.add('hidden');
+            }
+            if (target) {
+                target.classList.toggle('hidden');
+                activeDropdownId = target.classList.contains('hidden') ? null : dropdownId;
+            }
+        }
+
+        function closeAllDropdowns() {
+            document.querySelectorAll('.dropdown-menu').forEach(el => el.classList.add('hidden'));
+            activeDropdownId = null;
+        }
+
+        function filterBooksByLanguage() {
+            renderBooks();
+        }
+
+        function editBook(bookId) {
+            window.location.href = `formulaire.html?id=${bookId}`;
+        }
+
+        async function toggleVisibility(bookId, currentStatus) {
+            const newStatus = currentStatus === 'masqué' ? 'visible' : 'masqué';
+            const bookIndex = dbCache.books.findIndex(b => b.id === bookId);
+            if (bookIndex > -1) {
+                dbCache.books[bookIndex].status = newStatus;
+                try {
+                    await cms.saveDatabase(dbCache, dbSha);
+                    loadBooks();
+                } catch (e) {
+                    alert("Erreur lors de la modification du statut: " + e.message);
+                }
+            }
+        }
+
+        async function deleteBook(bookId) {
+            if (confirm("Êtes-vous sûr de vouloir supprimer définitivement ce livre ?")) {
+                dbCache.books = dbCache.books.filter(b => b.id !== bookId);
+                try {
+                    await cms.saveDatabase(dbCache, dbSha);
+                    loadBooks();
+                } catch (e) {
+                    alert("Erreur lors de la suppression: " + e.message);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
