@@ -30,6 +30,22 @@
                 height: 420px;
             }
         }
+        /* Styles pour le HTML riche produit par Quill (listes à puces et numéros) */
+        #bookDescription ul, #bookContent ul {
+            list-style-type: disc !important;
+            padding-left: 1.5rem !important;
+            margin-top: 0.5rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        #bookDescription ol, #bookContent ol {
+            list-style-type: decimal !important;
+            padding-left: 1.5rem !important;
+            margin-top: 0.5rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        #bookDescription li, #bookContent li {
+            margin-bottom: 0.25rem !important;
+        }
     </style>
 </head>
 <body class="bg-white min-h-screen font-sans text-gray-900 flex flex-col">
@@ -60,7 +76,7 @@
             <div id="carouselWrapper" class="flex h-full transition-transform duration-500 ease-out">
                 <!-- Bannières injectées par JS -->
             </div>
-            
+
             <!-- Contrôles flèches -->
             <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white border border-gray-200 rounded-full flex items-center justify-center text-gray-700 shadow-md opacity-0 group-hover:opacity-100 transition-opacity z-10 focus:outline-none">
                 <i data-lucide="chevron-left" class="w-5 h-5"></i>
@@ -68,7 +84,7 @@
             <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white border border-gray-200 rounded-full flex items-center justify-center text-gray-700 shadow-md opacity-0 group-hover:opacity-100 transition-opacity z-10 focus:outline-none">
                 <i data-lucide="chevron-right" class="w-5 h-5"></i>
             </button>
-            
+
             <!-- Bulles de navigation -->
             <div id="carouselDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
                 <!-- Rempli par JS -->
@@ -79,7 +95,7 @@
     <!-- MAIN PRODUCT DETAIL -->
     <main class="flex-grow max-w-5xl mx-auto w-full px-6 py-12">
         <div class="flex flex-col md:flex-row gap-12 items-start">
-            
+
             <!-- Couverture du livre (Flottante à gauche) -->
             <div class="w-full md:w-80 shrink-0 flex justify-center">
                 <div class="aspect-[3/4] w-64 md:w-full bg-gray-50 border border-gray-150 rounded-lg shadow-md overflow-hidden relative flex items-center justify-center">
@@ -95,7 +111,7 @@
                 <div class="space-y-3">
                     <span id="bookCategoryLabel" class="text-xs font-bold uppercase tracking-wider text-gray-400">Catégorie</span>
                     <h1 id="bookTitle" class="text-3xl font-extrabold tracking-tight text-gray-900 leading-tight">--</h1>
-                    
+
                     <!-- Boutons d'achat Amazon & commentaires -->
                     <div class="flex flex-wrap gap-4 pt-3">
                         <a id="buyAmazonBtn" href="#" target="_blank" class="bg-black text-white px-6 py-3 rounded font-medium hover:bg-gray-800 transition-colors inline-flex items-center space-x-2 text-sm shadow-sm">
@@ -112,13 +128,13 @@
                 <!-- Descriptif -->
                 <div id="sectionDescription" class="space-y-3 border-t border-gray-100 pt-6 hidden">
                     <h2 id="headerDescription" class="text-xs font-bold uppercase tracking-wider text-gray-500">Descriptif</h2>
-                    <div id="bookDescription" class="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">--</div>
+                    <div id="bookDescription" class="text-sm text-gray-600 leading-relaxed space-y-2">--</div>
                 </div>
 
                 <!-- Contenu du livre -->
                 <div id="sectionContent" class="space-y-3 border-t border-gray-100 pt-6 hidden">
                     <h2 id="headerContent" class="text-xs font-bold uppercase tracking-wider text-gray-500">Contenu du livre</h2>
-                    <div id="bookContent" class="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">--</div>
+                    <div id="bookContent" class="text-sm text-gray-600 leading-relaxed space-y-2">--</div>
                 </div>
             </div>
         </div>
@@ -237,7 +253,7 @@
                 "Français": {
                     title: "Mots cachés illustrés - Les Animaux",
                     category: "Mots cachés illustrés",
-                    description: "Le premier cahier d'activités hybride qui allie la stimulation des mots cachés à la richesse d'un documentaire illustré.",
+                    description: "Le premier cahier d\'activités hybride qui allie la stimulation des mots cachés à la richesse d\'un documentaire illustré.<br><br><strong>Points forts :</strong><ul><li>Illustrations uniques faites à la main</li><li>Plus de 50 thèmes captivants</li><li>Solutions incluses</li></ul><br><br><strong>Points forts :</strong><ul><li>Illustrations uniques faites à la main</li><li>Plus de 50 thèmes captivants</li><li>Solutions incluses</li></ul>",
                     content: "Idéal pour tous les âges !\n- 80 mots mystères à déchiffrer\n- Des fiches illustrées explicatives\n- Des solutions complètes en fin d'ouvrage",
                     coverUrl: "https://images-na.ssl-images-amazon.com/images/I/81XXXXXX.jpg",
                     banners: [
@@ -304,7 +320,7 @@
 
             const urlParams = new URLSearchParams(window.location.search);
             currentBookId = urlParams.get('id');
-            
+
             const savedLang = urlParams.get('lang') || localStorage.getItem('enigmium_lang');
             if (savedLang) {
                 currentLanguage = savedLang;
@@ -315,31 +331,33 @@
         });
 
         async function fetchBooks() {
-    try {
-        let data = {};
-        const isLocal = window.location.protocol === 'file:';
-
-        // Si on teste en local, on utilise la démo, sinon on force la lecture du vrai books.json sur GitHub
-        if (isLocal && localStorage.getItem('demo_books_db')) {
-            data = JSON.parse(localStorage.getItem('demo_books_db'));
-        } else {
-            const response = await fetch('books.json?t=' + Date.now()); // Évite le cache
-            if (!response.ok) throw new Error("Impossible de lire books.json");
-            data = await response.json();
+            try {
+                let data = {};
+                if (localStorage.getItem('demo_books_db')) {
+                    data = JSON.parse(localStorage.getItem('demo_books_db'));
+                } else {
+                    try {
+                        const response = await fetch('books.json');
+                        if (!response.ok) throw new Error("CORS or not found");
+                        data = await response.json();
+                    } catch (e) {
+                        localStorage.setItem('demo_books_db', JSON.stringify(DEFAULT_DEMO_DB));
+                        data = DEFAULT_DEMO_DB;
+                    }
+                }
+                booksData = data;
+                applyInterfaceTranslations();
+                renderProductDetails();
+            } catch (err) {
+                console.error(err);
+                alert("Erreur de chargement du produit.");
+            }
         }
-        booksData = data;
-        applyInterfaceTranslations();
-        renderProductDetails();
-    } catch (err) {
-        console.error(err);
-        alert("Erreur de chargement du produit.");
-    }
-}
 
         function changeLanguage() {
             currentLanguage = document.getElementById('publicLanguageSelector').value;
             localStorage.setItem('enigmium_lang', currentLanguage);
-            
+
             applyInterfaceTranslations();
             renderProductDetails();
         }
@@ -403,7 +421,7 @@
             const buyBtn = document.getElementById('buyAmazonBtn');
             const reviewBtn = document.getElementById('reviewAmazonBtn');
             buyBtn.href = langData.amazonUrl || "https://www.amazon.fr";
-            
+
             if (langData.amazonReviewsUrl) {
                 reviewBtn.href = langData.amazonReviewsUrl;
                 reviewBtn.classList.remove('hidden');
@@ -415,7 +433,7 @@
             const descSec = document.getElementById('sectionDescription');
             const descText = document.getElementById('bookDescription');
             if (langData.description) {
-                descText.innerText = langData.description;
+                descText.innerHTML = langData.description;
                 descSec.classList.remove('hidden');
             } else {
                 descSec.classList.add('hidden');
@@ -425,7 +443,7 @@
             const contentSec = document.getElementById('sectionContent');
             const contentText = document.getElementById('bookContent');
             if (langData.content) {
-                contentText.innerText = langData.content;
+                contentText.innerHTML = langData.content;
                 contentSec.classList.remove('hidden');
             } else {
                 contentSec.classList.add('hidden');
@@ -460,7 +478,7 @@
             banners.forEach((bannerUrl, idx) => {
                 const slide = document.createElement('div');
                 slide.className = "w-full h-full shrink-0";
-                
+
                 const img = document.createElement('img');
                 img.src = bannerUrl;
                 img.className = "w-full h-full object-cover";
@@ -553,7 +571,7 @@
 
             const imgContainer = document.createElement('div');
             imgContainer.className = "aspect-[3/4] bg-gray-50 border border-gray-100 rounded overflow-hidden relative shadow-sm group-hover:shadow transition-shadow flex items-center justify-center";
-            
+
             if (langData.coverUrl) {
                 const img = document.createElement('img');
                 img.src = langData.coverUrl;
