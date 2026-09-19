@@ -580,14 +580,17 @@
                 if (editId) {
                     isEditing = true;
                     currentBookId = editId;
-                    const book = dbCache.books.find(b => b.id === editId);
+                    document.getElementById('pageTitle').innerText = "Modifier le livre";
+                    const book = dbCache.books.find(b => String(b.id) === String(editId));
                     if (book) {
-                        bookData = book;
+                        bookData = JSON.parse(JSON.stringify(book));
+                        if (!bookData.languages) bookData.languages = {};
                         const langs = Object.keys(bookData.languages);
                         if (langs.length > 0) {
                             activeLanguage = langs[0];
                         } else {
-                            activeLanguage = null;
+                            bookData.languages["Français"] = createEmptyLanguageObject();
+                            activeLanguage = "Français";
                         }
                     } else {
                         alert("Livre introuvable.");
@@ -595,13 +598,17 @@
                         return;
                     }
                 } else {
+                    isEditing = false;
                     currentBookId = 'book_' + Date.now();
+                    document.getElementById('pageTitle').innerText = "Ajouter un livre";
                     bookData = {
                         id: currentBookId,
                         status: 'visible',
-                        languages: {}
+                        languages: {
+                            "Français": createEmptyLanguageObject()
+                        }
                     };
-                    activeLanguage = null;
+                    activeLanguage = "Français";
                 }
 
                 renderLanguageTabs();
@@ -676,6 +683,27 @@
             }
         }
 
+                function createEmptyLanguageObject() {
+            return {
+                title: "",
+                category: "",
+                description: "",
+                content: "",
+                coverUrl: "",
+                banners: [],
+                pdfBonusUrl: "",
+                amazonUrl: "",
+                amazonReviewsUrl: "",
+                bonusConfig: {
+                    enabled: false,
+                    slug: "",
+                    message: "",
+                    previewImageUrl: "",
+                    brevoIframe: ""
+                }
+            };
+        }
+
         function addLanguageBadge() {
             const select = document.getElementById('languageSelector');
             const lang = select.value;
@@ -721,7 +749,8 @@
                     if (remainingLangs.length > 0) {
                         activeLanguage = remainingLangs[0];
                     } else {
-                        activeLanguage = null;
+                        bookData.languages["Français"] = createEmptyLanguageObject();
+                        activeLanguage = "Français";
                     }
                 }
 
