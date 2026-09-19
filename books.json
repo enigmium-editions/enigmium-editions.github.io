@@ -17,8 +17,8 @@
           "coverUrl": "images/covers/cover-book_1788688589465-Français.jpg",
           "banners": [],
           "pdfBonusUrl": "assets/bonus/enigmium-bonus-mots-caches-illustres-les-animaux.pdf",
-          "amazonUrl": "https://www.amazon.fr/dp/B0H2BWKKPD",
-          "amazonReviewsUrl": "https://www.amazon.fr/dp/B0H2BWKKPD",
+          "amazonUrl": "",
+          "amazonReviewsUrl": "",
           "bonusConfig": {
             "enabled": true,
             "slug": "",
@@ -35,8 +35,8 @@
           "coverUrl": "images/covers/cover-book_1788688589465-Anglais.jpg",
           "banners": [],
           "pdfBonusUrl": "",
-          "amazonUrl": "https://www.amazon.fr/dp/B0H2BWKKPD",
-          "amazonReviewsUrl": "https://www.amazon.fr/dp/B0H2BWKKPD",
+          "amazonUrl": "https://www.amazon.com/dp/B0HHRZ943B",
+          "amazonReviewsUrl": "https://www.amazon.com/dp/B0HHRZ943B",
           "bonusConfig": {
             "enabled": false,
             "slug": "",
