@@ -17,6 +17,29 @@
         }
     </script>
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Quill WYSIWYG Editor Style and Script -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <style>
+        /* Intégration esthétique de Quill dans notre charte minimale */
+        .ql-toolbar.ql-snow {
+            border-color: #e5e7eb !important;
+            border-top-left-radius: 0.375rem;
+            border-top-right-radius: 0.375rem;
+            background-color: #f9fafb;
+        }
+        .ql-container.ql-snow {
+            border-color: #e5e7eb !important;
+            border-bottom-left-radius: 0.375rem;
+            border-bottom-right-radius: 0.375rem;
+            font-family: ui-sans-serif, system-ui, sans-serif;
+            font-size: 0.875rem; /* text-sm */
+        }
+        .ql-editor {
+            min-height: 120px;
+        }
+    </style>
 </head>
 <body class="bg-white min-h-screen font-sans text-gray-900 flex flex-col">
 
@@ -53,9 +76,9 @@
     <!-- MAIN FORM CONTAINER -->
     <main class="flex-grow max-w-3xl mx-auto w-full px-6 py-10">
         <h1 id="pageTitle" class="text-2xl font-bold mb-8">Ajouter un livre</h1>
-        
+
         <form id="bookForm" onsubmit="handleFormSubmit(event)" class="space-y-8">
-            
+
             <!-- SECTION : CHOIX & ONGLETS DE LANGUES -->
             <div class="bg-gray-50 p-6 rounded-lg border border-gray-100 space-y-5">
                 <div class="flex flex-col space-y-2">
@@ -105,11 +128,11 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Description</label>
-                        <textarea id="bookDescription" rows="4" class="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"></textarea>
+                        <div id="bookDescriptionEditor" class="bg-white"></div>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Contenu du livre</label>
-                        <textarea id="bookContent" rows="4" class="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black" placeholder="Ex: détails des énigmes, solutions, coulisses du livre..."></textarea>
+                        <div id="bookContentEditor" class="bg-white"></div>
                     </div>
                 </div>
 
@@ -122,7 +145,7 @@
                         </button>
                     </h3>
                     <input type="file" id="coverFileInput" accept="image/*" class="hidden" onchange="uploadImageAsset(this, 'cover')">
-                    
+
                     <div id="coverPreviewContainer" class="hidden flex items-start space-x-4 p-4 border border-gray-100 rounded-md">
                         <img id="coverPreview" src="" class="w-24 h-auto object-cover rounded shadow border border-gray-100">
                         <div class="space-y-1">
@@ -145,7 +168,7 @@
                     </h3>
                     <p class="text-xxs text-gray-400 -mt-2">Format horizontal recommandé (ex: 1500x500). Vous pouvez en associer plusieurs à cet onglet de langue.</p>
                     <input type="file" id="bannerFileInput" accept="image/*" class="hidden" onchange="uploadImageAsset(this, 'banner')">
-                    
+
                     <div id="bannersListContainer" class="space-y-3">
                         <!-- Liste des bannières ajoutées -->
                     </div>
@@ -160,7 +183,7 @@
                         </button>
                     </h3>
                     <input type="file" id="pdfFileInput" accept="application/pdf" class="hidden" onchange="uploadPDFAsset(this)">
-                    
+
                     <div id="pdfPreviewContainer" class="hidden flex items-center justify-between p-3 border border-gray-100 rounded-md bg-gray-50">
                         <div class="flex items-center space-x-2">
                             <i data-lucide="file-text" class="w-5 h-5 text-red-500"></i>
@@ -169,6 +192,59 @@
                         <div class="flex space-x-2">
                             <button type="button" onclick="triggerFileInput('pdfFileInput')" class="text-xxs bg-white border border-gray-200 rounded px-2.5 py-1.5 hover:bg-gray-50">Modifier</button>
                             <button type="button" onclick="deletePDFAsset()" class="text-xxs bg-red-50 text-red-600 hover:bg-red-100 rounded px-2.5 py-1.5">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION : PAGE BONUS DÉDIÉE (BREVO & CAPTATION EMAIL) -->
+                <div class="space-y-4 bg-gray-50/80 p-5 rounded-lg border border-gray-200">
+                    <div class="flex items-center justify-between border-b border-gray-200 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="gift" class="w-4 h-4 text-amber-600"></i>
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-700">Page Bonus Dédiée (Brevo & Captation Email)</h3>
+                        </div>
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="bonusEnabled" onchange="toggleBonusSectionUI()" class="sr-only peer">
+                            <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-black"></div>
+                            <span class="ml-2 text-xs font-semibold text-gray-600">Générer la page</span>
+                        </label>
+                    </div>
+
+                    <div id="bonusFieldsContainer" class="space-y-4 hidden pt-1">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Nom du fichier HTML (Slug) <span class="text-gray-400 font-normal">(ex: animaux-t1)</span></label>
+                            <div class="flex items-center">
+                                <span id="bonusPathPrefix" class="text-xs text-gray-500 bg-gray-100 border border-r-0 border-gray-200 rounded-l px-3 py-2 font-mono">/sub/fr/</span>
+                                <input type="text" id="bonusSlug" oninput="updateBonusFullUrlPreview()" class="flex-grow border border-gray-200 rounded-r px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black font-mono" placeholder="animaux-t1">
+                                <span class="text-xs text-gray-500 ml-1 font-mono">.html</span>
+                            </div>
+                            <p class="text-xxs text-gray-400 mt-1">L'URL finale sera : <span id="bonusFullUrlPreview" class="font-mono text-gray-600 font-bold">https://enigmium-editions.com/sub/fr/animaux-t1.html</span></p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Message d'accroche <span class="text-gray-400 font-normal">(affiché sous le titre du livre)</span></label>
+                            <textarea id="bonusMessage" rows="2" class="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black" placeholder="Ex: Obtenez vos 20 grilles exclusives + solutions offertes aux lecteurs !"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Visuel / Grille du PDF Bonus <span class="text-gray-400 font-normal">(affiché à plat)</span></label>
+                            <div class="flex items-center space-x-3">
+                                <button type="button" onclick="triggerFileInput('bonusImgFileInput')" class="text-xs font-semibold bg-white border border-gray-200 hover:bg-gray-50 rounded px-3 py-1.5 transition-colors">
+                                    Choisir une image
+                                </button>
+                                <span id="bonusImgNameText" class="text-xs text-gray-500 truncate">Couverture du livre utilisée par défaut</span>
+                            </div>
+                            <input type="file" id="bonusImgFileInput" accept="image/*" class="hidden" onchange="uploadBonusImageAsset(this)">
+                            <div id="bonusImgPreviewContainer" class="hidden mt-2 flex items-center space-x-3">
+                                <img id="bonusImgPreview" src="" class="w-16 h-auto rounded border border-gray-200 shadow-sm">
+                                <button type="button" onclick="deleteBonusImageAsset()" class="text-xxs text-red-600 hover:underline">Supprimer l'image spécifique</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Lien ou Code iFrame du Formulaire Brevo</label>
+                            <textarea id="bonusBrevoIframe" rows="3" class="w-full border border-gray-200 rounded px-3 py-2 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-black" placeholder="Collez l'URL Brevo (https://sibforms.com/serve/...) ou le code <iframe src='...'></iframe>"></textarea>
+                            <p class="text-xxs text-gray-400 mt-1">Collez directement le lien de partage ou le code iframe fourni par Brevo.</p>
                         </div>
                     </div>
                 </div>
@@ -263,7 +339,7 @@
                 "Français": {
                     title: "Mots cachés illustrés - Les Animaux",
                     category: "Mots cachés illustrés",
-                    description: "Le premier cahier d'activités hybride qui allie la stimulation des mots cachés à la richesse d'un documentaire illustré.",
+                    description: "Le premier cahier d\'activités hybride qui allie la stimulation des mots cachés à la richesse d\'un documentaire illustré.<br><br><strong>Points forts :</strong><ul><li>Illustrations uniques faites à la main</li><li>Plus de 50 thèmes captivants</li><li>Solutions incluses</li></ul><br><br><strong>Points forts :</strong><ul><li>Illustrations uniques faites à la main</li><li>Plus de 50 thèmes captivants</li><li>Solutions incluses</li></ul>",
                     content: "Idéal pour tous les âges !\n- 80 mots mystères à déchiffrer\n- Des fiches illustrées explicatives\n- Des solutions complètes en fin d'ouvrage",
                     coverUrl: "https://images-na.ssl-images-amazon.com/images/I/81XXXXXX.jpg",
                     banners: [
@@ -375,6 +451,14 @@
                 return response.json();
             }
 
+            async uploadTextFile(textContent, targetPath, commitMsg) {
+                if (this.demoMode) {
+                    return targetPath;
+                }
+                const base64 = btoa(unescape(encodeURIComponent(textContent)));
+                return await this.uploadFile(base64, targetPath, commitMsg);
+            }
+
             async uploadFile(base64Content, targetPath, commitMsg) {
                 if (this.demoMode) {
                     return base64Content;
@@ -422,24 +506,55 @@
         let dbCache = { categories: [], books: [] };
         let dbSha = null;
         let currentBookId = "";
-        
+
         let bookData = {
             id: "",
             status: "visible",
-            languages: {} 
+            languages: {}
         };
-        
+
         let activeLanguage = null;
 
         let coverUrl = "";
         let bannersList = [];
         let pdfBonusUrl = "";
+        let bonusPreviewImgUrl = "";
         let isEditing = false;
+
+        // Éditeurs Quill
+        let quillDescription = null;
+        let quillContent = null;
 
         const ALL_LANGUAGES = ["Français", "Anglais", "Allemand", "Espagnol", "Italien", "Portugais", "Néerlandais"];
 
         document.addEventListener('DOMContentLoaded', async () => {
             lucide.createIcons();
+
+            // Initialisation des éditeurs Quill
+            quillDescription = new Quill('#bookDescriptionEditor', {
+                theme: 'snow',
+                placeholder: 'Saisissez la description du livre...',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        ['clean']
+                    ]
+                }
+            });
+
+            quillContent = new Quill('#bookContentEditor', {
+                theme: 'snow',
+                placeholder: 'Ex: détails des énigmes, solutions, coulisses...',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        ['clean']
+                    ]
+                }
+            });
+
             if (!cms.isConfigured()) {
                 document.getElementById('demoBanner').classList.remove('hidden');
             }
@@ -534,9 +649,9 @@
         function updateLanguageSelectorDropdown() {
             const select = document.getElementById('languageSelector');
             select.innerHTML = '';
-            
+
             const availableLangs = ALL_LANGUAGES.filter(lang => !bookData.languages[lang]);
-            
+
             if (availableLangs.length === 0) {
                 const opt = document.createElement('option');
                 opt.value = "";
@@ -570,7 +685,14 @@
                     banners: [],
                     pdfBonusUrl: "",
                     amazonUrl: "",
-                    amazonReviewsUrl: ""
+                    amazonReviewsUrl: "",
+                    bonusConfig: {
+                        enabled: false,
+                        slug: "",
+                        message: "",
+                        previewImageUrl: "",
+                        brevoIframe: ""
+                    }
                 };
                 activeLanguage = lang;
                 renderLanguageTabs();
@@ -619,8 +741,8 @@
 
                 const tab = document.createElement('div');
                 tab.className = `inline-flex items-center space-x-2 px-3.5 py-1.5 rounded cursor-pointer transition-colors shadow-sm text-xs border ${
-                    isActive 
-                    ? "bg-black text-white border-black" 
+                    isActive
+                    ? "bg-black text-white border-black"
                     : "bg-gray-100 hover:bg-gray-200 text-gray-800 border-gray-200"
                 }`;
 
@@ -658,13 +780,20 @@
             bookData.languages[activeLanguage] = {
                 title: document.getElementById('bookTitle').value.trim(),
                 category: document.getElementById('bookCategory').value,
-                description: document.getElementById('bookDescription').value.trim(),
-                content: document.getElementById('bookContent').value.trim(),
+                description: quillDescription ? quillDescription.root.innerHTML.trim() : "",
+                content: quillContent ? quillContent.root.innerHTML.trim() : "",
                 coverUrl: coverUrl,
                 banners: [...bannersList],
                 pdfBonusUrl: pdfBonusUrl,
                 amazonUrl: document.getElementById('amazonUrl').value.trim(),
-                amazonReviewsUrl: document.getElementById('amazonReviewsUrl').value.trim()
+                amazonReviewsUrl: document.getElementById('amazonReviewsUrl').value.trim(),
+                bonusConfig: {
+                    enabled: document.getElementById('bonusEnabled').checked,
+                    slug: document.getElementById('bonusSlug').value.trim(),
+                    message: document.getElementById('bonusMessage').value.trim(),
+                    previewImageUrl: bonusPreviewImgUrl,
+                    brevoIframe: document.getElementById('bonusBrevoIframe').value.trim()
+                }
             };
         }
 
@@ -686,9 +815,13 @@
             const data = bookData.languages[activeLanguage];
             document.getElementById('bookTitle').value = data.title || "";
             document.getElementById('bookCategory').value = data.category || "";
-            document.getElementById('bookDescription').value = data.description || "";
-            document.getElementById('bookContent').value = data.content || "";
-            
+            if (quillDescription) {
+                quillDescription.root.innerHTML = data.description || "";
+            }
+            if (quillContent) {
+                quillContent.root.innerHTML = data.content || "";
+            }
+
             coverUrl = data.coverUrl || "";
             updateCoverUI();
 
@@ -697,7 +830,18 @@
 
             pdfBonusUrl = data.pdfBonusUrl || "";
             updatePDFUI();
-            
+
+            const bonusConfig = data.bonusConfig || {};
+            document.getElementById('bonusEnabled').checked = !!bonusConfig.enabled;
+            document.getElementById('bonusSlug').value = bonusConfig.slug || "";
+            document.getElementById('bonusMessage').value = bonusConfig.message || "";
+            bonusPreviewImgUrl = bonusConfig.previewImageUrl || "";
+            document.getElementById('bonusBrevoIframe').value = bonusConfig.brevoIframe || "";
+
+            updateBonusPathPrefix();
+            toggleBonusSectionUI();
+            updateBonusImgUI();
+
             lucide.createIcons();
         }
 
@@ -832,6 +976,213 @@
             updatePDFUI();
         }
 
+        // --- LOGIQUE GÉNÉRATEUR DE PAGE BONUS ---
+        function getLangCode(lang) {
+            const map = {
+                'Français': 'fr',
+                'Anglais': 'en',
+                'Allemand': 'de',
+                'Espagnol': 'es',
+                'Italien': 'it',
+                'Portugais': 'pt',
+                'Néerlandais': 'nl'
+            };
+            return map[lang] || 'fr';
+        }
+
+        function updateBonusPathPrefix() {
+            if (!activeLanguage) return;
+            const code = getLangCode(activeLanguage);
+            document.getElementById('bonusPathPrefix').innerText = `/sub/${code}/`;
+            updateBonusFullUrlPreview();
+        }
+
+        function updateBonusFullUrlPreview() {
+            if (!activeLanguage) return;
+            const code = getLangCode(activeLanguage);
+            const slugInput = document.getElementById('bonusSlug').value.trim();
+            const slug = slugInput || 'animaux-t1';
+            document.getElementById('bonusFullUrlPreview').innerText = `https://enigmium-editions.com/sub/${code}/${slug}.html`;
+        }
+
+        function toggleBonusSectionUI() {
+            const checked = document.getElementById('bonusEnabled').checked;
+            const container = document.getElementById('bonusFieldsContainer');
+            if (checked) {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        async function uploadBonusImageAsset(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            showLoading("Téléversement de l'image bonus...");
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const base64 = e.target.result;
+                const ext = file.name.split('.').pop() || 'png';
+                const targetPath = `images/bonus/bonus-${currentBookId}-${getLangCode(activeLanguage)}.${ext}`;
+                const commitMsg = `Upload bonus image for ${currentBookId} (${activeLanguage})`;
+
+                try {
+                    const relativePath = await cms.uploadFile(base64, targetPath, commitMsg);
+                    bonusPreviewImgUrl = relativePath;
+                    updateBonusImgUI();
+                } catch (err) {
+                    alert("Échec du téléversement : " + err.message);
+                } finally {
+                    hideLoading();
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateBonusImgUI() {
+            const container = document.getElementById('bonusImgPreviewContainer');
+            const preview = document.getElementById('bonusImgPreview');
+            const nameText = document.getElementById('bonusImgNameText');
+
+            if (bonusPreviewImgUrl) {
+                preview.src = (bonusPreviewImgUrl.startsWith('http') || bonusPreviewImgUrl.startsWith('data:')) ? bonusPreviewImgUrl : `https://raw.githubusercontent.com/${cms.owner}/${cms.repo}/${cms.branch}/${bonusPreviewImgUrl}`;
+                container.classList.remove('hidden');
+                nameText.innerText = bonusPreviewImgUrl.split('/').pop();
+            } else {
+                container.classList.add('hidden');
+                nameText.innerText = "Couverture du livre utilisée par défaut";
+            }
+        }
+
+        function deleteBonusImageAsset() {
+            bonusPreviewImgUrl = "";
+            updateBonusImgUI();
+        }
+
+        function slugify(text) {
+            if (!text) return "";
+            return text.toString().toLowerCase().trim()
+                .normalize('NFD').replace(/[̀-ͯ]/g, '')
+                .replace(/[^a-z0-9 -]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+        }
+
+        function generateBonusPageHTML(bookTitle, bonusConfig, langCode, bookId) {
+            const message = bonusConfig.message || "Obtenez vos grilles exclusives + solutions offertes aux lecteurs !";
+            let previewImg = bonusConfig.previewImageUrl || coverUrl || "";
+            const iframeCode = bonusConfig.brevoIframe || "";
+
+            let iframeSrc = iframeCode;
+            if (iframeCode.includes('<iframe')) {
+                const match = iframeCode.match(/src=["']([^"']+)["']/);
+                if (match) iframeSrc = match[1];
+            }
+
+            let formattedImgSrc = previewImg;
+            if (previewImg && !previewImg.startsWith('http') && !previewImg.startsWith('data:')) {
+                formattedImgSrc = "../../" + previewImg.replace(/^\//, '');
+            } else if (!previewImg) {
+                formattedImgSrc = "../../images/covers/cover-placeholder.jpg";
+            }
+
+            return `<!DOCTYPE html>
+<html lang="${langCode}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enigmium - Bonus ${bookTitle}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        enigmiumGreen: '#a3c9a8',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans text-gray-900 flex flex-col justify-between">
+
+    <!-- HEADER MINIMAL -->
+    <header class="bg-white border-b border-gray-200 py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-40">
+        <a href="../../index.html" class="flex items-center space-x-3 group">
+            <div class="w-8 h-8 bg-black text-white flex items-center justify-center font-bold text-lg rounded-sm group-hover:bg-gray-800 transition-colors">E</div>
+            <span class="text-xl font-bold tracking-tight text-gray-800">Enigmium</span>
+        </a>
+        <a href="../../index.html" class="text-xs font-semibold text-gray-500 hover:text-black transition-colors flex items-center space-x-1">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span>Retour au site</span>
+        </a>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow flex items-center justify-center px-4 py-8 md:py-12">
+        <div class="max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-12 border border-gray-100">
+
+            <!-- COLONNE GAUCHE (SOMBRE) : PRESENTATION DU LIVRE ET DU BONUS -->
+            <div class="md:col-span-5 bg-gray-900 text-white p-6 md:p-8 flex flex-col justify-between space-y-6">
+                <div>
+                    <div class="inline-flex items-center space-x-1.5 bg-amber-400/20 text-amber-300 border border-amber-400/30 text-xxs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full mb-4">
+                        <i data-lucide="gift" class="w-3.5 h-3.5"></i>
+                        <span>Cadeau Exclusif Lecteur</span>
+                    </div>
+
+                    <h1 class="text-xl md:text-2xl font-bold leading-tight text-white mb-2">${bookTitle}</h1>
+                    <p class="text-xs text-gray-300 leading-relaxed">${message}</p>
+                </div>
+
+                <!-- APERÇU DU BONUS (A PLAT SANS PERSPECTIVE POUR LISIBILITÉ OPTIMALE) -->
+                <div class="flex justify-center items-center py-2">
+                    <img src="${formattedImgSrc}" alt="${bookTitle}" class="w-48 md:w-56 h-auto object-cover rounded-md shadow-2xl border border-gray-700/50">
+                </div>
+
+                <!-- RASSURANCE -->
+                <div class="border-t border-gray-800 pt-4 space-y-2">
+                    <div class="flex items-center space-x-2 text-xxs text-gray-400">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                        <span>Envoi instantané par e-mail au format PDF</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-xxs text-gray-400">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                        <span>100% Gratuit & Réservé aux lecteurs Enigmium</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLONNE DROITE (BLANCHE) : FORMULAIRE BREVO -->
+            <div class="md:col-span-7 p-6 md:p-8 flex flex-col justify-center bg-white">
+                <div class="mb-4">
+                    <h2 class="text-lg font-bold text-gray-900 mb-1">Télécharger votre bonus PDF</h2>
+                    <p class="text-xs text-gray-500">Saisissez votre adresse e-mail ci-dessous pour recevoir immédiatement votre fichier.</p>
+                </div>
+
+                <!-- FORMULAIRE BREVO IFRAME -->
+                <div class="w-full">
+                    ${iframeSrc ? `<iframe src="${iframeSrc}" class="w-full border-0 rounded-lg" style="height: 480px; overflow: hidden;" scrolling="no" frameborder="0"></iframe>` : `<div class="p-8 text-center text-xs text-gray-400 bg-gray-50 rounded-lg border border-dashed border-gray-200">Collez votre lien ou code iFrame Brevo dans l'administration pour afficher le formulaire.</div>`}
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER MINIMAL -->
+    <footer class="bg-white border-t border-gray-100 py-4 text-center text-xxs text-gray-400">
+        <p>© 2026 Énigmium Éditions — Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>`;
+        }
+
         // --- SOUMISSION FINALE ---
         async function handleFormSubmit(event) {
             event.preventDefault();
@@ -863,6 +1214,25 @@
                 if (!cms.demoMode && res && res.content) {
                     dbSha = res.content.sha;
                 }
+
+                // Génération automatique des pages bonus HTML si configurées
+                for (const lang of Object.keys(bookData.languages)) {
+                    const langData = bookData.languages[lang];
+                    const bonus = langData.bonusConfig;
+                    if (bonus && bonus.enabled) {
+                        const langCode = getLangCode(lang);
+                        const slug = bonus.slug ? bonus.slug.trim() : slugify(langData.title) || 'bonus';
+                        const targetHtmlPath = `sub/${langCode}/${slug}.html`;
+                        const bonusHtml = generateBonusPageHTML(langData.title, bonus, langCode, currentBookId);
+
+                        try {
+                            await cms.uploadTextFile(bonusHtml, targetHtmlPath, `Génération automatique de la page bonus HTML : ${targetHtmlPath}`);
+                        } catch (e) {
+                            console.error(`Erreur de génération de la page bonus HTML (${targetHtmlPath}):`, e);
+                        }
+                    }
+                }
+
                 hideLoading();
                 showSuccessModal();
             } catch (err) {
