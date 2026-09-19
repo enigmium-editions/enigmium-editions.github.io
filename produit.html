@@ -31,19 +31,25 @@
             }
         }
         /* Styles pour le HTML riche produit par Quill (listes à puces et numéros) */
-        #bookDescription ul, #bookContent ul {
+        #bookDescription ul, #bookContent ul, .rich-text ul {
             list-style-type: disc !important;
             padding-left: 1.5rem !important;
             margin-top: 0.5rem !important;
             margin-bottom: 0.5rem !important;
         }
-        #bookDescription ol, #bookContent ol {
+        #bookDescription ol, #bookContent ol, .rich-text ol {
             list-style-type: decimal !important;
             padding-left: 1.5rem !important;
             margin-top: 0.5rem !important;
             margin-bottom: 0.5rem !important;
         }
-        #bookDescription li, #bookContent li {
+        #bookDescription li[data-list="bullet"], #bookContent li[data-list="bullet"], .rich-text li[data-list="bullet"] {
+            list-style-type: disc !important;
+        }
+        #bookDescription li[data-list="ordered"], #bookContent li[data-list="ordered"], .rich-text li[data-list="ordered"] {
+            list-style-type: decimal !important;
+        }
+        #bookDescription li, #bookContent li, .rich-text li {
             margin-bottom: 0.25rem !important;
         }
     </style>

@@ -230,13 +230,12 @@
 
                         <!-- CHAMP : SLUG HTML -->
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Nom du fichier HTML (Slug) <span class="text-gray-400 font-normal">(ex: animaux-t1)</span></label>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Nom du fichier HTML (Slug)</label>
                             <div class="flex items-center">
                                 <span id="bonusPathPrefix" class="text-xs text-gray-500 bg-gray-100 border border-r-0 border-gray-200 rounded-l px-3 py-2 font-mono">/sub/fr/</span>
-                                <input type="text" id="bonusSlug" oninput="updateBonusFullUrlPreview()" class="flex-grow border border-gray-200 rounded-r px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black font-mono" placeholder="animaux-t1">
-                                <span class="text-xs text-gray-500 ml-1 font-mono">.html</span>
+                                <input type="text" id="bonusSlug" oninput="updateBonusFullUrlPreview()" class="flex-grow border border-gray-200 rounded-r px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black font-mono" placeholder="">
                             </div>
-                            <p class="text-xxs text-gray-400 mt-1">L'URL finale sera : <span id="bonusFullUrlPreview" class="font-mono text-gray-600 font-bold">https://enigmium-editions.com/sub/fr/animaux-t1.html</span></p>
+                            <p class="text-xs text-gray-500 font-normal mt-1">L'URL finale sera : <span id="bonusFullUrlPreview" class="font-mono">https://enigmium-editions.com/sub/fr/</span></p>
                         </div>
 
                         <!-- CHAMP : MESSAGE D'ACCROCHE -->
@@ -265,7 +264,7 @@
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 mb-1">Lien ou Code iFrame du Formulaire Brevo</label>
                             <textarea id="bonusBrevoIframe" rows="3" class="w-full border border-gray-200 rounded px-3 py-2 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-black" placeholder="Collez l'URL Brevo (https://sibforms.com/serve/...) ou le code <iframe src='...'></iframe>"></textarea>
-                            <p class="text-xxs text-gray-400 mt-1">Collez directement le lien de partage ou le code iframe fourni par Brevo.</p>
+
                         </div>
                     </div>
                 </div>
@@ -839,6 +838,9 @@
             pdfBonusUrl = data.pdfBonusUrl || "";
             updatePDFUI();
 
+            document.getElementById('amazonUrl').value = data.amazonUrl || "";
+            document.getElementById('amazonReviewsUrl').value = data.amazonReviewsUrl || "";
+
             const bonusConfig = data.bonusConfig || {};
             document.getElementById('bonusEnabled').checked = !!bonusConfig.enabled;
             document.getElementById('bonusSlug').value = bonusConfig.slug || "";
@@ -862,16 +864,18 @@
             const reader = new FileReader();
             reader.onload = async (e) => {
                 const base64 = e.target.result;
-                const ext = file.name.split('.').pop() || 'jpg';
                 let targetPath = "";
                 let commitMsg = "";
 
                 if (type === 'cover') {
-                    targetPath = `images/covers/cover-${currentBookId}-${activeLanguage}.${ext}`;
-                    commitMsg = `Upload cover for ${currentBookId} (${activeLanguage})`;
+                    targetPath = `images/covers/${file.name}`;
+                    commitMsg = `Upload cover: ${file.name}`;
+                    if (coverUrl && coverUrl !== targetPath) {
+                        await cms.deleteFile(coverUrl, "Suppression ancienne couverture");
+                    }
                 } else {
-                    targetPath = `images/banners/banner-${currentBookId}-${activeLanguage}-${Date.now()}.${ext}`;
-                    commitMsg = `Upload banner for ${currentBookId} (${activeLanguage})`;
+                    targetPath = `images/banners/${file.name}`;
+                    commitMsg = `Upload banner: ${file.name}`;
                 }
 
                 try {
@@ -907,7 +911,10 @@
             }
         }
 
-        function deleteCoverAsset() {
+        async function deleteCoverAsset() {
+            if (coverUrl) {
+                await cms.deleteFile(coverUrl, "Suppression couverture");
+            }
             coverUrl = "";
             updateCoverUI();
         }
@@ -935,7 +942,10 @@
             });
         }
 
-        function deleteBannerAsset(index) {
+        async function deleteBannerAsset(index) {
+            if (bannersList[index]) {
+                await cms.deleteFile(bannersList[index], "Suppression bannière");
+            }
             bannersList.splice(index, 1);
             renderBannersList();
         }
@@ -992,7 +1002,10 @@
             }
         }
 
-        function deletePDFAsset() {
+        async function deletePDFAsset() {
+            if (pdfBonusUrl) {
+                await cms.deleteFile(pdfBonusUrl, "Suppression PDF bonus");
+            }
             pdfBonusUrl = "";
             updatePDFUI();
         }
@@ -1076,7 +1089,10 @@
             }
         }
 
-        function deleteBonusImageAsset() {
+        async function deleteBonusImageAsset() {
+            if (bonusPreviewImgUrl) {
+                await cms.deleteFile(bonusPreviewImgUrl, "Suppression visuel bonus");
+            }
             bonusPreviewImgUrl = "";
             updateBonusImgUI();
         }
@@ -1091,7 +1107,7 @@
         }
 
         function generateBonusPageHTML(bookTitle, bonusConfig, langCode, bookId) {
-            const message = bonusConfig.message || "Obtenez vos grilles exclusives + solutions offertes aux lecteurs !";
+            const message = bonusConfig.message || "Merci d'avoir fait l'acquisition du livre ! Entrez votre e-mail pour recevoir instantanément vos grilles exclusives + solutions.";
             let previewImg = bonusConfig.previewImageUrl || coverUrl || "";
             const iframeCode = bonusConfig.brevoIframe || "";
 
@@ -1124,6 +1140,124 @@
                     }
                 }
             }
+        }
+    <\/script>
+    <script src="https://unpkg.com/lucide@latest"><\/script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        }
+    </style>
+</head>
+<body class="bg-white min-h-screen font-sans text-gray-900 flex flex-col gradient-bg">
+
+    <!-- HEADER -->
+    <header class="border-b border-gray-100 py-4 px-6 md:px-12 flex justify-between items-center bg-white sticky top-0 z-40 shadow-sm">
+        <div class="flex items-center space-x-3">
+            <a href="../../index.html" class="w-8 h-8 bg-black text-white flex items-center justify-center font-bold text-lg rounded-sm">E</a>
+            <span class="text-xl font-bold tracking-tight text-gray-800">Enigmium</span>
+        </div>
+        <div>
+            <a href="../../index.html" class="text-xs font-semibold text-gray-500 hover:text-black transition-colors flex items-center space-x-1">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                <span>Retour au site</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow max-w-4xl mx-auto w-full px-6 py-12 flex flex-col items-center">
+
+        <!-- HERO / HEADER DU BONUS -->
+        <div class="text-center space-y-3 mb-10 max-w-2xl">
+            <span class="inline-flex items-center space-x-1.5 bg-black text-white text-xxs font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">
+                <i data-lucide="gift" class="w-3.5 h-3.5 text-yellow-400"></i>
+                <span>Cadeau Exclusif Lecteur</span>
+            </span>
+            <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">
+                ${bookTitle}
+            </h1>
+            <p class="text-sm text-gray-600 leading-relaxed">
+                ${message}
+            </p>
+        </div>
+
+        <!-- CARTE PRINCIPALE DE CAPTURE DE BONUS -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-xl overflow-hidden w-full grid grid-cols-1 md:grid-cols-12">
+
+            <!-- COLONNE GAUCHE : VISUEL LIVRE & PREUVE -->
+            <div class="md:col-span-5 bg-gray-50 p-8 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 text-center space-y-6">
+                <div class="relative group">
+                    <img src="${formattedImgSrc}"
+                         alt="${bookTitle}"
+                         class="w-40 md:w-48 h-auto object-cover rounded-md shadow-2xl transition-transform duration-300 group-hover:scale-105 border border-gray-200">
+                    <div class="absolute -bottom-3 -right-3 bg-yellow-400 text-black text-xxs font-extrabold uppercase px-2.5 py-1 rounded shadow-md border border-yellow-300 flex items-center space-x-1">
+                        <i data-lucide="file-text" class="w-3 h-3"></i>
+                        <span>PDF Gratuit</span>
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <h3 class="text-sm font-bold text-gray-900">${bookTitle}</h3>
+                    <p class="text-xs text-gray-500">Cahier d'activités & énigmes</p>
+                </div>
+
+                <div class="w-full pt-4 border-t border-gray-200/60 space-y-2 text-left text-xs text-gray-600">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                        <span>Grilles supplémentaires exclusives</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                        <span>Format PDF prêt à imprimer chez soi</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                        <span>Envoi immédiat par e-mail</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLONNE DROITE : INTÉGRATION DU FORMULAIRE BREVO -->
+            <div class="md:col-span-7 p-8 flex flex-col justify-center bg-white space-y-6">
+
+                <div class="space-y-2">
+                    <h2 class="text-lg font-bold text-gray-900">Où devons-nous vous l'envoyer ?</h2>
+                    <p class="text-xs text-gray-500">
+                        Saisissez votre e-mail pour débloquer votre téléchargement.
+                    </p>
+                </div>
+
+                <!-- EMPLACEMENT BREVO -->
+                <div class="w-full">
+                    ${iframeSrc ? `<iframe src="${iframeSrc}" class="w-full border-0 rounded-lg" style="height: 380px; overflow: hidden;" scrolling="no" frameborder="0"></iframe>` : `<div class="p-8 text-center text-xs text-gray-400 bg-gray-50 rounded-lg border border-dashed border-gray-200">Collez votre lien ou code iFrame Brevo dans l'administration pour afficher le formulaire.</div>`}
+                </div>
+
+                <!-- RÉASSURANCE -->
+                <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xxs text-gray-400">
+                    <span class="flex items-center space-x-1">
+                        <i data-lucide="lock" class="w-3 h-3 text-gray-400"></i>
+                        <span>100% Sécurisé & Sans Spam</span>
+                    </span>
+                    <span>Éditions Enigmium © 2026</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-gray-100 py-6 text-center text-xs text-gray-400 bg-white">
+        © 2026 Enigmium. Tous droits réservés.
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    <\/script>
+</body>
+</html>`;
         }
     <\/script>
     <script src="https://unpkg.com/lucide@latest"><\/script>
@@ -1215,6 +1349,29 @@
             if (Object.keys(bookData.languages).length === 0) {
                 alert("Erreur : Vous devez configurer au moins un onglet de langue et y saisir des données avant d'enregistrer.");
                 return;
+            }
+
+            if (document.getElementById('bonusEnabled').checked) {
+                const bonusSlug = document.getElementById('bonusSlug').value.trim();
+                const bonusMessage = document.getElementById('bonusMessage').value.trim();
+                const bonusBrevoIframe = document.getElementById('bonusBrevoIframe').value.trim();
+
+                if (!pdfBonusUrl) {
+                    alert("Erreur : Veuillez téléverser un fichier PDF Bonus. Il est obligatoire lorsque l'option 'Générer la page' est activée.");
+                    return;
+                }
+                if (!bonusSlug) {
+                    alert("Erreur : Le nom de fichier HTML (Slug) est obligatoire lorsque l'option 'Générer la page' est activée.");
+                    return;
+                }
+                if (!bonusMessage) {
+                    alert("Erreur : Le message d'accroche est obligatoire lorsque l'option 'Générer la page' est activée.");
+                    return;
+                }
+                if (!bonusBrevoIframe) {
+                    alert("Erreur : Le lien ou code iFrame Brevo est obligatoire lorsque l'option 'Générer la page' est activée.");
+                    return;
+                }
             }
 
             showLoading("Enregistrement du livre...");
