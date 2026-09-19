@@ -22,7 +22,6 @@
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <style>
-        /* Intégration esthétique de Quill dans notre charte minimale */
         .ql-toolbar.ql-snow {
             border-color: #e5e7eb !important;
             border-top-left-radius: 0.375rem;
@@ -34,7 +33,7 @@
             border-bottom-left-radius: 0.375rem;
             border-bottom-right-radius: 0.375rem;
             font-family: ui-sans-serif, system-ui, sans-serif;
-            font-size: 0.875rem; /* text-sm */
+            font-size: 0.875rem;
         }
         .ql-editor {
             min-height: 120px;
@@ -61,7 +60,7 @@
     <div id="demoBanner" class="hidden bg-amber-50 border-b border-amber-200 text-amber-800 px-6 py-3.5 text-sm flex items-center space-x-2">
         <i data-lucide="info" class="w-5 h-5 text-amber-600 shrink-0"></i>
         <span>
-            <strong>⚡ Mode Démo actif :</strong> Vos modifications s'enregistreront temporairement dans votre navigateur. Chaque langue dispose de ses propres informations (onglet séparé). Téléversez des bannières et couvertures locales pour tester !
+            <strong>⚡ Mode Démo actif :</strong> Vos modifications s'enregistreront temporairement dans votre navigateur.
         </span>
     </div>
 
@@ -103,7 +102,6 @@
             </div>
 
             <!-- ZONE DYNAMIQUE DU FORMULAIRE : Visible seulement si une langue est active -->
-                        <!-- ZONE DYNAMIQUE DU FORMULAIRE : Visible seulement si une langue est active -->
             <div id="localizedFormSection" class="hidden space-y-8 animate-fadeIn">
                 <div class="border-l-4 border-black pl-4 py-1 bg-gray-50/50 pr-4 rounded-r">
                     <span class="text-sm font-bold text-gray-700">Formulaire d'édition pour l'onglet : <span id="activeLanguageLabel" class="underline text-black">Français</span></span>
@@ -188,7 +186,7 @@
                     </div>
                 </div>
 
-                <!-- SECTION : PAGE BONUS DÉDIÉE (BREVO, CAPTATION EMAIL & PDF BONUS) -->
+                <!-- SECTION : PAGE BONUS DÉDIÉE -->
                 <div class="space-y-4 bg-gray-50/80 p-5 rounded-lg border border-gray-200">
                     <div class="flex items-center justify-between border-b border-gray-200 pb-3">
                         <div class="flex items-center space-x-2">
@@ -235,7 +233,7 @@
                                 <span id="bonusPathPrefix" class="text-xs text-gray-500 bg-gray-100 border border-r-0 border-gray-200 rounded-l px-3 py-2 font-mono">/sub/fr/</span>
                                 <input type="text" id="bonusSlug" oninput="updateBonusFullUrlPreview()" class="flex-grow border border-gray-200 rounded-r px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black font-mono" placeholder="">
                             </div>
-                            <p class="text-xs text-gray-500 font-normal mt-1">L'URL finale sera : <span id="bonusFullUrlPreview" class="font-mono">https://enigmium-editions.com/sub/fr/</span></p>
+                            <p class="text-xs text-gray-400 font-normal mt-1">L'URL finale sera : <span id="bonusFullUrlPreview" class="font-mono text-gray-500">https://enigmium-editions.com/sub/fr/</span></p>
                         </div>
 
                         <!-- CHAMP : MESSAGE D'ACCROCHE -->
@@ -264,13 +262,12 @@
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 mb-1">Lien ou Code iFrame du Formulaire Brevo</label>
                             <textarea id="bonusBrevoIframe" rows="3" class="w-full border border-gray-200 rounded px-3 py-2 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-black" placeholder="Collez l'URL Brevo (https://sibforms.com/serve/...) ou le code <iframe src='...'></iframe>"></textarea>
-
                         </div>
                     </div>
                 </div>
             </div>
 
-<!-- BOUTONS GLOBALS -->
+            <!-- BOUTONS GLOBALS -->
             <div id="submitBtnContainer" class="hidden flex space-x-4 pt-6 border-t border-gray-150">
                 <a href="admin.html" class="w-1/2 text-center border border-gray-200 hover:bg-gray-50 rounded py-3 text-sm font-medium transition-colors">
                     Annuler
@@ -282,17 +279,17 @@
         </form>
     </main>
 
-    <!-- SUCCESS MODAL (Empêche la redirection immédiate) -->
+    <!-- SUCCESS MODAL -->
     <div id="successModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden animate-fadeIn">
         <div class="bg-white rounded-lg max-w-md w-full p-6 shadow-2xl border border-gray-100 mx-4 text-center">
             <div class="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i data-lucide="check" class="w-6 h-6"></i>
             </div>
             <h3 class="text-lg font-bold text-gray-900 mb-1">Sauvegarde réussie !</h3>
-            <p class="text-xs text-gray-500 mb-6 leading-relaxed">Les données du livre ont été enregistrées avec succès dans la base. Que voulez-vous faire maintenant ?</p>
+            <p class="text-xs text-gray-500 mb-6 leading-relaxed">Les données du livre ont été enregistrées avec succès dans la base.</p>
             <div class="flex flex-col space-y-2">
                 <button onclick="closeSuccessModal()" class="w-full bg-black text-white rounded py-2.5 text-xs font-semibold hover:bg-gray-800 transition-colors shadow-sm">
-                    Continuer l'édition (ajouter ou modifier une langue...)
+                    Continuer l'édition
                 </button>
                 <a href="admin.html" class="w-full border border-gray-200 rounded py-2.5 text-xs font-semibold hover:bg-gray-50 transition-colors text-gray-700 block">
                     Retourner à la page de gestion
@@ -337,76 +334,27 @@
                     let demoDb = localStorage.getItem('demo_books_db');
                     if (!demoDb) {
                         const initialDb = {
-    categories: ["Mots cachés illustrés", "Tadokuro", "Chasse au trésor"],
-    books: [
-        {
-            id: "book_demo_1",
-            status: "visible",
-            languages: {
-                "Français": {
-                    title: "Mots cachés illustrés - Les Animaux",
-                    category: "Mots cachés illustrés",
-                    description: "Le premier cahier d\'activités hybride qui allie la stimulation des mots cachés à la richesse d\'un documentaire illustré.<br><br><strong>Points forts :</strong><ul><li>Illustrations uniques faites à la main</li><li>Plus de 50 thèmes captivants</li><li>Solutions incluses</li></ul><br><br><strong>Points forts :</strong><ul><li>Illustrations uniques faites à la main</li><li>Plus de 50 thèmes captivants</li><li>Solutions incluses</li></ul>",
-                    content: "Idéal pour tous les âges !\n- 80 mots mystères à déchiffrer\n- Des fiches illustrées explicatives\n- Des solutions complètes en fin d'ouvrage",
-                    coverUrl: "https://images-na.ssl-images-amazon.com/images/I/81XXXXXX.jpg",
-                    banners: [
-                        "https://images-na.ssl-images-amazon.com/images/I/81XXXXXX.jpg"
-                    ],
-                    pdfBonusUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-                    amazonUrl: "https://www.amazon.fr/dp/B0D1XXXXXX",
-                    amazonReviewsUrl: "https://www.amazon.fr/product-reviews/B0D1XXXXXX"
-                },
-                "Anglais": {
-                    title: "Illustrated Word Search - Animals",
-                    category: "Mots cachés illustrés",
-                    description: "The first hybrid activity book combining word search puzzles with beautiful animal illustrations.",
-                    content: "Ideal for all ages!\n- 80 mystery words to decipher\n- Explanatory illustrated sheets\n- Complete solutions at the end",
-                    coverUrl: "https://images-na.ssl-images-amazon.com/images/I/81XXXXXX.jpg",
-                    banners: [
-                        "https://images-na.ssl-images-amazon.com/images/I/81XXXXXX.jpg"
-                    ],
-                    pdfBonusUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-                    amazonUrl: "https://www.amazon.com/dp/B0D1XXXXXX",
-                    amazonReviewsUrl: "https://www.amazon.com/product-reviews/B0D1XXXXXX"
-                }
-            }
-        },
-        {
-            id: "book_demo_2",
-            status: "visible",
-            languages: {
-                "Français": {
-                    title: "Tadokuro - Casse-têtes de Logique",
-                    category: "Tadokuro",
-                    description: "Découvrez le casse-tête de logique qui stimule vos neurones.",
-                    content: "Grilles de niveau facile à difficile.",
-                    coverUrl: "",
-                    banners: [],
-                    pdfBonusUrl: "",
-                    amazonUrl: "https://www.amazon.fr/dp/B0D2XXXXXX",
-                    amazonReviewsUrl: ""
-                }
-            }
-        },
-        {
-            id: "book_demo_3",
-            status: "visible",
-            languages: {
-                "Allemand": {
-                    title: "Rätselhafte Schatzsuche",
-                    category: "Chasse au trésor",
-                    description: "Eine große Abenteuerreise für die ganze Familie.",
-                    content: "Spannende Rätsel und Geheimnisse.",
-                    coverUrl: "",
-                    banners: [],
-                    pdfBonusUrl: "",
-                    amazonUrl: "https://www.amazon.de/dp/B0D3XXXXXX",
-                    amazonReviewsUrl: ""
-                }
-            }
-        }
-    ]
-};
+                            categories: ["Mots cachés illustrés", "Tadokuro", "Chasse au trésor"],
+                            books: [
+                                {
+                                    id: "book_demo_1",
+                                    status: "visible",
+                                    languages: {
+                                        "Français": {
+                                            title: "Mots cachés illustrés - Les Animaux",
+                                            category: "Mots cachés illustrés",
+                                            description: "Le premier cahier d'activités hybride.",
+                                            content: "80 mots mystères à déchiffrer.",
+                                            coverUrl: "",
+                                            banners: [],
+                                            pdfBonusUrl: "",
+                                            amazonUrl: "",
+                                            amazonReviewsUrl: ""
+                                        }
+                                    }
+                                }
+                            ]
+                        };
                         localStorage.setItem('demo_books_db', JSON.stringify(initialDb));
                         demoDb = JSON.stringify(initialDb);
                     }
@@ -459,17 +407,13 @@
             }
 
             async uploadTextFile(textContent, targetPath, commitMsg) {
-                if (this.demoMode) {
-                    return targetPath;
-                }
+                if (this.demoMode) return targetPath;
                 const base64 = btoa(unescape(encodeURIComponent(textContent)));
                 return await this.uploadFile(base64, targetPath, commitMsg);
             }
 
             async uploadFile(base64Content, targetPath, commitMsg) {
-                if (this.demoMode) {
-                    return base64Content;
-                }
+                if (this.demoMode) return base64Content;
 
                 const cleanBase64 = base64Content.split(',')[1] || base64Content;
                 const url = `https://api.github.com/repos/${this.owner}/${this.repo}/contents/${targetPath}`;
@@ -507,6 +451,37 @@
                 }
                 return targetPath;
             }
+
+            async deleteFile(targetPath, commitMsg) {
+                if (this.demoMode || !targetPath) return true;
+                const url = `https://api.github.com/repos/${this.owner}/${this.repo}/contents/${targetPath}`;
+                const headers = {
+                    'Authorization': `token ${this.token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                };
+
+                try {
+                    const checkRes = await fetch(url, { headers });
+                    if (!checkRes.ok) return true;
+                    const checkData = await checkRes.json();
+
+                    const body = {
+                        message: commitMsg,
+                        sha: checkData.sha,
+                        branch: this.branch
+                    };
+
+                    await fetch(url, {
+                        method: 'DELETE',
+                        headers,
+                        body: JSON.stringify(body)
+                    });
+                } catch (e) {
+                    console.error("Erreur de suppression du fichier :", e);
+                }
+                return true;
+            }
         }
 
         const cms = new GitHubCMS();
@@ -528,7 +503,6 @@
         let bonusPreviewImgUrl = "";
         let isEditing = false;
 
-        // Éditeurs Quill
         let quillDescription = null;
         let quillContent = null;
 
@@ -537,7 +511,6 @@
         document.addEventListener('DOMContentLoaded', async () => {
             lucide.createIcons();
 
-            // Initialisation des éditeurs Quill
             quillDescription = new Quill('#bookDescriptionEditor', {
                 theme: 'snow',
                 placeholder: 'Saisissez la description du livre...',
@@ -572,18 +545,8 @@
             showLoading("Chargement des données...");
             try {
                 const res = await cms.getDatabase();
-                dbCache = res.data || { categories: [], books: [] };
+                dbCache = res.data;
                 dbSha = res.sha;
-
-                // Récupération de secours dans localStorage si besoin
-                let localDemoDb = null;
-                try {
-                    const localRaw = localStorage.getItem('demo_books_db');
-                    if (localRaw) localDemoDb = JSON.parse(localRaw);
-                } catch(e) {}
-
-                if (!dbCache.books) dbCache.books = [];
-                if (!dbCache.categories) dbCache.categories = [];
 
                 populateCategoriesDropdown();
 
@@ -592,22 +555,10 @@
                     currentBookId = editId;
                     document.getElementById('pageTitle').innerText = "Modifier le livre";
 
-                    let book = dbCache.books.find(b => String(b.id) === String(editId));
-                    if (!book && localDemoDb && localDemoDb.books) {
-                        book = localDemoDb.books.find(b => String(b.id) === String(editId));
-                    }
-
+                    const book = dbCache.books.find(b => String(b.id) === String(editId));
                     if (book) {
                         bookData = JSON.parse(JSON.stringify(book));
                         if (!bookData.languages) bookData.languages = {};
-
-                        // S'assurer que les catégories du livre sont bien dans le dropdown
-                        Object.values(bookData.languages).forEach(langObj => {
-                            if (langObj.category && !dbCache.categories.includes(langObj.category)) {
-                                dbCache.categories.push(langObj.category);
-                            }
-                        });
-                        populateCategoriesDropdown();
 
                         const langs = Object.keys(bookData.languages);
                         if (langs.length > 0) {
@@ -616,7 +567,7 @@
                             activeLanguage = null;
                         }
                     } else {
-                        alert("Livre introuvable dans la base de données.");
+                        alert("Livre introuvable.");
                         window.location.href = "admin.html";
                         return;
                     }
@@ -683,27 +634,18 @@
 
         function updateLanguageSelectorDropdown() {
             const select = document.getElementById('languageSelector');
-            if (!select) return;
             select.innerHTML = '';
 
-            const configuredLangs = bookData && bookData.languages ? Object.keys(bookData.languages) : [];
-            const availableLangs = ALL_LANGUAGES.filter(lang => !configuredLangs.includes(lang));
+            const availableLangs = ALL_LANGUAGES.filter(lang => !bookData.languages[lang]);
+
+            const defaultOpt = document.createElement('option');
+            defaultOpt.value = "";
+            defaultOpt.innerText = availableLangs.length === 0 ? "Toutes les langues configurées" : "Choisir une langue...";
+            select.appendChild(defaultOpt);
 
             if (availableLangs.length === 0) {
-                const opt = document.createElement('option');
-                opt.value = "";
-                opt.innerText = "Toutes les langues configurées";
-                opt.selected = true;
-                select.appendChild(opt);
                 select.disabled = true;
             } else {
-                const defaultOpt = document.createElement('option');
-                defaultOpt.value = "";
-                defaultOpt.innerText = "Choisir une langue...";
-                defaultOpt.disabled = true;
-                defaultOpt.selected = true;
-                select.appendChild(defaultOpt);
-
                 availableLangs.forEach(lang => {
                     const opt = document.createElement('option');
                     opt.value = lang;
@@ -714,25 +656,26 @@
             }
         }
 
-                function createEmptyLanguageObject() {
-            return {
-                title: "",
-                category: "",
-                description: "",
-                content: "",
-                coverUrl: "",
-                banners: [],
-                pdfBonusUrl: "",
-                amazonUrl: "",
-                amazonReviewsUrl: "",
-                bonusConfig: {
-                    enabled: false,
-                    slug: "",
-                    message: "",
-                    previewImageUrl: "",
-                    brevoIframe: ""
-                }
-            };
+        function addLanguageBadge() {
+            const select = document.getElementById('languageSelector');
+            const lang = select.value;
+            if (!lang) {
+                alert("Veuillez choisir une langue dans le menu déroulant.");
+                return;
+            }
+
+            if (!bookData.languages[lang]) {
+                saveCurrentLanguageDataToState();
+                bookData.languages[lang] = createEmptyLanguageObject();
+                activeLanguage = lang;
+                renderLanguageTabs();
+                loadActiveLanguageDataIntoForm();
+            } else {
+                saveCurrentLanguageDataToState();
+                activeLanguage = lang;
+                renderLanguageTabs();
+                loadActiveLanguageDataIntoForm();
+            }
         }
 
         function createEmptyLanguageObject() {
@@ -756,32 +699,6 @@
             };
         }
 
-        function addLanguageBadge() {
-            const select = document.getElementById('languageSelector');
-            if (!select) return;
-            const lang = select.value;
-            if (!lang) {
-                alert("Veuillez choisir une langue dans la liste déroulante avant de cliquer sur 'Ajouter'.");
-                return;
-            }
-
-            if (activeLanguage && bookData.languages && bookData.languages[activeLanguage]) {
-                saveCurrentLanguageDataToState();
-            }
-
-            if (!bookData.languages) {
-                bookData.languages = {};
-            }
-
-            if (!bookData.languages[lang]) {
-                bookData.languages[lang] = createEmptyLanguageObject();
-            }
-
-            activeLanguage = lang;
-            renderLanguageTabs();
-            loadActiveLanguageDataIntoForm();
-        }
-
         function removeLanguageTab(lang) {
             if (confirm(`Voulez-vous vraiment supprimer la langue "${lang}" pour ce livre ? Toutes ses données associées seront supprimées.`)) {
                 delete bookData.languages[lang];
@@ -791,8 +708,7 @@
                     if (remainingLangs.length > 0) {
                         activeLanguage = remainingLangs[0];
                     } else {
-                        bookData.languages["Français"] = createEmptyLanguageObject();
-                        activeLanguage = "Français";
+                        activeLanguage = null;
                     }
                 }
 
@@ -1025,30 +941,17 @@
             const file = input.files[0];
             if (!file) return;
 
-            showLoading("Traitement du PDF...");
+            showLoading("Téléversement du PDF...");
             const reader = new FileReader();
             reader.onload = async (e) => {
                 const base64 = e.target.result;
-
-                // Génération d'un nom de fichier PDF propre, lisible et personnalisé (ex: enigmium-bonus-animaux-t1.pdf)
-                const slugInput = document.getElementById('bonusSlug') ? document.getElementById('bonusSlug').value.trim() : '';
-                const titleInput = document.getElementById('bookTitle') ? document.getElementById('bookTitle').value.trim() : '';
-
-                let cleanSlug = slugInput || titleInput || currentBookId;
-                cleanSlug = cleanSlug.toLowerCase()
-                    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-                    .replace(/[^a-z0-9_-]/g, '-')
-                    .replace(/-+/g, '-')
-                    .replace(/^-|-$/g, '');
-
-                const cleanFileName = `enigmium-bonus-${cleanSlug || 'book'}.pdf`;
-                const targetPath = `assets/bonus/${cleanFileName}`;
-                const commitMsg = `Upload bonus PDF: ${cleanFileName} (${activeLanguage})`;
+                const targetPath = `assets/bonus/${file.name}`;
+                const commitMsg = `Upload bonus PDF: ${file.name}`;
 
                 try {
                     const relativePath = await cms.uploadFile(base64, targetPath, commitMsg);
                     pdfBonusUrl = relativePath;
-                    updatePDFUI(cleanFileName);
+                    updatePDFUI(file.name);
                 } catch (err) {
                     alert("Échec du téléversement du PDF : " + err.message);
                 } finally {
@@ -1081,7 +984,6 @@
             updatePDFUI();
         }
 
-        // --- LOGIQUE GÉNÉRATEUR DE PAGE BONUS ---
         function getLangCode(lang) {
             const map = {
                 'Français': 'fr',
@@ -1106,8 +1008,7 @@
             if (!activeLanguage) return;
             const code = getLangCode(activeLanguage);
             const slugInput = document.getElementById('bonusSlug').value.trim();
-            const slug = slugInput || 'animaux-t1';
-            document.getElementById('bonusFullUrlPreview').innerText = `https://enigmium-editions.com/sub/${code}/${slug}.html`;
+            document.getElementById('bonusFullUrlPreview').innerText = `https://enigmium-editions.com/sub/${code}/${slugInput}`;
         }
 
         function toggleBonusSectionUI() {
@@ -1128,9 +1029,8 @@
             const reader = new FileReader();
             reader.onload = async (e) => {
                 const base64 = e.target.result;
-                const ext = file.name.split('.').pop() || 'png';
-                const targetPath = `images/bonus/bonus-${currentBookId}-${getLangCode(activeLanguage)}.${ext}`;
-                const commitMsg = `Upload bonus image for ${currentBookId} (${activeLanguage})`;
+                const targetPath = `images/bonus/${file.name}`;
+                const commitMsg = `Upload bonus image: ${file.name}`;
 
                 try {
                     const relativePath = await cms.uploadFile(base64, targetPath, commitMsg);
@@ -1171,7 +1071,7 @@
         function slugify(text) {
             if (!text) return "";
             return text.toString().toLowerCase().trim()
-                .normalize('NFD').replace(/[̀-ͯ]/g, '')
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
                 .replace(/[^a-z0-9 -]/g, '')
                 .replace(/\s+/g, '-')
                 .replace(/-+/g, '-');
@@ -1214,124 +1114,6 @@
         }
     <\/script>
     <script src="https://unpkg.com/lucide@latest"><\/script>
-    <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-        }
-    </style>
-</head>
-<body class="bg-white min-h-screen font-sans text-gray-900 flex flex-col gradient-bg">
-
-    <!-- HEADER -->
-    <header class="border-b border-gray-100 py-4 px-6 md:px-12 flex justify-between items-center bg-white sticky top-0 z-40 shadow-sm">
-        <div class="flex items-center space-x-3">
-            <a href="../../index.html" class="w-8 h-8 bg-black text-white flex items-center justify-center font-bold text-lg rounded-sm">E</a>
-            <span class="text-xl font-bold tracking-tight text-gray-800">Enigmium</span>
-        </div>
-        <div>
-            <a href="../../index.html" class="text-xs font-semibold text-gray-500 hover:text-black transition-colors flex items-center space-x-1">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                <span>Retour au site</span>
-            </a>
-        </div>
-    </header>
-
-    <!-- MAIN CONTAINER -->
-    <main class="flex-grow max-w-4xl mx-auto w-full px-6 py-12 flex flex-col items-center">
-
-        <!-- HERO / HEADER DU BONUS -->
-        <div class="text-center space-y-3 mb-10 max-w-2xl">
-            <span class="inline-flex items-center space-x-1.5 bg-black text-white text-xxs font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">
-                <i data-lucide="gift" class="w-3.5 h-3.5 text-yellow-400"></i>
-                <span>Cadeau Exclusif Lecteur</span>
-            </span>
-            <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">
-                ${bookTitle}
-            </h1>
-            <p class="text-sm text-gray-600 leading-relaxed">
-                ${message}
-            </p>
-        </div>
-
-        <!-- CARTE PRINCIPALE DE CAPTURE DE BONUS -->
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-xl overflow-hidden w-full grid grid-cols-1 md:grid-cols-12">
-
-            <!-- COLONNE GAUCHE : VISUEL LIVRE & PREUVE -->
-            <div class="md:col-span-5 bg-gray-50 p-8 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 text-center space-y-6">
-                <div class="relative group">
-                    <img src="${formattedImgSrc}"
-                         alt="${bookTitle}"
-                         class="w-40 md:w-48 h-auto object-cover rounded-md shadow-2xl transition-transform duration-300 group-hover:scale-105 border border-gray-200">
-                    <div class="absolute -bottom-3 -right-3 bg-yellow-400 text-black text-xxs font-extrabold uppercase px-2.5 py-1 rounded shadow-md border border-yellow-300 flex items-center space-x-1">
-                        <i data-lucide="file-text" class="w-3 h-3"></i>
-                        <span>PDF Gratuit</span>
-                    </div>
-                </div>
-
-                <div class="space-y-1.5">
-                    <h3 class="text-sm font-bold text-gray-900">${bookTitle}</h3>
-                    <p class="text-xs text-gray-500">Cahier d'activités & énigmes</p>
-                </div>
-
-                <div class="w-full pt-4 border-t border-gray-200/60 space-y-2 text-left text-xs text-gray-600">
-                    <div class="flex items-center space-x-2">
-                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
-                        <span>Grilles supplémentaires exclusives</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
-                        <span>Format PDF prêt à imprimer chez soi</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
-                        <span>Envoi immédiat par e-mail</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- COLONNE DROITE : INTÉGRATION DU FORMULAIRE BREVO -->
-            <div class="md:col-span-7 p-8 flex flex-col justify-center bg-white space-y-6">
-
-                <div class="space-y-2">
-                    <h2 class="text-lg font-bold text-gray-900">Où devons-nous vous l'envoyer ?</h2>
-                    <p class="text-xs text-gray-500">
-                        Saisissez votre e-mail pour débloquer votre téléchargement.
-                    </p>
-                </div>
-
-                <!-- EMPLACEMENT BREVO -->
-                <div class="w-full">
-                    ${iframeSrc ? `<iframe src="${iframeSrc}" class="w-full border-0 rounded-lg" style="height: 380px; overflow: hidden;" scrolling="no" frameborder="0"></iframe>` : `<div class="p-8 text-center text-xs text-gray-400 bg-gray-50 rounded-lg border border-dashed border-gray-200">Collez votre lien ou code iFrame Brevo dans l'administration pour afficher le formulaire.</div>`}
-                </div>
-
-                <!-- RÉASSURANCE -->
-                <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xxs text-gray-400">
-                    <span class="flex items-center space-x-1">
-                        <i data-lucide="lock" class="w-3 h-3 text-gray-400"></i>
-                        <span>100% Sécurisé & Sans Spam</span>
-                    </span>
-                    <span>Éditions Enigmium © 2026</span>
-                </div>
-
-            </div>
-
-        </div>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="border-t border-gray-100 py-6 text-center text-xs text-gray-400 bg-white">
-        © 2026 Enigmium. Tous droits réservés.
-    </footer>
-
-    <script>
-        lucide.createIcons();
-    <\/script>
-</body>
-</html>`;
-        }
-    <\/script>
-    <script src="https://unpkg.com/lucide@latest"><\/script>
 </head>
 <body class="bg-gray-100 min-h-screen font-sans text-gray-900 flex flex-col justify-between">
 
@@ -1363,7 +1145,7 @@
                     <p class="text-xs text-gray-300 leading-relaxed">${message}</p>
                 </div>
 
-                <!-- APERÇU DU BONUS (A PLAT SANS PERSPECTIVE POUR LISIBILITÉ OPTIMALE) -->
+                <!-- APERÇU DU BONUS -->
                 <div class="flex justify-center items-center py-2">
                     <img src="${formattedImgSrc}" alt="${bookTitle}" class="w-48 md:w-56 h-auto object-cover rounded-md shadow-2xl border border-gray-700/50">
                 </div>
@@ -1409,7 +1191,6 @@
 </html>`;
         }
 
-        // --- SOUMISSION FINALE ---
         async function handleFormSubmit(event) {
             event.preventDefault();
 
@@ -1464,14 +1245,13 @@
                     dbSha = res.content.sha;
                 }
 
-                // Génération automatique des pages bonus HTML si configurées
                 for (const lang of Object.keys(bookData.languages)) {
                     const langData = bookData.languages[lang];
                     const bonus = langData.bonusConfig;
                     if (bonus && bonus.enabled) {
                         const langCode = getLangCode(lang);
-                        const slug = bonus.slug ? bonus.slug.trim() : slugify(langData.title) || 'bonus';
-                        const targetHtmlPath = `sub/${langCode}/${slug}.html`;
+                        const slug = bonus.slug ? bonus.slug.trim() : slugify(langData.title) || 'bonus.html';
+                        const targetHtmlPath = `sub/${langCode}/${slug.endsWith('.html') ? slug : slug + '.html'}`;
                         const bonusHtml = generateBonusPageHTML(langData.title, bonus, langCode, currentBookId);
 
                         try {
