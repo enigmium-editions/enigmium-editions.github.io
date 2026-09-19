@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enigmium - Bonus Mots cachés illustrés - Les animaux</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        enigmiumGreen: '#a3c9a8',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans text-gray-900 flex flex-col justify-between">
+
+    <!-- HEADER MINIMAL -->
+    <header class="bg-white border-b border-gray-200 py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-40">
+        <a href="../../index.html" class="flex items-center space-x-3 group">
+            <div class="w-8 h-8 bg-black text-white flex items-center justify-center font-bold text-lg rounded-sm group-hover:bg-gray-800 transition-colors">E</div>
+            <span class="text-xl font-bold tracking-tight text-gray-800">Enigmium</span>
+        </a>
+        <a href="../../index.html" class="text-xs font-semibold text-gray-500 hover:text-black transition-colors flex items-center space-x-1">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span>Retour au site</span>
+        </a>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow flex items-center justify-center px-4 py-8 md:py-12">
+        <div class="max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-12 border border-gray-100">
+
+            <!-- COLONNE GAUCHE (SOMBRE) : PRESENTATION DU LIVRE ET DU BONUS -->
+            <div class="md:col-span-5 bg-gray-900 text-white p-6 md:p-8 flex flex-col justify-between space-y-6">
+                <div>
+                    <div class="inline-flex items-center space-x-1.5 bg-amber-400/20 text-amber-300 border border-amber-400/30 text-xxs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full mb-4">
+                        <i data-lucide="gift" class="w-3.5 h-3.5"></i>
+                        <span>Cadeau Exclusif Lecteur</span>
+                    </div>
+
+                    <h1 class="text-xl md:text-2xl font-bold leading-tight text-white mb-2">Mots cachés illustrés - Les animaux</h1>
+                    <p class="text-xs text-gray-300 leading-relaxed">Merci d'avoir fait l'acquisition du livre ! Entrez votre e-mail pour recevoir instantanément vos 20 grilles exclusives + solutions.</p>
+                </div>
+
+                <!-- APERÇU DU BONUS (A PLAT SANS PERSPECTIVE POUR LISIBILITÉ OPTIMALE) -->
+                <div class="flex justify-center items-center py-2">
+                    <img src="../../images/bonus/bonus-book_1788688589465-fr.jpg" alt="Mots cachés illustrés - Les animaux" class="w-48 md:w-56 h-auto object-cover rounded-md shadow-2xl border border-gray-700/50">
+                </div>
+
+                <!-- RASSURANCE -->
+                <div class="border-t border-gray-800 pt-4 space-y-2">
+                    <div class="flex items-center space-x-2 text-xxs text-gray-400">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                        <span>Envoi instantané par e-mail au format PDF</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-xxs text-gray-400">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                        <span>100% Gratuit & Réservé aux lecteurs Enigmium</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLONNE DROITE (BLANCHE) : FORMULAIRE BREVO -->
+            <div class="md:col-span-7 p-6 md:p-8 flex flex-col justify-center bg-white">
+                <div class="mb-4">
+                    <h2 class="text-lg font-bold text-gray-900 mb-1">Télécharger votre bonus PDF</h2>
+                    <p class="text-xs text-gray-500">Saisissez votre adresse e-mail ci-dessous pour recevoir immédiatement votre fichier.</p>
+                </div>
+
+                <!-- FORMULAIRE BREVO IFRAME -->
+                <div class="w-full">
+                    <iframe src="https://3603444f.sibforms.com/v2/serve/MUIFAM_5p5E7femh0nm9Cxux0x56icGQpSm0r05ahUWbhFz_M6KLc5Ll13rcJV8aZ23fvK-rtCINcrwE7VOcogEJ9uPCnRSjBPml7PBBqpfRitqP_aUE5Aw7kwTZ2XYtC0qyH3zg5gThW9-RRS41PvpW3tqIdNQLVIjVDraMUfsWMZU48oZxqJvY-x7MaLrC4QqQlf0TyJmRRXSTPw==" class="w-full border-0 rounded-lg" style="height: 480px; overflow: hidden;" scrolling="no" frameborder="0"></iframe>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER MINIMAL -->
+    <footer class="bg-white border-t border-gray-100 py-4 text-center text-xxs text-gray-400">
+        <p>© 2026 Énigmium Éditions — Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
