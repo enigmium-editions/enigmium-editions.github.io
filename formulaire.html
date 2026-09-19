@@ -103,6 +103,7 @@
             </div>
 
             <!-- ZONE DYNAMIQUE DU FORMULAIRE : Visible seulement si une langue est active -->
+                        <!-- ZONE DYNAMIQUE DU FORMULAIRE : Visible seulement si une langue est active -->
             <div id="localizedFormSection" class="hidden space-y-8 animate-fadeIn">
                 <div class="border-l-4 border-black pl-4 py-1 bg-gray-50/50 pr-4 rounded-r">
                     <span class="text-sm font-bold text-gray-700">Formulaire d'édition pour l'onglet : <span id="activeLanguageLabel" class="underline text-black">Français</span></span>
@@ -174,29 +175,20 @@
                     </div>
                 </div>
 
-                <!-- SECTION : PDF BONUS -->
+                <!-- SECTION : LIENS AMAZON -->
                 <div class="space-y-4">
-                    <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 border-b border-gray-100 pb-2 flex justify-between items-center">
-                        <span>PDF Bonus (Spécifique à la langue)</span>
-                        <button type="button" id="pdfActionBtn" onclick="triggerFileInput('pdfFileInput')" class="text-xs font-semibold text-black hover:underline">
-                            Ajouter
-                        </button>
-                    </h3>
-                    <input type="file" id="pdfFileInput" accept="application/pdf" class="hidden" onchange="uploadPDFAsset(this)">
-
-                    <div id="pdfPreviewContainer" class="hidden flex items-center justify-between p-3 border border-gray-100 rounded-md bg-gray-50">
-                        <div class="flex items-center space-x-2">
-                            <i data-lucide="file-text" class="w-5 h-5 text-red-500"></i>
-                            <span id="pdfNameText" class="text-xs font-medium text-gray-700 truncate">bonus.pdf</span>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button type="button" onclick="triggerFileInput('pdfFileInput')" class="text-xxs bg-white border border-gray-200 rounded px-2.5 py-1.5 hover:bg-gray-50">Modifier</button>
-                            <button type="button" onclick="deletePDFAsset()" class="text-xxs bg-red-50 text-red-600 hover:bg-red-100 rounded px-2.5 py-1.5">Supprimer</button>
-                        </div>
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 border-b border-gray-100 pb-2">Liens Amazon (Spécifique à la langue)</h3>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Lien Amazon du livre</label>
+                        <input type="url" id="amazonUrl" class="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black" placeholder="https://www.amazon.fr/dp/...">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Lien page commentaires Amazon</label>
+                        <input type="url" id="amazonReviewsUrl" class="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black" placeholder="https://www.amazon.fr/product-reviews/...">
                     </div>
                 </div>
 
-                <!-- SECTION : PAGE BONUS DÉDIÉE (BREVO & CAPTATION EMAIL) -->
+                <!-- SECTION : PAGE BONUS DÉDIÉE (BREVO, CAPTATION EMAIL & PDF BONUS) -->
                 <div class="space-y-4 bg-gray-50/80 p-5 rounded-lg border border-gray-200">
                     <div class="flex items-center justify-between border-b border-gray-200 pb-3">
                         <div class="flex items-center space-x-2">
@@ -210,7 +202,33 @@
                         </label>
                     </div>
 
-                    <div id="bonusFieldsContainer" class="space-y-4 hidden pt-1">
+                    <div id="bonusFieldsContainer" class="space-y-5 hidden pt-1">
+                        <!-- CHAMP : FICHIER PDF BONUS -->
+                        <div class="p-4 bg-white rounded-md border border-gray-200 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-700">Fichier PDF Bonus (Spécifique à la langue)</label>
+                                    <p class="text-xxs text-gray-400">Le document PDF offert aux lecteurs ayant rempli le formulaire.</p>
+                                </div>
+                                <button type="button" id="pdfActionBtn" onclick="triggerFileInput('pdfFileInput')" class="text-xs font-semibold text-black hover:underline shrink-0">
+                                    Ajouter
+                                </button>
+                            </div>
+                            <input type="file" id="pdfFileInput" accept="application/pdf" class="hidden" onchange="uploadPDFAsset(this)">
+
+                            <div id="pdfPreviewContainer" class="hidden flex items-center justify-between p-3 border border-gray-100 rounded-md bg-gray-50">
+                                <div class="flex items-center space-x-2">
+                                    <i data-lucide="file-text" class="w-5 h-5 text-red-500 shrink-0"></i>
+                                    <span id="pdfNameText" class="text-xs font-medium text-gray-700 truncate">bonus.pdf</span>
+                                </div>
+                                <div class="flex space-x-2 shrink-0">
+                                    <button type="button" onclick="triggerFileInput('pdfFileInput')" class="text-xxs bg-white border border-gray-200 rounded px-2.5 py-1.5 hover:bg-gray-50">Modifier</button>
+                                    <button type="button" onclick="deletePDFAsset()" class="text-xxs bg-red-50 text-red-600 hover:bg-red-100 rounded px-2.5 py-1.5">Supprimer</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CHAMP : SLUG HTML -->
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 mb-1">Nom du fichier HTML (Slug) <span class="text-gray-400 font-normal">(ex: animaux-t1)</span></label>
                             <div class="flex items-center">
@@ -221,13 +239,15 @@
                             <p class="text-xxs text-gray-400 mt-1">L'URL finale sera : <span id="bonusFullUrlPreview" class="font-mono text-gray-600 font-bold">https://enigmium-editions.com/sub/fr/animaux-t1.html</span></p>
                         </div>
 
+                        <!-- CHAMP : MESSAGE D'ACCROCHE -->
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 mb-1">Message d'accroche <span class="text-gray-400 font-normal">(affiché sous le titre du livre)</span></label>
                             <textarea id="bonusMessage" rows="2" class="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black" placeholder="Ex: Obtenez vos 20 grilles exclusives + solutions offertes aux lecteurs !"></textarea>
                         </div>
 
+                        <!-- CHAMP : VISUEL / GRILLE DU PDF BONUS -->
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Visuel / Grille du PDF Bonus <span class="text-gray-400 font-normal">(affiché à plat)</span></label>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Visuel / Grille du PDF Bonus <span class="text-gray-400 font-normal">(affiché à plat sur la page)</span></label>
                             <div class="flex items-center space-x-3">
                                 <button type="button" onclick="triggerFileInput('bonusImgFileInput')" class="text-xs font-semibold bg-white border border-gray-200 hover:bg-gray-50 rounded px-3 py-1.5 transition-colors">
                                     Choisir une image
@@ -241,6 +261,7 @@
                             </div>
                         </div>
 
+                        <!-- CHAMP : CODE IFRAME BREVO -->
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 mb-1">Lien ou Code iFrame du Formulaire Brevo</label>
                             <textarea id="bonusBrevoIframe" rows="3" class="w-full border border-gray-200 rounded px-3 py-2 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-black" placeholder="Collez l'URL Brevo (https://sibforms.com/serve/...) ou le code <iframe src='...'></iframe>"></textarea>
@@ -248,22 +269,9 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- SECTION : LIENS AMAZON -->
-                <div class="space-y-4">
-                    <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 border-b border-gray-100 pb-2">Liens Amazon (Spécifique à la langue)</h3>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Lien Amazon du livre</label>
-                        <input type="url" id="amazonUrl" class="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black" placeholder="https://www.amazon.fr/dp/...">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Lien page commentaires Amazon</label>
-                        <input type="url" id="amazonReviewsUrl" class="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black" placeholder="https://www.amazon.fr/product-reviews/...">
-                    </div>
-                </div>
             </div>
 
-            <!-- BOUTONS GLOBALS -->
+<!-- BOUTONS GLOBALS -->
             <div id="submitBtnContainer" class="hidden flex space-x-4 pt-6 border-t border-gray-150">
                 <a href="admin.html" class="w-1/2 text-center border border-gray-200 hover:bg-gray-50 rounded py-3 text-sm font-medium transition-colors">
                     Annuler
