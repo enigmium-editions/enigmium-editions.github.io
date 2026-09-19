@@ -572,8 +572,18 @@
             showLoading("Chargement des données...");
             try {
                 const res = await cms.getDatabase();
-                dbCache = res.data;
+                dbCache = res.data || { categories: [], books: [] };
                 dbSha = res.sha;
+
+                // Récupération de secours dans localStorage si besoin
+                let localDemoDb = null;
+                try {
+                    const localRaw = localStorage.getItem('demo_books_db');
+                    if (localRaw) localDemoDb = JSON.parse(localRaw);
+                } catch(e) {}
+
+                if (!dbCache.books) dbCache.books = [];
+                if (!dbCache.categories) dbCache.categories = [];
 
                 populateCategoriesDropdown();
 
@@ -581,19 +591,32 @@
                     isEditing = true;
                     currentBookId = editId;
                     document.getElementById('pageTitle').innerText = "Modifier le livre";
-                    const book = dbCache.books.find(b => String(b.id) === String(editId));
+
+                    let book = dbCache.books.find(b => String(b.id) === String(editId));
+                    if (!book && localDemoDb && localDemoDb.books) {
+                        book = localDemoDb.books.find(b => String(b.id) === String(editId));
+                    }
+
                     if (book) {
                         bookData = JSON.parse(JSON.stringify(book));
                         if (!bookData.languages) bookData.languages = {};
+
+                        // S'assurer que les catégories du livre sont bien dans le dropdown
+                        Object.values(bookData.languages).forEach(langObj => {
+                            if (langObj.category && !dbCache.categories.includes(langObj.category)) {
+                                dbCache.categories.push(langObj.category);
+                            }
+                        });
+                        populateCategoriesDropdown();
+
                         const langs = Object.keys(bookData.languages);
                         if (langs.length > 0) {
                             activeLanguage = langs[0];
                         } else {
-                            bookData.languages["Français"] = createEmptyLanguageObject();
-                            activeLanguage = "Français";
+                            activeLanguage = null;
                         }
                     } else {
-                        alert("Livre introuvable.");
+                        alert("Livre introuvable dans la base de données.");
                         window.location.href = "admin.html";
                         return;
                     }
@@ -604,11 +627,9 @@
                     bookData = {
                         id: currentBookId,
                         status: 'visible',
-                        languages: {
-                            "Français": createEmptyLanguageObject()
-                        }
+                        languages: {}
                     };
-                    activeLanguage = "Français";
+                    activeLanguage = null;
                 }
 
                 renderLanguageTabs();
@@ -662,17 +683,27 @@
 
         function updateLanguageSelectorDropdown() {
             const select = document.getElementById('languageSelector');
+            if (!select) return;
             select.innerHTML = '';
 
-            const availableLangs = ALL_LANGUAGES.filter(lang => !bookData.languages[lang]);
+            const configuredLangs = bookData && bookData.languages ? Object.keys(bookData.languages) : [];
+            const availableLangs = ALL_LANGUAGES.filter(lang => !configuredLangs.includes(lang));
 
             if (availableLangs.length === 0) {
                 const opt = document.createElement('option');
                 opt.value = "";
                 opt.innerText = "Toutes les langues configurées";
+                opt.selected = true;
                 select.appendChild(opt);
                 select.disabled = true;
             } else {
+                const defaultOpt = document.createElement('option');
+                defaultOpt.value = "";
+                defaultOpt.innerText = "Choisir une langue...";
+                defaultOpt.disabled = true;
+                defaultOpt.selected = true;
+                select.appendChild(defaultOpt);
+
                 availableLangs.forEach(lang => {
                     const opt = document.createElement('option');
                     opt.value = lang;
@@ -704,40 +735,51 @@
             };
         }
 
+        function createEmptyLanguageObject() {
+            return {
+                title: "",
+                category: "",
+                description: "",
+                content: "",
+                coverUrl: "",
+                banners: [],
+                pdfBonusUrl: "",
+                amazonUrl: "",
+                amazonReviewsUrl: "",
+                bonusConfig: {
+                    enabled: false,
+                    slug: "",
+                    message: "",
+                    previewImageUrl: "",
+                    brevoIframe: ""
+                }
+            };
+        }
+
         function addLanguageBadge() {
             const select = document.getElementById('languageSelector');
+            if (!select) return;
             const lang = select.value;
-            if (!lang) return;
+            if (!lang) {
+                alert("Veuillez choisir une langue dans la liste déroulante avant de cliquer sur 'Ajouter'.");
+                return;
+            }
+
+            if (activeLanguage && bookData.languages && bookData.languages[activeLanguage]) {
+                saveCurrentLanguageDataToState();
+            }
+
+            if (!bookData.languages) {
+                bookData.languages = {};
+            }
 
             if (!bookData.languages[lang]) {
-                saveCurrentLanguageDataToState();
-                bookData.languages[lang] = {
-                    title: "",
-                    category: "",
-                    description: "",
-                    content: "",
-                    coverUrl: "",
-                    banners: [],
-                    pdfBonusUrl: "",
-                    amazonUrl: "",
-                    amazonReviewsUrl: "",
-                    bonusConfig: {
-                        enabled: false,
-                        slug: "",
-                        message: "",
-                        previewImageUrl: "",
-                        brevoIframe: ""
-                    }
-                };
-                activeLanguage = lang;
-                renderLanguageTabs();
-                loadActiveLanguageDataIntoForm();
-            } else {
-                saveCurrentLanguageDataToState();
-                activeLanguage = lang;
-                renderLanguageTabs();
-                loadActiveLanguageDataIntoForm();
+                bookData.languages[lang] = createEmptyLanguageObject();
             }
+
+            activeLanguage = lang;
+            renderLanguageTabs();
+            loadActiveLanguageDataIntoForm();
         }
 
         function removeLanguageTab(lang) {
