@@ -948,13 +948,26 @@
             const reader = new FileReader();
             reader.onload = async (e) => {
                 const base64 = e.target.result;
-                const targetPath = `assets/bonus/bonus-${currentBookId}-${activeLanguage}.pdf`;
-                const commitMsg = `Upload bonus PDF for ${currentBookId} (${activeLanguage})`;
+
+                // Génération d'un nom de fichier PDF propre, lisible et personnalisé (ex: enigmium-bonus-animaux-t1.pdf)
+                const slugInput = document.getElementById('bonusSlug') ? document.getElementById('bonusSlug').value.trim() : '';
+                const titleInput = document.getElementById('bookTitle') ? document.getElementById('bookTitle').value.trim() : '';
+
+                let cleanSlug = slugInput || titleInput || currentBookId;
+                cleanSlug = cleanSlug.toLowerCase()
+                    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                    .replace(/[^a-z0-9_-]/g, '-')
+                    .replace(/-+/g, '-')
+                    .replace(/^-|-$/g, '');
+
+                const cleanFileName = `enigmium-bonus-${cleanSlug || 'book'}.pdf`;
+                const targetPath = `assets/bonus/${cleanFileName}`;
+                const commitMsg = `Upload bonus PDF: ${cleanFileName} (${activeLanguage})`;
 
                 try {
                     const relativePath = await cms.uploadFile(base64, targetPath, commitMsg);
                     pdfBonusUrl = relativePath;
-                    updatePDFUI(file.name);
+                    updatePDFUI(cleanFileName);
                 } catch (err) {
                     alert("Échec du téléversement du PDF : " + err.message);
                 } finally {
