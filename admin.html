@@ -476,19 +476,19 @@
                 menu.id = `dropdown-${book.id}`;
                 menu.className = "dropdown-menu absolute right-2 bottom-10 w-32 bg-white border border-gray-150 rounded shadow-lg py-1 hidden z-50 text-xs";
                 menu.innerHTML = `
-                    <button onclick="previewBook('${book.id}')" class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 text-gray-800 font-medium">
+                    <button onclick="event.stopPropagation(); previewBook('${book.id}')" class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 text-gray-800 font-medium">
                         <i data-lucide="eye" class="w-3.5 h-3.5 text-blue-600"></i>
                         <span>Aperçu & Liens</span>
                     </button>
-                    <button onclick="editBook('${book.id}')" class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2">
+                    <button onclick="event.stopPropagation(); editBook('${book.id}')" class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2">
                         <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
                         <span>Éditer</span>
                     </button>
-                    <button onclick="toggleVisibility('${book.id}', '${book.status}')" class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2">
+                    <button onclick="event.stopPropagation(); toggleVisibility('${book.id}', '${book.status}')" class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2">
                         <i data-lucide="${book.status === 'masqué' ? 'eye' : 'eye-off'}" class="w-3.5 h-3.5"></i>
                         <span>${book.status === 'masqué' ? 'Afficher' : 'Masquer'}</span>
                     </button>
-                    <button onclick="deleteBook('${book.id}')" class="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 border-t border-gray-100 flex items-center space-x-2">
+                    <button onclick="event.stopPropagation(); deleteBook('${book.id}')" class="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 border-t border-gray-100 flex items-center space-x-2">
                         <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                         <span>Supprimer</span>
                     </button>
@@ -497,7 +497,8 @@
                 card.appendChild(imgContainer);
 
                 const title = document.createElement('a');
-                title.href = `preview.html?id=${book.id}`;
+                title.href = `formulaire.html?id=${book.id}`;
+                title.title = "Cliquer pour éditer ce livre";
                 title.className = `text-xs font-semibold leading-snug break-words hover:underline cursor-pointer ${isGrayed ? 'text-gray-400' : 'text-gray-700'}`;
                 title.innerText = bookTitle;
                 card.appendChild(title);
