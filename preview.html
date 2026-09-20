@@ -72,20 +72,22 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
                 <!-- CHAMP 1 : URL DE CONFIRMATION BREVO -->
-                <div class="bg-white p-5 rounded-xl border border-amber-200 shadow-sm space-y-3">
-                    <div class="flex items-center justify-between">
-                        <label class="text-xs font-extrabold text-gray-900 uppercase tracking-wider flex items-center space-x-1.5">
-                            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
-                            <span>1. URL de Confirmation Brevo</span>
-                        </label>
-                        <span class="text-xxs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">À coller dans Brevo</span>
+                <div class="bg-white p-5 rounded-xl border border-amber-200 shadow-sm space-y-3 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-gray-900 uppercase tracking-wider flex items-center space-x-1.5">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+                                <span>1. Confirmation Brevo</span>
+                            </label>
+                            <span class="text-xxs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">Dans Brevo</span>
+                        </div>
+                        <p class="text-xxs text-gray-500 leading-relaxed">
+                            À coller sous <em>« Page de confirmation après validation »</em> dans Brevo.
+                        </p>
                     </div>
-                    <p class="text-xxs text-gray-500 leading-relaxed">
-                        Collez ce lien dans Brevo sous l'option <em>« Page de confirmation après validation du formulaire »</em>. Il déclenchera le bandeau d'avis Amazon adapté à ce livre.
-                    </p>
-                    <div class="flex items-center space-x-2">
+                    <div class="flex items-center space-x-2 pt-2">
                         <input type="text" id="brevoRedirectUrlInput" readonly class="flex-grow text-xs font-mono bg-gray-50 border border-gray-200 rounded px-3 py-2 text-gray-800 focus:outline-none select-all">
                         <button onclick="copyToClipboard('brevoRedirectUrlInput', 'btnCopyBrevo')" id="btnCopyBrevo" class="bg-black hover:bg-gray-800 text-white text-xs font-bold px-4 py-2 rounded transition-colors shrink-0 flex items-center space-x-1 shadow-sm">
                             <i data-lucide="copy" class="w-3.5 h-3.5"></i>
@@ -95,18 +97,20 @@
                 </div>
 
                 <!-- CHAMP 2 : PAGE BONUS HTML (Pour QR Code) -->
-                <div class="bg-white p-5 rounded-xl border border-amber-200 shadow-sm space-y-3">
-                    <div class="flex items-center justify-between">
-                        <label class="text-xs font-extrabold text-gray-900 uppercase tracking-wider flex items-center space-x-1.5">
-                            <i data-lucide="qr-code" class="w-4 h-4 text-blue-600"></i>
-                            <span>2. Page Bonus HTML (QR Code)</span>
-                        </label>
-                        <span id="bonusStatusBadge" class="text-xxs font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded">Non configuré</span>
+                <div class="bg-white p-5 rounded-xl border border-amber-200 shadow-sm space-y-3 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-gray-900 uppercase tracking-wider flex items-center space-x-1.5">
+                                <i data-lucide="qr-code" class="w-4 h-4 text-blue-600"></i>
+                                <span>2. Page Bonus (QR Code)</span>
+                            </label>
+                            <span id="bonusStatusBadge" class="text-xxs font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded">Non configuré</span>
+                        </div>
+                        <p class="text-xxs text-gray-500 leading-relaxed">
+                            Page web où le lecteur atterrit après avoir scanné le QR Code de votre livre.
+                        </p>
                     </div>
-                    <p class="text-xxs text-gray-500 leading-relaxed">
-                        C'est la page web dédiée où le lecteur atterrit lorsqu'il scanne le QR Code imprimé dans votre livre.
-                    </p>
-                    <div class="flex items-center space-x-2">
+                    <div class="flex items-center space-x-2 pt-2">
                         <input type="text" id="bonusPageUrlInput" readonly class="flex-grow text-xs font-mono bg-gray-50 border border-gray-200 rounded px-3 py-2 text-gray-800 focus:outline-none select-all">
                         <button onclick="copyToClipboard('bonusPageUrlInput', 'btnCopyBonusUrl')" id="btnCopyBonusUrl" class="bg-black hover:bg-gray-800 text-white text-xs font-bold px-4 py-2 rounded transition-colors shrink-0 flex items-center space-x-1 shadow-sm">
                             <i data-lucide="copy" class="w-3.5 h-3.5"></i>
@@ -117,19 +121,42 @@
                         </a>
                     </div>
                 </div>
+
+                <!-- CHAMP 3 : LIEN DIRECT PDF BONUS -->
+                <div class="bg-white p-5 rounded-xl border border-amber-200 shadow-sm space-y-3 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-gray-900 uppercase tracking-wider flex items-center space-x-1.5">
+                                <i data-lucide="file-text" class="w-4 h-4 text-red-600"></i>
+                                <span>3. Lien Direct PDF Bonus</span>
+                            </label>
+                            <span id="pdfStatusBadge" class="text-xxs font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded">Non téléversé</span>
+                        </div>
+                        <p class="text-xxs text-gray-500 leading-relaxed">
+                            Lien direct vers le fichier PDF bonus hébergé pour le téléchargement.
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-2 pt-2">
+                        <input type="text" id="pdfUrlInput" readonly class="flex-grow text-xs font-mono bg-gray-50 border border-gray-200 rounded px-3 py-2 text-gray-800 focus:outline-none select-all">
+                        <button onclick="copyToClipboard('pdfUrlInput', 'btnCopyPdfUrl')" id="btnCopyPdfUrl" class="bg-black hover:bg-gray-800 text-white text-xs font-bold px-4 py-2 rounded transition-colors shrink-0 flex items-center space-x-1 shadow-sm">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                            <span id="btnCopyPdfUrlText">Copier</span>
+                        </button>
+                        <a id="btnOpenPdfUrl" href="#" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold px-3 py-2 rounded transition-colors shrink-0 flex items-center space-x-1">
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- ONGLETS DE SÉLECTION D'APERÇU -->
-        <div class="border-b border-gray-200 flex space-x-8">
-            <button onclick="switchPreviewTab('product')" id="tabBtnProduct" class="pb-3 text-sm font-bold border-b-2 border-black text-black flex items-center space-x-2">
-                <i data-lucide="book-open" class="w-4 h-4"></i>
-                <span>Fiche Produit Client (produit.html)</span>
-            </button>
-            <button onclick="switchPreviewTab('bonus')" id="tabBtnBonus" class="pb-3 text-sm font-bold border-b-2 border-transparent text-gray-400 hover:text-black flex items-center space-x-2">
-                <i data-lucide="gift" class="w-4 h-4"></i>
-                <span>Page Bonus Lecteur (sub/...)</span>
-            </button>
+        <!-- EN-TÊTE D'APERÇU PRODUIT CLIENT -->
+        <div class="flex items-center justify-between border-b border-gray-200 pb-3">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-700 flex items-center space-x-2">
+                <i data-lucide="eye" class="w-4 h-4 text-gray-800"></i>
+                <span>Aperçu Fiche Produit Client (produit.html)</span>
+            </h3>
+            <span class="text-xs text-gray-400">Rendu visuel exact vu par les lecteurs</span>
         </div>
 
         <!-- ZONE 1 : APERÇU FICHE PRODUIT -->
@@ -187,48 +214,7 @@
             </div>
         </div>
 
-        <!-- ZONE 2 : APERÇU PAGE BONUS LECTEUR -->
-        <div id="previewBonusSection" class="hidden bg-white rounded-2xl border border-gray-200 p-8 shadow-sm space-y-8">
-            <div id="bonusDisabledAlert" class="p-8 text-center text-gray-500 border border-dashed border-gray-200 rounded-xl space-y-2">
-                <i data-lucide="gift-off" class="w-10 h-10 mx-auto text-gray-300"></i>
-                <p class="font-bold text-sm">La page bonus n'est pas activée pour cette langue.</p>
-                <p class="text-xs text-gray-400">Vous pouvez l'activer dans le formulaire d'édition du livre.</p>
-            </div>
-
-            <div id="bonusPreviewCard" class="hidden space-y-6">
-                <div class="p-4 bg-emerald-50 text-emerald-800 rounded-lg border border-emerald-200 text-xs flex items-center justify-between">
-                    <span>Aperçu en direct de la page bonus pour la langue sélectionnée</span>
-                    <a id="liveBonusLinkBtn" href="#" target="_blank" class="font-bold underline hover:text-emerald-950 flex items-center space-x-1">
-                        <span>Ouvrir la vraie page</span>
-                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-                    </a>
-                </div>
-
-                <!-- SIMULATION RENDU PAGE BONUS -->
-                <div class="border border-gray-200 rounded-2xl overflow-hidden shadow-lg bg-gray-100 p-6">
-                    <div class="max-w-3xl mx-auto bg-white rounded-xl border border-gray-100 overflow-hidden shadow-md grid grid-cols-1 md:grid-cols-12">
-                        <div class="md:col-span-5 bg-gray-900 text-white p-6 flex flex-col justify-between space-y-4">
-                            <div>
-                                <span class="inline-block bg-amber-400/20 text-amber-300 text-xxs font-bold uppercase px-2.5 py-1 rounded-full mb-2">🎁 Bonus Exclusif</span>
-                                <h3 id="bonusPreviewBookTitle" class="text-lg font-bold">Titre du livre</h3>
-                                <p id="bonusPreviewMsg" class="text-xs text-gray-300 mt-2 leading-relaxed">Message d'accroche...</p>
-                            </div>
-                            <div class="flex justify-center py-2">
-                                <img id="bonusPreviewImg" src="" class="w-32 h-auto object-cover rounded shadow-lg border border-gray-700">
-                            </div>
-                        </div>
-                        <div class="md:col-span-7 p-6 flex flex-col justify-center bg-white space-y-4">
-                            <h4 class="text-sm font-bold text-gray-900">Télécharger votre bonus PDF</h4>
-                            <div id="bonusIframeContainer" class="w-full bg-gray-50 border border-dashed border-gray-200 rounded p-4 text-center text-xs text-gray-400 min-h-[200px] flex items-center justify-center">
-                                Chargement de l'iFrame Brevo...
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </main>
+        </main>
 
     <!-- FOOTER -->
     <footer class="border-t border-gray-200 py-6 text-center text-xs text-gray-400 bg-white">
@@ -399,8 +385,8 @@
             document.getElementById('previewAmazonReviewsBtn').href = langData.amazonReviewsUrl || 'https://www.amazon.fr';
 
             // Descriptif & Contenu
-            document.getElementById('previewDescription').innerHTML = langData.description || "<em class='text-gray-400'>Aucune description.</em>";
-            document.getElementById('previewContent').innerHTML = langData.content || "<em class='text-gray-400'>Aucun contenu spécifié.</em>";
+            document.getElementById('previewDescription').innerHTML = formatRichText(langData.description) || "<em class='text-gray-400'>Aucune description.</em>";
+            document.getElementById('previewContent').innerHTML = formatRichText(langData.content) || "<em class='text-gray-400'>Aucun contenu spécifié.</em>";
 
             // Bannières
             const bannersSec = document.getElementById('previewBannersSection');
@@ -425,8 +411,8 @@
 
             const bonus = langData.bonusConfig || {};
             const langCode = getLangCode(activeLanguage);
-            const slug = bonus.slug || 'bonus';
-            const bonusPageFullUrl = `https://enigmium-editions.com/sub/${langCode}/${slug}.html`;
+            const rawSlug = (bonus.slug || 'bonus').trim().replace(/\.html$/i, '');
+            const bonusPageFullUrl = `https://enigmium-editions.com/sub/${langCode}/${rawSlug}.html`;
 
             const bonusStatusBadge = document.getElementById('bonusStatusBadge');
             const bonusPageUrlInput = document.getElementById('bonusPageUrlInput');
@@ -437,63 +423,36 @@
                 bonusStatusBadge.className = "text-xxs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded";
                 bonusPageUrlInput.value = bonusPageFullUrl;
                 btnOpenBonusUrl.href = bonusPageFullUrl;
-
-                document.getElementById('bonusDisabledAlert').classList.add('hidden');
-                document.getElementById('bonusPreviewCard').classList.remove('hidden');
-
-                document.getElementById('bonusPreviewBookTitle').innerText = langData.title || "Titre du livre";
-                document.getElementById('bonusPreviewMsg').innerText = bonus.message || "Message d'accroche";
-
-                const bonusImg = document.getElementById('bonusPreviewImg');
-                const pImg = bonus.previewImageUrl || langData.coverUrl || "";
-                if (pImg) {
-                    bonusImg.src = (pImg.startsWith('http') || pImg.startsWith('data:')) ? pImg : `https://raw.githubusercontent.com/${cms.owner}/${cms.repo}/${cms.branch}/${pImg}`;
-                }
-
-                const iframeCont = document.getElementById('bonusIframeContainer');
-                if (bonus.brevoIframe) {
-                    let iframeSrc = bonus.brevoIframe;
-                    if (bonus.brevoIframe.includes('<iframe')) {
-                        const m = bonus.brevoIframe.match(/src=["']([^"']+)["']/);
-                        if (m) iframeSrc = m[1];
-                    }
-                    iframeCont.innerHTML = `<iframe src="${iframeSrc}" class="w-full h-52 border-0 rounded"></iframe>`;
-                } else {
-                    iframeCont.innerHTML = `<span class="text-xs text-gray-400">Aucun lien d'iFrame Brevo saisi dans le formulaire.</span>`;
-                }
-
-                document.getElementById('liveBonusLinkBtn').href = bonusPageFullUrl;
             } else {
                 bonusStatusBadge.innerText = "Désactivé";
                 bonusStatusBadge.className = "text-xxs font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded";
                 bonusPageUrlInput.value = "Page bonus non activée pour cette langue";
                 btnOpenBonusUrl.href = "#";
+            }
 
-                document.getElementById('bonusDisabledAlert').classList.remove('hidden');
-                document.getElementById('bonusPreviewCard').classList.add('hidden');
+            // --- MISE À JOUR LIEN PDF BONUS ---
+            const pdfUrlInput = document.getElementById('pdfUrlInput');
+            const pdfStatusBadge = document.getElementById('pdfStatusBadge');
+            const btnOpenPdfUrl = document.getElementById('btnOpenPdfUrl');
+
+            if (langData.pdfBonusUrl) {
+                const cleanPdfPath = langData.pdfBonusUrl.startsWith('/') ? langData.pdfBonusUrl.slice(1) : langData.pdfBonusUrl;
+                const fullPdfUrl = langData.pdfBonusUrl.startsWith('http') ? langData.pdfBonusUrl : `https://enigmium-editions.com/${cleanPdfPath}`;
+                pdfUrlInput.value = fullPdfUrl;
+                btnOpenPdfUrl.href = fullPdfUrl;
+                pdfStatusBadge.innerText = "Disponible";
+                pdfStatusBadge.className = "text-xxs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded";
+            } else {
+                pdfUrlInput.value = "Aucun PDF téléversé pour cette langue";
+                btnOpenPdfUrl.href = "#";
+                pdfStatusBadge.innerText = "Non téléversé";
+                pdfStatusBadge.className = "text-xxs font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded";
             }
 
             lucide.createIcons();
         }
 
-        function switchPreviewTab(tab) {
-            const productSec = document.getElementById('previewProductSection');
-            const bonusSec = document.getElementById('previewBonusSection');
-            const btnP = document.getElementById('tabBtnProduct');
-            const btnB = document.getElementById('tabBtnBonus');
 
-            if (tab === 'product') {
-                productSec.classList.remove('hidden');
-                bonusSec.classList.add('hidden');
-                btnP.className = "pb-3 text-sm font-bold border-b-2 border-black text-black flex items-center space-x-2";
-                btnB.className = "pb-3 text-sm font-bold border-b-2 border-transparent text-gray-400 hover:text-black flex items-center space-x-2";
-            } else {
-                productSec.classList.add('hidden');
-                bonusSec.classList.remove('hidden');
-                btnB.className = "pb-3 text-sm font-bold border-b-2 border-black text-black flex items-center space-x-2";
-                btnP.className = "pb-3 text-sm font-bold border-b-2 border-transparent text-gray-400 hover:text-black flex items-center space-x-2";
-            }
-        }
 
         function copyToClipboard(inputId, btnId) {
             const input = document.getElementById(inputId);

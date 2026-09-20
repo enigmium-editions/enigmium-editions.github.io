@@ -132,13 +132,13 @@
                 </div>
 
                 <!-- Descriptif -->
-                <div id="sectionDescription" class="space-y-3 border-t border-gray-100 pt-6 hidden">
+                <div id="sectionDescription" class="space-y-3 pt-4 hidden">
                     <h2 id="headerDescription" class="text-xs font-bold uppercase tracking-wider text-gray-500">Descriptif</h2>
                     <div id="bookDescription" class="text-sm text-gray-600 leading-relaxed space-y-2">--</div>
                 </div>
 
                 <!-- Contenu du livre -->
-                <div id="sectionContent" class="space-y-3 border-t border-gray-100 pt-6 hidden">
+                <div id="sectionContent" class="space-y-3 pt-4 hidden">
                     <h2 id="headerContent" class="text-xs font-bold uppercase tracking-wider text-gray-500">Contenu du livre</h2>
                     <div id="bookContent" class="text-sm text-gray-600 leading-relaxed space-y-2">--</div>
                 </div>
@@ -439,9 +439,39 @@
 
             // Descriptif
             const descSec = document.getElementById('sectionDescription');
+                    function formatRichText(htmlContent) {
+            if (!htmlContent) return "";
+            if (!/<[a-z][\s\S]*>/i.test(htmlContent)) {
+                const lines = htmlContent.split('\n');
+                let inList = false;
+                let result = [];
+                lines.forEach(line => {
+                    const trimmed = line.trim();
+                    if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+                        if (!inList) {
+                            inList = true;
+                            result.push('<ul class="list-disc pl-5 my-2 space-y-1">');
+                        }
+                        result.push(`<li>${trimmed.substring(2)}</li>`);
+                    } else {
+                        if (inList) {
+                            inList = false;
+                            result.push('</ul>');
+                        }
+                        if (trimmed) {
+                            result.push(`<p>${trimmed}</p>`);
+                        }
+                    }
+                });
+                if (inList) result.push('</ul>');
+                return result.join('');
+            }
+            return htmlContent;
+        }
+
             const descText = document.getElementById('bookDescription');
             if (langData.description) {
-                descText.innerHTML = langData.description;
+                descText.innerHTML = formatRichText(langData.description);
                 descSec.classList.remove('hidden');
             } else {
                 descSec.classList.add('hidden');
@@ -451,7 +481,7 @@
             const contentSec = document.getElementById('sectionContent');
             const contentText = document.getElementById('bookContent');
             if (langData.content) {
-                contentText.innerHTML = langData.content;
+                contentText.innerHTML = formatRichText(langData.content);
                 contentSec.classList.remove('hidden');
             } else {
                 contentSec.classList.add('hidden');
@@ -595,7 +625,7 @@
             link.appendChild(imgContainer);
 
             const title = document.createElement('h4');
-            title.className = "text-xs font-bold text-gray-800 group-hover:text-black line-clamp-1";
+            title.className = "text-xs font-bold text-gray-800 group-hover:text-black leading-snug break-words";
             title.innerText = langData.title;
             link.appendChild(title);
 

@@ -1007,7 +1007,7 @@
         function updateBonusFullUrlPreview() {
             if (!activeLanguage) return;
             const code = getLangCode(activeLanguage);
-            const slugInput = document.getElementById('bonusSlug').value.trim();
+            const slugInput = document.getElementById('bonusSlug').value.trim().replace(/\.html$/i, '');
             document.getElementById('bonusFullUrlPreview').innerText = `https://enigmium-editions.com/sub/${code}/${slugInput}`;
         }
 
