@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enigmium - Aperçu & Liens Brevo</title>
+    <title>Enigmium - Aperçu Produit & Configuration Brevo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -17,37 +17,61 @@
         }
     </script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Styles pour le HTML riche (listes à puces et numéros) */
+        #previewDescription ul, #previewContent ul, .rich-text ul {
+            list-style-type: disc !important;
+            padding-left: 1.25rem !important;
+            margin-top: 0.5rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        #previewDescription ol, #previewContent ol, .rich-text ol {
+            list-style-type: decimal !important;
+            padding-left: 1.25rem !important;
+            margin-top: 0.5rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        #previewDescription li[data-list="bullet"], #previewContent li[data-list="bullet"], .rich-text li[data-list="bullet"] {
+            list-style-type: disc !important;
+        }
+        #previewDescription li[data-list="ordered"], #previewContent li[data-list="ordered"], .rich-text li[data-list="ordered"] {
+            list-style-type: decimal !important;
+        }
+        #previewDescription li, #previewContent li, .rich-text li {
+            margin-bottom: 0.25rem !important;
+        }
+    </style>
 </head>
 <body class="bg-gray-50 min-h-screen font-sans text-gray-900 flex flex-col">
 
-    <!-- HEADER ADMIN -->
-    <header class="border-b border-gray-200 py-4 px-6 md:px-12 flex justify-between items-center bg-white sticky top-0 z-40 shadow-sm">
+    <!-- HEADER -->
+    <header class="bg-white border-b border-gray-100 py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-40 shadow-sm">
         <div class="flex items-center space-x-3">
             <a href="admin.html" class="w-8 h-8 bg-black text-white flex items-center justify-center font-bold text-lg rounded-sm">E</a>
             <span class="text-xl font-bold tracking-tight text-gray-800">Enigmium</span>
-            <span class="bg-amber-100 text-amber-800 text-xxs font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Espace Admin</span>
+            <span class="bg-amber-100 text-amber-800 text-xxs font-extrabold uppercase px-2.5 py-0.5 rounded-full border border-amber-200">ESPACE ADMIN</span>
         </div>
-        <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-4">
             <a href="admin.html" class="text-xs font-semibold text-gray-600 hover:text-black transition-colors flex items-center space-x-1">
                 <i data-lucide="arrow-left" class="w-4 h-4"></i>
                 <span>Retour au tableau de bord</span>
             </a>
-            <a id="editBookBtn" href="#" class="bg-black text-white text-xs font-semibold px-4 py-2 rounded hover:bg-gray-800 transition-colors flex items-center space-x-1.5 shadow-sm">
+            <a id="editBookBtn" href="#" class="bg-black hover:bg-gray-800 text-white text-xs font-medium px-4 py-2 rounded transition-colors inline-flex items-center space-x-1.5 shadow-sm">
                 <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
                 <span>Éditer ce livre</span>
             </a>
         </div>
     </header>
 
-    <!-- BANDEAU INFORMATION -->
-    <div class="bg-white border-b border-gray-200 py-6 px-6 md:px-12">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <!-- BANDEAU SOUS-HEADER -->
+    <div class="bg-white border-b border-gray-200/80 py-4 px-6 md:px-12">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <div class="flex items-center space-x-2">
-                    <span id="bookIdBadge" class="text-xxs font-mono bg-gray-100 border border-gray-200 px-2 py-0.5 rounded text-gray-600">book_id</span>
-                    <span id="bookStatusBadge" class="text-xxs font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-green-100 text-green-800">Visible</span>
+                    <span id="bookIdBadge" class="text-xxs font-mono text-gray-500 bg-gray-100 px-2 py-0.5 rounded">book_id</span>
+                    <span id="bookStatusBadge" class="text-xxs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">VISIBLE</span>
                 </div>
-                <h1 id="previewTitle" class="text-2xl font-extrabold text-gray-900 mt-1">Chargement du livre...</h1>
+                <h1 id="previewTitle" class="text-xl font-extrabold text-gray-900 mt-1">Chargement du livre...</h1>
             </div>
 
             <!-- SELECTEUR DE LANGUES POUR L'APERÇU -->
@@ -72,37 +96,16 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
-                <!-- CHAMP 1 : URL DE CONFIRMATION BREVO -->
-                <div class="bg-white p-5 rounded-xl border border-amber-200 shadow-sm space-y-3 flex flex-col justify-between">
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between">
-                            <label class="text-xs font-extrabold text-gray-900 uppercase tracking-wider flex items-center space-x-1.5">
-                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
-                                <span>1. Confirmation Brevo</span>
-                            </label>
-                            <span class="text-xxs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">Dans Brevo</span>
-                        </div>
-                        <p class="text-xxs text-gray-500 leading-relaxed">
-                            À coller sous <em>« Page de confirmation après validation »</em> dans Brevo.
-                        </p>
-                    </div>
-                    <div class="flex items-center space-x-2 pt-2">
-                        <input type="text" id="brevoRedirectUrlInput" readonly class="flex-grow text-xs font-mono bg-gray-50 border border-gray-200 rounded px-3 py-2 text-gray-800 focus:outline-none select-all">
-                        <button onclick="copyToClipboard('brevoRedirectUrlInput', 'btnCopyBrevo')" id="btnCopyBrevo" class="bg-black hover:bg-gray-800 text-white text-xs font-bold px-4 py-2 rounded transition-colors shrink-0 flex items-center space-x-1 shadow-sm">
-                            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-                            <span id="btnCopyBrevoText">Copier</span>
-                        </button>
-                    </div>
-                </div>
+            <!-- GRID CONTENANT LES 3 CHAMPS RÉORDONNÉS -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
 
-                <!-- CHAMP 2 : PAGE BONUS HTML (Pour QR Code) -->
+                <!-- CHAMP 1 : PAGE BONUS (QR Code) (Côté gauche haut) -->
                 <div class="bg-white p-5 rounded-xl border border-amber-200 shadow-sm space-y-3 flex flex-col justify-between">
                     <div class="space-y-3">
                         <div class="flex items-center justify-between">
                             <label class="text-xs font-extrabold text-gray-900 uppercase tracking-wider flex items-center space-x-1.5">
                                 <i data-lucide="qr-code" class="w-4 h-4 text-blue-600"></i>
-                                <span>2. Page Bonus (QR Code)</span>
+                                <span>1. Page Bonus (QR Code)</span>
                             </label>
                             <span id="bonusStatusBadge" class="text-xxs font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded">Non configuré</span>
                         </div>
@@ -116,19 +119,19 @@
                             <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                             <span id="btnCopyBonusUrlText">Copier</span>
                         </button>
-                        <a id="btnOpenBonusUrl" href="#" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold px-3 py-2 rounded transition-colors shrink-0 flex items-center space-x-1">
+                        <a id="btnOpenBonusUrl" href="#" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold px-3 py-2 rounded transition-colors shrink-0 flex items-center space-x-1" title="Ouvrir la page">
                             <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- CHAMP 3 : LIEN DIRECT PDF BONUS -->
+                <!-- CHAMP 2 : LIEN DIRECT PDF BONUS (Côté droit haut) -->
                 <div class="bg-white p-5 rounded-xl border border-amber-200 shadow-sm space-y-3 flex flex-col justify-between">
                     <div class="space-y-3">
                         <div class="flex items-center justify-between">
                             <label class="text-xs font-extrabold text-gray-900 uppercase tracking-wider flex items-center space-x-1.5">
                                 <i data-lucide="file-text" class="w-4 h-4 text-red-600"></i>
-                                <span>3. Lien Direct PDF Bonus</span>
+                                <span>2. Lien Direct PDF Bonus</span>
                             </label>
                             <span id="pdfStatusBadge" class="text-xxs font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded">Non téléversé</span>
                         </div>
@@ -142,83 +145,111 @@
                             <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                             <span id="btnCopyPdfUrlText">Copier</span>
                         </button>
-                        <a id="btnOpenPdfUrl" href="#" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold px-3 py-2 rounded transition-colors shrink-0 flex items-center space-x-1">
+                        <a id="btnOpenPdfUrl" href="#" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold px-3 py-2 rounded transition-colors shrink-0 flex items-center space-x-1" title="Ouvrir/Télécharger le PDF">
                             <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
                         </a>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- EN-TÊTE D'APERÇU PRODUIT CLIENT -->
-        <div class="flex items-center justify-between border-b border-gray-200 pb-3">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-700 flex items-center space-x-2">
-                <i data-lucide="eye" class="w-4 h-4 text-gray-800"></i>
-                <span>Aperçu Fiche Produit Client (produit.html)</span>
-            </h3>
-            <span class="text-xs text-gray-400">Rendu visuel exact vu par les lecteurs</span>
-        </div>
-
-        <!-- ZONE 1 : APERÇU FICHE PRODUIT -->
-        <div id="previewProductSection" class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm space-y-8">
-            <div class="flex flex-col md:flex-row gap-10 items-start">
-
-                <!-- COUVERTURE -->
-                <div class="w-full md:w-72 shrink-0 flex justify-center">
-                    <div class="aspect-[3/4] w-60 md:w-full bg-gray-50 border border-gray-200 rounded-lg shadow-md overflow-hidden flex items-center justify-center">
-                        <img id="previewCoverImg" src="" class="w-full h-full object-cover hidden">
-                        <div id="previewCoverFallback" class="text-center p-6 text-gray-300">
-                            <i data-lucide="book-open" class="w-16 h-16 mx-auto mb-2"></i>
-                            <span class="text-xs">Pas de couverture</span>
+                <!-- CHAMP 3 : CONFIRMATION BREVO (Pleine largeur en bas) -->
+                <div class="md:col-span-2 bg-white p-5 rounded-xl border border-amber-200 shadow-sm space-y-3 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-gray-900 uppercase tracking-wider flex items-center space-x-1.5">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+                                <span>3. Confirmation Brevo</span>
+                            </label>
+                            <span class="text-xxs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">Dans Brevo</span>
                         </div>
+                        <p class="text-xxs text-gray-500 leading-relaxed">
+                            À coller sous <em>« Page de confirmation après validation »</em> dans Brevo pour ce livre.
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-2 pt-2">
+                        <input type="text" id="brevoRedirectUrlInput" readonly class="flex-grow text-xs font-mono bg-gray-50 border border-gray-200 rounded px-3 py-2 text-gray-800 focus:outline-none select-all">
+                        <button onclick="copyToClipboard('brevoRedirectUrlInput', 'btnCopyBrevo')" id="btnCopyBrevo" class="bg-black hover:bg-gray-800 text-white text-xs font-bold px-4 py-2 rounded transition-colors shrink-0 flex items-center space-x-1 shadow-sm">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                            <span id="btnCopyBrevoText">Copier</span>
+                        </button>
                     </div>
                 </div>
 
-                <!-- INFOS -->
-                <div class="flex-grow space-y-6 w-full">
-                    <div class="space-y-2">
-                        <span id="previewCategory" class="text-xs font-bold uppercase tracking-wider text-gray-400">Catégorie</span>
-                        <h2 id="previewBookTitle" class="text-2xl font-extrabold text-gray-900 leading-tight">--</h2>
-
-                        <!-- BOUTONS ACHAT AMAZON -->
-                        <div class="flex flex-wrap gap-3 pt-2">
-                            <a id="previewAmazonBtn" href="#" target="_blank" class="bg-black text-white px-5 py-2.5 rounded font-medium hover:bg-gray-800 transition-colors inline-flex items-center space-x-2 text-xs shadow-sm">
-                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-                                <span>Acheter sur Amazon</span>
-                            </a>
-                            <a id="previewAmazonReviewsBtn" href="#" target="_blank" class="border border-gray-200 text-gray-700 px-5 py-2.5 rounded font-medium hover:bg-gray-50 transition-colors inline-flex items-center space-x-2 text-xs">
-                                <i data-lucide="message-square" class="w-4 h-4"></i>
-                                <span>Laisser un commentaire</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- DESCRIPTIF -->
-                    <div class="border-t border-gray-100 pt-4 space-y-2">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500">Descriptif</h3>
-                        <div id="previewDescription" class="text-sm text-gray-600 leading-relaxed space-y-2 bg-gray-50/50 p-4 rounded-lg border border-gray-100">--</div>
-                    </div>
-
-                    <!-- CONTENU -->
-                    <div class="border-t border-gray-100 pt-4 space-y-2">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500">Contenu du livre</h3>
-                        <div id="previewContent" class="text-sm text-gray-600 leading-relaxed space-y-2 bg-gray-50/50 p-4 rounded-lg border border-gray-100">--</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- BANNIÈRES -->
-            <div id="previewBannersSection" class="border-t border-gray-100 pt-6 space-y-3 hidden">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500">Bannières associées (${bannersList.length})</h3>
-                <div id="previewBannersContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
             </div>
         </div>
 
-        </main>
+        <!-- ZONE D'APERÇU : FICHE PRODUIT CLIENT -->
+        <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-gray-200 pb-2">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 flex items-center space-x-2">
+                    <i data-lucide="eye" class="w-4 h-4 text-gray-700"></i>
+                    <span>Aperçu Fiche Produit Client (produit.html)</span>
+                </h3>
+                <span class="text-xxs text-gray-400">Rendu visuel exact vu par les lecteurs</span>
+            </div>
+
+            <div id="previewProductSection" class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm space-y-8">
+                <div class="flex flex-col md:flex-row gap-10 items-start">
+
+                    <!-- COUVERTURE -->
+                    <div class="w-full md:w-72 shrink-0 flex justify-center">
+                        <div class="aspect-[3/4] w-60 md:w-full bg-gray-50 border border-gray-200 rounded-lg shadow-md overflow-hidden flex items-center justify-center">
+                            <img id="previewCoverImg" src="" class="w-full h-full object-cover hidden">
+                            <div id="previewCoverFallback" class="text-center p-6 text-gray-300">
+                                <i data-lucide="book-open" class="w-16 h-16 mx-auto mb-2"></i>
+                                <span class="text-xs">Pas de couverture</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- INFOS -->
+                    <div class="flex-grow space-y-6 w-full">
+                        <div class="space-y-2">
+                            <span id="previewCategory" class="text-xs font-bold uppercase tracking-wider text-gray-400">Catégorie</span>
+                            <h2 id="previewBookTitle" class="text-2xl font-extrabold text-gray-900 leading-tight">--</h2>
+
+                            <!-- BOUTONS ACHAT AMAZON -->
+                            <div class="flex flex-wrap gap-3 pt-2">
+                                <a id="previewAmazonBtn" href="#" target="_blank" class="bg-black text-white px-5 py-2.5 rounded font-medium hover:bg-gray-800 transition-colors inline-flex items-center space-x-2 text-xs shadow-sm">
+                                    <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                                    <span>Acheter sur Amazon</span>
+                                </a>
+                                <a id="previewAmazonReviewsBtn" href="#" target="_blank" class="border border-gray-200 text-gray-700 px-5 py-2.5 rounded font-medium hover:bg-gray-50 transition-colors inline-flex items-center space-x-2 text-xs">
+                                    <i data-lucide="message-square" class="w-4 h-4"></i>
+                                    <span>Laisser un commentaire</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- DESCRIPTIF -->
+                        <div id="sectionDescription" class="space-y-2 pt-2">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500">Descriptif</h3>
+                            <div id="previewDescription" class="text-sm text-gray-600 leading-relaxed rich-text">--</div>
+                        </div>
+
+                        <!-- CONTENU DU LIVRE -->
+                        <div id="sectionContent" class="space-y-2 pt-2">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500">Contenu du livre</h3>
+                            <div id="previewContent" class="text-sm text-gray-600 leading-relaxed rich-text">--</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- BANNIÈRES DU LIVRE -->
+                <div id="previewBannersSection" class="space-y-3 pt-6 border-t border-gray-100 hidden">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500">Bannières d'aperçu</h3>
+                    <div id="previewBannersContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <!-- Bannières injectées par JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
 
     <!-- FOOTER -->
-    <footer class="border-t border-gray-200 py-6 text-center text-xs text-gray-400 bg-white">
-        © 2026 Énigmium Éditions — Panneau d'Administration
+    <footer class="border-t border-gray-100 py-6 text-center text-xs text-gray-400 bg-white">
+        © 2026 Énigmium Éditions. Espace d'administration.
     </footer>
 
     <script>
@@ -255,7 +286,10 @@
             async getDatabase() {
                 if (this.demoMode) {
                     let demoDb = localStorage.getItem('demo_books_db');
-                    if (demoDb) return { sha: "demo-sha", data: JSON.parse(demoDb) };
+                    if (!demoDb) {
+                        return { sha: "demo-sha", data: { categories: [], books: [] } };
+                    }
+                    return { sha: "demo-sha", data: JSON.parse(demoDb) };
                 }
 
                 try {
@@ -263,17 +297,63 @@
                     const content = decodeURIComponent(escape(atob(data.content)));
                     return { sha: data.sha, data: JSON.parse(content) };
                 } catch (e) {
-                    let demoDb = localStorage.getItem('demo_books_db');
-                    if (demoDb) return { sha: "demo-sha", data: JSON.parse(demoDb) };
+                    if (e.message.includes('Not Found') || e.message.includes('404')) {
+                        return { sha: null, data: { categories: [], books: [] } };
+                    }
                     throw e;
                 }
             }
         }
 
         const cms = new GitHubCMS();
-        let currentBookId = '';
+        let dbCache = { categories: [], books: [] };
+        let currentBookId = "";
         let bookData = null;
-        let activeLanguage = 'Français';
+        let activeLanguage = "Français";
+
+        function getLangCode(lang) {
+            const map = {
+                'Français': 'fr',
+                'Anglais': 'en',
+                'Allemand': 'de',
+                'Espagnol': 'es',
+                'Italien': 'it',
+                'Portugais': 'pt',
+                'Néerlandais': 'nl'
+            };
+            return map[lang] || 'fr';
+        }
+
+        // Helper de formatage du texte riche
+        function formatRichText(htmlContent) {
+            if (!htmlContent) return "";
+            if (!/<[a-z][\s\S]*>/i.test(htmlContent)) {
+                const lines = htmlContent.split('\n');
+                let inList = false;
+                let result = [];
+                lines.forEach(line => {
+                    const trimmed = line.trim();
+                    if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+                        if (!inList) {
+                            inList = true;
+                            result.push('<ul class="list-disc pl-5 my-2 space-y-1">');
+                        }
+                        result.push(`<li>${trimmed.substring(2)}</li>`);
+                    } else {
+                        if (inList) {
+                            inList = false;
+                            result.push('</ul>');
+                        }
+                        if (trimmed) {
+                            result.push(`<p>${trimmed}</p>`);
+                        }
+                    }
+                });
+                if (inList) result.push('</ul>');
+                return result.join('');
+            }
+            return htmlContent;
+        }
 
         document.addEventListener('DOMContentLoaded', async () => {
             lucide.createIcons();
@@ -291,51 +371,39 @@
 
             try {
                 const res = await cms.getDatabase();
-                const db = res.data;
+                dbCache = res.data;
 
-                bookData = db.books.find(b => String(b.id) === String(currentBookId));
-                if (!bookData) {
+                const book = dbCache.books.find(b => String(b.id) === String(currentBookId));
+                if (!book) {
                     alert("Livre introuvable dans la base.");
                     window.location.href = 'admin.html';
                     return;
                 }
 
+                bookData = book;
                 renderBookPreview();
             } catch (err) {
-                console.error(err);
                 alert("Erreur de chargement: " + err.message);
             }
         });
 
-        function getLangCode(lang) {
-            const map = {
-                'Français': 'fr',
-                'Anglais': 'en',
-                'Allemand': 'de',
-                'Espagnol': 'es',
-                'Italien': 'it',
-                'Portugais': 'pt',
-                'Néerlandais': 'nl'
-            };
-            return map[lang] || 'fr';
-        }
-
         function renderBookPreview() {
-            document.getElementById('bookIdBadge').innerText = bookData.id;
+            if (!bookData) return;
 
+            document.getElementById('bookIdBadge').innerText = bookData.id;
             const statusBadge = document.getElementById('bookStatusBadge');
+            statusBadge.innerText = (bookData.status || 'visible').toUpperCase();
             if (bookData.status === 'masqué') {
-                statusBadge.innerText = "Masqué";
-                statusBadge.className = "text-xxs font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-gray-200 text-gray-600";
+                statusBadge.className = "text-xxs font-bold text-gray-600 bg-gray-200 px-2 py-0.5 rounded";
             } else {
-                statusBadge.innerText = "Visible";
-                statusBadge.className = "text-xxs font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-green-100 text-green-800";
+                statusBadge.className = "text-xxs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded";
             }
 
-            // Génération des onglets de langues disponibles
-            const availableLangs = Object.keys(bookData.languages || {});
+            // Onglets de langues disponibles
             const tabsContainer = document.getElementById('languageTabsContainer');
             tabsContainer.innerHTML = '';
+
+            const availableLangs = Object.keys(bookData.languages || {});
 
             if (availableLangs.length === 0) {
                 tabsContainer.innerHTML = '<span class="text-xs text-gray-400">Aucune langue configurée</span>';
@@ -452,8 +520,6 @@
             lucide.createIcons();
         }
 
-
-
         function copyToClipboard(inputId, btnId) {
             const input = document.getElementById(inputId);
             if (!input || !input.value) return;
@@ -470,8 +536,6 @@
                     btn.classList.remove('bg-emerald-600');
                     btn.classList.add('bg-black');
                 }, 2000);
-            }).catch(err => {
-                alert("Erreur lors de la copie : " + err);
             });
         }
     </script>
