@@ -16,7 +16,7 @@
           "content": "<ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Une exploration immersive à travers de grands univers (Savane, Océans, Forêts, Animaux disparus...).</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>745 mots cachés stimulants pour exercer votre cerveau.</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>80 mots mystères à déchiffrer pour clore chaque grille en beauté.</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Les solutions complètes incluses en fin d'ouvrage.</li></ol><p><br></p><p>Préparez vos crayons, offrez (ou offrez-vous) une pause d'évasion intelligente au cœur du monde animal !</p>",
           "coverUrl": "images/covers/cover-book_1788688589465-Français.jpg",
           "banners": [],
-          "pdfBonusUrl": "assets/bonus/enigmium-bonus-mots-caches-illustres-les-animaux.pdf",
+          "pdfBonusUrl": "bonus/Bonus_Animaux_T1.pdf",
           "amazonUrl": "",
           "amazonReviewsUrl": "",
           "bonusConfig": {
@@ -24,7 +24,7 @@
             "slug": "animaux-t1.html",
             "message": "Merci d'avoir fait l'acquisition du livre ! Entrez votre e-mail pour recevoir instantanément vos 20 grilles exclusives + solutions.",
             "previewImageUrl": "images/bonus/bonus-book_1788688589465-fr.jpg",
-            "brevoIframe": "<iframe width=\"540\" height=\"300\" src=\"https://3603444f.sibforms.com/v2/serve/MUIFAM_5p5E7femh0nm9Cxux0x56icGQpSm0r05ahUWbhFz_M6KLc5Ll13rcJV8aZ23fvK-rtCINcrwE7VOcogEJ9uPCnRSjBPml7PBBqpfRitqP_aUE5Aw7kwTZ2XYtC0qyH3zg5gThW9-RRS41PvpW3tqIdNQLVIjVDraMUfsWMZU48oZxqJvY-x7MaLrC4QqQlf0TyJmRRXSTPw==\" frameborder=\"0\" scrolling=\"auto\" allowfullscreen style=\"display: block;margin-left: auto;margin-right: auto;max-width: 100%;\"></iframe>"
+            "brevoIframe": "<iframe width=\"540\" height=\"350\" src=\"https://3603444f.sibforms.com/v2/serve/MUIFAM_5p5E7femh0nm9Cxux0x56icGQpSm0r05ahUWbhFz_M6KLc5Ll13rcJV8aZ23fvK-rtCINcrwE7VOcogEJ9uPCnRSjBPml7PBBqpfRitqP_aUE5Aw7kwTZ2XYtC0qyH3zg5gThW9-RRS41PvpW3tqIdNQLVIjVDraMUfsWMZU48oZxqJvY-x7MaLrC4QqQlf0TyJmRRXSTPw==\" frameborder=\"0\" scrolling=\"auto\" allowfullscreen style=\"display: block;margin-left: auto;margin-right: auto;max-width: 100%;\"></iframe>"
           }
         },
         "Anglais": {
