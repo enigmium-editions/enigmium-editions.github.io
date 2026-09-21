@@ -28,21 +28,21 @@
           }
         },
         "Anglais": {
-          "title": "Illustrated Word Search - Animals",
+          "title": "Illustrated Word Search - Animals (Volume 1, part 1)",
           "category": "Mots cachés illustrés",
           "description": "<p>The 100% screen-free activity book that combines the stimulation of puzzles with the beauty of wildlife!</p><p><br></p><p>Discover animals like you have never seen them before and take on the Enigmium challenge. This first volume invites you on an adventure through our planet's most beautiful landscapes. From sun-drenched savannahs to deep oceans, explore wildlife through play and discovery.</p><p><br></p><p>This hybrid book beautifully blends captivating educational profiles with exciting observation challenges. It is the perfect gift book to enjoy a peaceful moment, enrich your vocabulary, and marvel as a family.</p><p><br></p><p><strong>Why this book stands out:</strong></p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>A True Artistic Journey: Every animal is highlighted by a beautiful illustration, making this activity book a gorgeous collector's item.</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Learn While Having Fun: Every solved grid is paired with an educational profile filled with surprising and unusual facts about the species. Become a wildlife expert!</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Maximum Visual Comfort (Large Print): Printed in a very large format with an airy layout and large, easy-to-read characters. No more eye strain—just pure puzzle pleasure.</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>A Moment to Share: Whether for solo relaxation, road trips, or creating a special bond between parents, kids, and grandparents.</li></ol>",
           "content": "<ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>An immersive exploration through great environments (Savannah, Forests, and more).</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>400 stimulating hidden words to exercise your brain.</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>40 mystery words to decipher to complete each grid beautifully.</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Full solutions included at the back of the book.</li></ol><p><br></p><p>Get your pencils ready, and give yourself (or a loved one) an inspiring, mindful escape into the heart of the animal kingdom!</p>",
           "coverUrl": "images/covers/cover-book_1788688589465-Anglais.jpg",
           "banners": [],
-          "pdfBonusUrl": "",
+          "pdfBonusUrl": "bonus/Bonus-Animals-v1p1.pdf",
           "amazonUrl": "https://www.amazon.com/dp/B0HHRZ943B",
           "amazonReviewsUrl": "https://www.amazon.com/dp/B0HHRZ943B",
           "bonusConfig": {
-            "enabled": false,
-            "slug": "",
-            "message": "",
-            "previewImageUrl": "",
-            "brevoIframe": ""
+            "enabled": true,
+            "slug": "animals-v1p1",
+            "message": "Thank you for purchasing the book! Enter your email to instantly receive your 10 exclusive bonus puzzles + solutions.",
+            "previewImageUrl": "images/bonus/Cover-Bonus-Animals-v1p1.jpg",
+            "brevoIframe": "<iframe width=\"540\" height=\"305\" src=\"https://3603444f.sibforms.com/v2/serve/MUIFACx1fl-YMjY7SMnTAQC-YEkwHwARx9p5-DnIczK9e-UmDy1vWuWJul4y9SczHP4VNP849W_UhdsBqsYzpllSHnHBBKzjC66bzKQDyoWFIZ2DlIxEC9Fn8AtEE46pv_UIrXHLGzpImsDV4gZaNkkOJ-vvByWcOeFfyFH4Bf7lIsVpkFZqMSlStrAmad5FV91VCAB9wzSVeD65gw==\" frameborder=\"0\" scrolling=\"auto\" allowfullscreen style=\"display: block;margin-left: auto;margin-right: auto;max-width: 100%;\"></iframe>"
           }
         }
       }
