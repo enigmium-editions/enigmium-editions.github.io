@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enigmium - Bonus Illustrated Word Search - Birds (Volume 2, part 1)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        enigmiumGreen: '#a3c9a8',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-white min-h-screen font-sans text-gray-900 flex flex-col">
+
+    <!-- HEADER PUBLIC avec lien de retour vers la racine -->
+    <header class="border-b border-gray-100 py-4 px-6 md:px-12 flex justify-between items-center bg-white sticky top-0 z-40">
+        <a href="../../index.html" class="flex items-center space-x-3 group">
+            <div class="w-8 h-8 bg-black text-white flex items-center justify-center font-bold text-lg rounded-sm group-hover:bg-gray-800 transition-colors">E</div>
+            <span class="text-xl font-bold tracking-tight text-gray-800">Enigmium</span>
+        </a>
+        <a href="../../index.html" class="text-sm font-medium hover:underline flex items-center space-x-1 text-gray-600">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span>Back to site</span>
+        </a>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow max-w-5xl mx-auto w-full px-6 py-12 flex flex-col justify-center">
+
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-12">
+
+            <!-- COLONNE GAUCHE : Visuel & Offre du Livre -->
+            <div class="md:col-span-5 bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 md:p-10 flex flex-col justify-between relative overflow-hidden">
+                <div class="space-y-4 relative z-10">
+                    <span class="inline-block bg-white/10 text-white text-xxs font-bold tracking-wider uppercase px-3 py-1 rounded-full border border-white/20">
+                        🎁 Exclusive Bonus
+                    </span>
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight leading-tight">
+                        Illustrated Word Search - Birds (Volume 2, part 1)
+                    </h1>
+                    <p class="text-sm text-gray-300 leading-relaxed">
+                        Thank you for purchasing the book! Enter your email to instantly receive your 10 exclusive bonus puzzles + solutions.
+                    </p>
+                </div>
+
+                <!-- Couverture avec effet 3D -->
+                <div class="my-8 flex justify-center relative z-10">
+                    <div class="w-44 aspect-[3/4] bg-gray-700 rounded-lg shadow-2xl overflow-hidden border-2 border-white/10 ">
+                        <img src="../../images/bonus/Bonus-Birds-v2p1.jpg" alt="Illustrated Word Search - Birds (Volume 2, part 1)" class="w-full h-full object-cover">
+                    </div>
+                </div>
+
+                <!-- Garanties -->
+                <div class="space-y-2 pt-4 border-t border-white/10 text-xs text-gray-400 relative z-10">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                        <span>Instant delivery in high-definition PDF format</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                        <span>Zero spam - Your data remains 100% private</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLONNE DROITE : Formulaire Brevo -->
+            <div class="md:col-span-7 p-8 md:p-12 flex flex-col justify-center bg-white">
+                <div class="max-w-md mx-auto w-full space-y-6">
+
+                    <div class="space-y-2 text-center md:text-left">
+                        <h2 class="text-xl font-bold text-gray-900">Download your free bonus</h2>
+                        <p class="text-xs text-gray-500">
+                            Enter the email address where we should send your file.
+                        </p>
+                    </div>
+
+                    <!-- CONTENEUR IFRAME FORMULAIRE BREVO -->
+                    <div class="w-full rounded-lg overflow-hidden border border-gray-100 bg-gray-50 min-h-[380px] flex items-center justify-center">
+                        <iframe width="100%" height="380" src="https://3603444f.sibforms.com/v2/serve/MUIFAJ_8e_IVGHtKm5i2Om8omYLFQA4OL3SQ4pKfUOp80NDqp2fn9IWKmmdPGzSFb20zfiJHiVhmrvdpgtmSHbHfYhBPstf1gLQhUFcnMqkPFeSDeCPFFn_O3SraNuDRI21HrIJ5Q3sh3BERzpTorFEs_0voCOS9vRKmuk7qyMg9GFVTsma1zqIwRVveuxKwgisRSDjjG-slmSI-4A==" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
+                    </div>
+
+                    <p class="text-xxs text-center text-gray-400">
+                        By subscribing, you join the Enigmium Club. You can unsubscribe at any time with a single click.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER PUBLIC -->
+    <footer class="border-t border-gray-100 py-6 text-center text-xs text-gray-400 bg-white">
+        © 2026 Énigmium Editions — All rights reserved.
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
