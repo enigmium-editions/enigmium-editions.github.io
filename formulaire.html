@@ -1078,7 +1078,104 @@
         }
 
         function generateBonusPageHTML(bookTitle, bonusConfig, langCode, bookId) {
-            const message = bonusConfig.message || "Merci d'avoir fait l'acquisition du livre ! Entrez votre e-mail pour recevoir instantanément vos grilles exclusives + solutions.";
+            const translations = {
+                fr: {
+                    defaultMsg: "Merci d'avoir fait l'acquisition du livre ! Entrez votre e-mail pour recevoir instantanément vos grilles exclusives + solutions.",
+                    backToSite: "Retour au site",
+                    exclusiveBonus: "🎁 Bonus Exclusif",
+                    guarantee1: "Envoi immédiat en version PDF haute définition",
+                    guarantee2: "Zero spam - Vos données restent 100% privées",
+                    titleRight: "Téléchargez votre bonus gratuit",
+                    subtitleRight: "Indiquez l'adresse e-mail à laquelle nous devons vous envoyer le fichier.",
+                    noIframe: "Collez votre lien ou code iFrame Brevo dans l'administration pour afficher le formulaire.",
+                    clubNote: "En vous inscrivant, vous rejoignez le Club Enigmium. Vous pourrez vous désinscrire à tout moment d'un simple clic.",
+                    footer: "© 2026 Énigmium Éditions — Tous droits réservés."
+                },
+                en: {
+                    defaultMsg: "Thank you for purchasing the book! Enter your email to instantly receive your exclusive bonus puzzles + solutions.",
+                    backToSite: "Back to site",
+                    exclusiveBonus: "🎁 Exclusive Bonus",
+                    guarantee1: "Instant delivery in high-definition PDF format",
+                    guarantee2: "Zero spam - Your data remains 100% private",
+                    titleRight: "Download your free bonus",
+                    subtitleRight: "Enter the email address where we should send your file.",
+                    noIframe: "Paste your Brevo iFrame link or code in the admin dashboard to display the form.",
+                    clubNote: "By subscribing, you join the Enigmium Club. You can unsubscribe at any time with a single click.",
+                    footer: "© 2026 Énigmium Editions — All rights reserved."
+                },
+                de: {
+                    defaultMsg: "Vielen Dank für den Kauf des Buches! Geben Sie Ihre E-Mail-Adresse ein, um sofort Ihre exklusiven Bonus-Rätsel + Lösungen zu erhalten.",
+                    backToSite: "Zurück zur Website",
+                    exclusiveBonus: "🎁 Exklusiver Bonus",
+                    guarantee1: "Sofortiger Versand als hochauflösende PDF-Datei",
+                    guarantee2: "Kein Spam - Ihre Daten bleiben 100% privat",
+                    titleRight: "Laden Sie Ihren kostenlosen Bonus herunter",
+                    subtitleRight: "Geben Sie die E-Mail-Adresse ein, an die wir die Datei senden sollen.",
+                    noIframe: "Fügen Sie Ihren Brevo iFrame-Link oder -Code in der Administration ein.",
+                    clubNote: "Mit Ihrer Anmeldung treten Sie dem Enigmium Club bei. Sie können sich jederzeit mit einem Klick abmelden.",
+                    footer: "© 2026 Énigmium Editions — Alle Rechte vorbehalten."
+                },
+                es: {
+                    defaultMsg: "¡Gracias por adquirir el libro! Ingrese su correo electrónico para recibir instantáneamente sus rompecabezas de bono exclusivos + soluciones.",
+                    backToSite: "Volver al sitio",
+                    exclusiveBonus: "🎁 Bono Exclusivo",
+                    guarantee1: "Envío inmediato en formato PDF de alta definición",
+                    guarantee2: "Cero spam - Sus datos se mantienen 100% privados",
+                    titleRight: "Descargue su bono gratuito",
+                    subtitleRight: "Ingrese la dirección de correo electrónico a la que debemos enviarle el archivo.",
+                    noIframe: "Pegue su enlace o código iFrame de Brevo en la administración para mostrar el formulario.",
+                    clubNote: "Al suscribirse, se une al Club Enigmium. Puede darse de baja en cualquier momento con un solo clic.",
+                    footer: "© 2026 Énigmium Editions — Todos los derechos reservados."
+                },
+                it: {
+                    defaultMsg: "Grazie per aver acquistato il libro! Inserisci la tua email per ricevere all'istante i tuoi puzzle bonus esclusivi + soluzioni.",
+                    backToSite: "Torna al sito",
+                    exclusiveBonus: "🎁 Bonus Esclusivo",
+                    guarantee1: "Consegna immediata in formato PDF ad alta definizione",
+                    guarantee2: "Zero spam - I tuoi dati rimangono privati al 100%",
+                    titleRight: "Scarica il tuo bonus gratuito",
+                    subtitleRight: "Inserisci l'indirizzo e-mail a cui dobbiamo inviarti il file.",
+                    noIframe: "Incolla il tuo link o codice iFrame Brevo nell'amministrazione per visualizzare il modulo.",
+                    clubNote: "Iscrivendoti ti unisci al Club Enigmium. Puoi cancellarti in qualsiasi momento con un solo click.",
+                    footer: "© 2026 Énigmium Editions — Tutti i diritti riservati."
+                },
+                nl: {
+                    defaultMsg: "Bedankt voor uw aankoop van het boek! Vul uw e-mailadres in om direct uw exclusieve bonuspuzzels + oplossingen te ontvangen.",
+                    backToSite: "Terug naar de site",
+                    exclusiveBonus: "🎁 Exclusieve Bonus",
+                    guarantee1: "Directe levering in high-definition pdf-formaat",
+                    guarantee2: "Nul spam - Uw gegevens blijven 100% privé",
+                    titleRight: "Download uw gratis bonus",
+                    subtitleRight: "Voer het e-mailadres in waarnaar we het bestand moeten sturen.",
+                    noIframe: "Plak uw Brevo iFrame-link of -code in het beheer om het formulier weer te geven.",
+                    clubNote: "Door u in te schrijven wordt u lid van de Enigmium Club. U kunt u op elk moment met één klik afmelden.",
+                    footer: "© 2026 Énigmium Editions — Alle rechten voorbehouden."
+                },
+                pt: {
+                    defaultMsg: "Obrigado por adquirir o livro! Insira o seu e-mail para receber instantaneamente os seus puzzles de bónus exclusivos + soluções.",
+                    backToSite: "Voltar ao site",
+                    exclusiveBonus: "🎁 Bónus Exclusivo",
+                    guarantee1: "Envio imediato em formato PDF de alta definição",
+                    guarantee2: "Zero spam - Os seus dados permanecem 100% privados",
+                    titleRight: "Descarregue o seu bónus gratuito",
+                    subtitleRight: "Insira o endereço de e-mail para onde devemos enviar o ficheiro.",
+                    noIframe: "Cole o seu link ou código iFrame do Brevo na administração para exibir o formulário.",
+                    clubNote: "Ao subscrever, junta-se ao Clube Enigmium. Pode cancelar a subscrição a qualquer momento com um único clique.",
+                    footer: "© 2026 Énigmium Editions — Todos os direitos reservados."
+                }
+            };
+
+            let normCode = (langCode || 'fr').toLowerCase().trim();
+            if (normCode.includes('anglais') || normCode.startsWith('en')) normCode = 'en';
+            else if (normCode.includes('allemand') || normCode.startsWith('de')) normCode = 'de';
+            else if (normCode.includes('espagnol') || normCode.startsWith('es')) normCode = 'es';
+            else if (normCode.includes('italien') || normCode.startsWith('it')) normCode = 'it';
+            else if (normCode.includes('portugais') || normCode.startsWith('pt')) normCode = 'pt';
+            else if (normCode.includes('néerlandais') || normCode.includes('neerlandais') || normCode.startsWith('nl')) normCode = 'nl';
+            else if (normCode.includes('français') || normCode.includes('francais') || normCode.startsWith('fr')) normCode = 'fr';
+
+            const t = translations[normCode] || translations.en;
+            const message = bonusConfig.message || t.defaultMsg;
             let previewImg = bonusConfig.previewImageUrl || coverUrl || "";
             const iframeCode = bonusConfig.brevoIframe || "";
 
@@ -1096,7 +1193,7 @@
             }
 
             return `<!DOCTYPE html>
-<html lang="${langCode}">
+<html lang="${normCode}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1125,7 +1222,7 @@
         </a>
         <a href="../../index.html" class="text-sm font-medium hover:underline flex items-center space-x-1 text-gray-600">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
-            <span>Retour au site</span>
+            <span>${t.backToSite}</span>
         </a>
     </header>
 
@@ -1138,7 +1235,7 @@
             <div class="md:col-span-5 bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 md:p-10 flex flex-col justify-between relative overflow-hidden">
                 <div class="space-y-4 relative z-10">
                     <span class="inline-block bg-white/10 text-white text-xxs font-bold tracking-wider uppercase px-3 py-1 rounded-full border border-white/20">
-                        🎁 Bonus Exclusif
+                        ${t.exclusiveBonus}
                     </span>
                     <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight leading-tight">
                         ${bookTitle}
@@ -1159,11 +1256,11 @@
                 <div class="space-y-2 pt-4 border-t border-white/10 text-xs text-gray-400 relative z-10">
                     <div class="flex items-center space-x-2">
                         <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0"></i>
-                        <span>Envoi immédiat en version PDF haute définition</span>
+                        <span>${t.guarantee1}</span>
                     </div>
                     <div class="flex items-center space-x-2">
                         <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400 shrink-0"></i>
-                        <span>Zero spam - Vos données restent 100% privées</span>
+                        <span>${t.guarantee2}</span>
                     </div>
                 </div>
             </div>
@@ -1173,19 +1270,19 @@
                 <div class="max-w-md mx-auto w-full space-y-6">
 
                     <div class="space-y-2 text-center md:text-left">
-                        <h2 class="text-xl font-bold text-gray-900">Téléchargez votre bonus gratuit</h2>
+                        <h2 class="text-xl font-bold text-gray-900">${t.titleRight}</h2>
                         <p class="text-xs text-gray-500">
-                            Indiquez l'adresse e-mail à laquelle nous devons vous envoyer le fichier.
+                            ${t.subtitleRight}
                         </p>
                     </div>
 
                     <!-- CONTENEUR IFRAME FORMULAIRE BREVO -->
                     <div class="w-full rounded-lg overflow-hidden border border-gray-100 bg-gray-50 min-h-[380px] flex items-center justify-center">
-                        ${iframeSrc ? `<iframe width="100%" height="380" src="${iframeSrc}" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>` : `<div class="p-8 text-center text-xs text-gray-400">Collez votre lien ou code iFrame Brevo dans l'administration pour afficher le formulaire.</div>`}
+                        ${iframeSrc ? `<iframe width="100%" height="380" src="${iframeSrc}" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>` : `<div class="p-8 text-center text-xs text-gray-400">${t.noIframe}</div>`}
                     </div>
 
                     <p class="text-xxs text-center text-gray-400">
-                        En vous inscrivant, vous rejoignez le Club Enigmium. Vous pourrez vous désinscrire à tout moment d'un simple clic.
+                        ${t.clubNote}
                     </p>
                 </div>
             </div>
@@ -1196,7 +1293,7 @@
 
     <!-- FOOTER PUBLIC -->
     <footer class="border-t border-gray-100 py-6 text-center text-xs text-gray-400 bg-white">
-        © 2026 Énigmium Éditions. Tous droits réservés.
+        ${t.footer}
     </footer>
 
     <script>
