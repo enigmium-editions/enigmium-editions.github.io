@@ -76,15 +76,15 @@
           "content": "<ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><span style=\"background-color: rgb(255, 255, 255); color: rgb(15, 17, 17);\">Thematic exploration: 5 fascinating environments to explore.</span></li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><span style=\"background-color: rgb(255, 255, 255); color: rgb(15, 17, 17);\">Fascinating Facts: 40 information-rich profiles to learn a multitude of amazing facts.</span></li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><span style=\"background-color: rgb(255, 255, 255); color: rgb(15, 17, 17);\">Word Search Grids: 40 stimulating challenges featuring a \"mystery word\" system to decipher using shared letters, plus an exciting quiz at the end of each chapter.</span></li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><span style=\"background-color: rgb(255, 255, 255); color: rgb(15, 17, 17);\">Elegant Illustrations: Beautiful and detailed drawings of each bird that give the book a unique and premium touch.</span></li></ol><p><br></p><p><span style=\"background-color: rgb(255, 255, 255); color: rgb(15, 17, 17);\">Perfect for a quiet evening, family time, or as a thoughtful gift for nature lovers and puzzle enthusiasts. Get your pencils ready, the exploration begins now!</span></p>",
           "coverUrl": "images/covers/Cover-Birds-v2p1.jpg",
           "banners": [],
-          "pdfBonusUrl": "",
+          "pdfBonusUrl": "bonus/Bonus-Birds-v2p1.pdf",
           "amazonUrl": "https://www.amazon.com/dp/B0HJHH4SQ7",
           "amazonReviewsUrl": "https://www.amazon.com/dp/B0HJHH4SQ7",
           "bonusConfig": {
-            "enabled": false,
-            "slug": "",
-            "message": "",
-            "previewImageUrl": "",
-            "brevoIframe": ""
+            "enabled": true,
+            "slug": "birds-v2p1",
+            "message": "Thank you for purchasing the book! Enter your email to instantly receive your 10 exclusive bonus puzzles + solutions.",
+            "previewImageUrl": "images/bonus/Bonus-Birds-v2p1.jpg",
+            "brevoIframe": "<iframe width=\"540\" height=\"305\" src=\"https://3603444f.sibforms.com/v2/serve/MUIFAJ_8e_IVGHtKm5i2Om8omYLFQA4OL3SQ4pKfUOp80NDqp2fn9IWKmmdPGzSFb20zfiJHiVhmrvdpgtmSHbHfYhBPstf1gLQhUFcnMqkPFeSDeCPFFn_O3SraNuDRI21HrIJ5Q3sh3BERzpTorFEs_0voCOS9vRKmuk7qyMg9GFVTsma1zqIwRVveuxKwgisRSDjjG-slmSI-4A==\" frameborder=\"0\" scrolling=\"auto\" allowfullscreen style=\"display: block;margin-left: auto;margin-right: auto;max-width: 100%;\"></iframe>"
           }
         }
       }
